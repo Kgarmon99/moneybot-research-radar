@@ -9,26 +9,27 @@
     <style>
         :root { --bg: #000000; --fg: #FFFFFF; --border: #333333; --accent: #888888; }
         body { background-color: var(--bg); color: var(--fg); font-family: 'Space Grotesk', sans-serif; margin: 0; padding: 40px 20px; line-height: 1.6; }
-        .container { max-width: 800px; margin: 0 auto; }
+        .container { max-width: 800px; margin: 0 auto; background: #050505; padding: 40px; border: 1px solid var(--border); border-radius: 8px;}
         h1, h2, h3 { font-weight: 600; letter-spacing: -0.03em; }
-        h1 { font-size: 2.5rem; border-bottom: 1px solid var(--border); padding-bottom: 10px; margin-bottom: 20px; margin-top: 40px;}
+        h1 { font-size: 2.5rem; border-bottom: 1px solid var(--border); padding-bottom: 10px; margin-bottom: 20px; margin-top: 30px;}
         h2 { font-size: 1.4rem; margin-top: 40px; color: var(--fg); border-bottom: 1px solid var(--border); padding-bottom: 5px;}
         a { color: var(--fg); text-decoration: none; border-bottom: 1px solid var(--border); transition: border-color 0.2s;}
-        a:hover { border-bottom: 1px solid var(--fg); }
-        .back-link { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--accent); }
+        a:hover { border-bottom: 1px solid var(--fg); color: #ccc;}
+        .back-link { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--accent); border: none; display: inline-block; margin-bottom: 20px; transition: color 0.2s;}
+        .back-link:hover { color: var(--fg); border: none; }
         table { width: 100%; border-collapse: collapse; margin-bottom: 24px; margin-top: 24px;}
         th, td { border: 1px solid var(--border); padding: 12px; text-align: left; font-size: 0.9rem; }
         th { color: var(--accent); font-weight: normal; text-transform: uppercase; letter-spacing: 0.05em;}
-        code { background: #111; padding: 2px 6px; border-radius: 4px; font-family: monospace; font-size: 0.9em; }
+        code { background: #111; padding: 2px 6px; border-radius: 4px; font-family: monospace; font-size: 0.9em; border: 1px solid #222;}
         pre { background: #111; padding: 15px; border-radius: 4px; overflow-x: auto; border: 1px solid var(--border); }
-        blockquote { border-left: 3px solid var(--border); margin: 0; padding-left: 15px; color: var(--accent); font-style: italic;}
+        blockquote { border-left: 3px solid var(--accent); margin: 0; padding-left: 15px; color: #ccc; font-style: italic;}
         ul, ol { padding-left: 20px; }
         li { margin-bottom: 10px; }
     </style>
 </head>
 <body>
     <div class="container">
-        <a href="../index.html" class="back-link">&larr; Back to Radar</a>
+        <a href="../index.html" class="back-link">&larr; Return to Dashboard</a>
         <h1>MoneyBot x Financial Literacy Research Alignment Strategy</h1>
 <p><strong>Date:</strong> May 28, 2026
 <strong>Topic:</strong> Aligning MoneyBot's product strategy with GFLEC, FINRA, and Stanford SIEPR research.</p>
