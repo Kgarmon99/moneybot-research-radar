@@ -17,10 +17,6 @@ HTML_TEMPLATE = """
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jsvectormap/dist/css/jsvectormap.min.css" />
-    <script src="https://cdn.jsdelivr.net/npm/jsvectormap"></script>
-    <script>jsVectorMap.prototype.addMap = jsVectorMap.addMap;</script>
-    <script src="https://cdn.jsdelivr.net/npm/jsvectormap/dist/maps/us-aea-en.js"></script>
     <style>
         :root { --bg: #000000; --fg: #FFFFFF; --border: #333333; --accent: #888888; }
         body { background-color: var(--bg); color: var(--fg); font-family: 'Space Grotesk', sans-serif; margin: 0; padding: 40px 20px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
@@ -60,17 +56,12 @@ HTML_TEMPLATE = """
         .viz-card:hover { border-color: #555; }
         .viz-title { font-size: 0.85rem; color: var(--accent); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 15px; border-bottom: 1px solid #222; padding-bottom: 10px;}
         
-        /* Map styles */
-        #us-map { width: 100%; height: 400px; margin-bottom: 20px; }
-        .jvm-tooltip {
-            background-color: #111 !important;
-            color: #fff !important;
-            border: 1px solid var(--border) !important;
-            border-radius: 4px !important;
-            font-family: 'Space Grotesk', sans-serif !important;
-            padding: 8px 12px !important;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.5) !important;
-        }
+        /* State Badges */
+        .states-badge-grid { display: grid; grid-template-columns: repeat(10, 1fr); gap: 6px; margin-bottom: 20px; }
+        .state-badge { background-color: #111; border: 1px solid #333; color: #555; border-radius: 4px; padding: 6px 0; text-align: center; font-size: 0.75rem; font-weight: 600; transition: all 0.2s;}
+        .state-badge.active { background-color: var(--fg); color: var(--bg); border-color: var(--fg); box-shadow: 0 0 10px rgba(255,255,255,0.2); }
+        @media(max-width: 768px) { .states-badge-grid { grid-template-columns: repeat(7, 1fr); gap: 5px; } }
+        @media(max-width: 480px) { .states-badge-grid { grid-template-columns: repeat(5, 1fr); } }
         
         /* Bar Chart */
         .bar-chart { display: flex; flex-direction: column; gap: 20px; margin-top: 20px;}
@@ -144,7 +135,11 @@ HTML_TEMPLATE = """
                 <div class="viz-card">
                     <div class="viz-title">K-12 Policy Mandates (NGPF)</div>
                     <div style="font-size: 2.5rem; font-weight: 700; margin-bottom: 20px; letter-spacing: -0.05em; line-height: 1.1;">25 <span style="font-size: 1.2rem; color: var(--accent); font-weight: 400; letter-spacing: normal;">/ 50 States</span></div>
-                    <div id="us-map"></div>
+                    <div class="states-badge-grid">
+                        {% for state in states_list %}
+                        <div class="state-badge {% if state.mandated %}active{% endif %}">{{ state.code }}</div>
+                        {% endfor %}
+                    </div>
                     <p style="font-size: 0.85rem; color: var(--accent); margin-top: 15px; line-height: 1.5; margin-bottom: 0;">States guaranteeing a standalone Personal Finance course for high school graduation.</p>
                 </div>
 
@@ -272,36 +267,10 @@ HTML_TEMPLATE = """
             });
         }
 
-        // JSVectorMap Initialization
-        const mandatedStates = ['US-AL', 'US-AR', 'US-CT', 'US-FL', 'US-GA', 'US-ID', 'US-IN', 'US-IA', 'US-KS', 'US-LA', 'US-MI', 'US-MN', 'US-MS', 'US-MO', 'US-NE', 'US-NV', 'US-NH', 'US-NC', 'US-OH', 'US-OR', 'US-PA', 'US-RI', 'US-SC', 'US-TN', 'US-UT', 'US-VA', 'US-WV'];
-        
-        const map = new jsVectorMap({
-            selector: '#us-map',
-            map: 'us_aea_en',
-            backgroundColor: 'transparent',
-            zoomButtons: false,
-            zoomOnScroll: false,
-            regionStyle: {
-                initial: { fill: '#222222', stroke: '#333333', strokeWidth: 0.5 },
-                hover: { fill: '#444444' },
-                selected: { fill: '#FFFFFF' },
-                selectedHover: { fill: '#cccccc' }
-            },
-            selectedRegions: mandatedStates,
-            onRegionTooltipShow(event, tooltip, code) {
-                if (mandatedStates.includes(code)) {
-                    tooltip.html('<strong>' + tooltip.text() + '</strong><br><span style="color:#00ff00;">Guaranteed Personal Finance</span>');
-                } else {
-                    tooltip.html('<strong>' + tooltip.text() + '</strong><br><span style="color:#888888;">No Guarantee Yet</span>');
-                }
-            }
-        });
-
         // Initialize
         window.onload = () => {
             calcTax();
             setTimeout(animateBars, 300);
-            setTimeout(() => map.updateSize(), 500);
         };
     </script>
 </body>
@@ -419,7 +388,25 @@ def build():
     except Exception as e:
         print("RSS error:", e)
 
-    index_html = Template(HTML_TEMPLATE).render(briefs=briefs, feed_items=feed_items)
+    index_html = Template(HTML_TEMPLATE).render(briefs=briefs, feed_items=feed_items, states_list=[
+        {"code": "AL", "mandated": True}, {"code": "AK", "mandated": False}, {"code": "AZ", "mandated": False},
+        {"code": "AR", "mandated": True}, {"code": "CA", "mandated": False}, {"code": "CO", "mandated": False},
+        {"code": "CT", "mandated": True}, {"code": "DE", "mandated": False}, {"code": "FL", "mandated": True},
+        {"code": "GA", "mandated": True}, {"code": "HI", "mandated": False}, {"code": "ID", "mandated": True},
+        {"code": "IL", "mandated": False}, {"code": "IN", "mandated": True}, {"code": "IA", "mandated": True},
+        {"code": "KS", "mandated": False}, {"code": "KY", "mandated": False}, {"code": "LA", "mandated": True},
+        {"code": "ME", "mandated": False}, {"code": "MD", "mandated": False}, {"code": "MA", "mandated": False},
+        {"code": "MI", "mandated": True}, {"code": "MN", "mandated": True}, {"code": "MS", "mandated": True},
+        {"code": "MO", "mandated": True}, {"code": "MT", "mandated": False}, {"code": "NE", "mandated": True},
+        {"code": "NV", "mandated": True}, {"code": "NH", "mandated": True}, {"code": "NJ", "mandated": False},
+        {"code": "NM", "mandated": False}, {"code": "NY", "mandated": False}, {"code": "NC", "mandated": True},
+        {"code": "ND", "mandated": False}, {"code": "OH", "mandated": True}, {"code": "OK", "mandated": False},
+        {"code": "OR", "mandated": True}, {"code": "PA", "mandated": True}, {"code": "RI", "mandated": True},
+        {"code": "SC", "mandated": True}, {"code": "SD", "mandated": False}, {"code": "TN", "mandated": True},
+        {"code": "TX", "mandated": False}, {"code": "UT", "mandated": True}, {"code": "VT", "mandated": False},
+        {"code": "VA", "mandated": True}, {"code": "WA", "mandated": False}, {"code": "WV", "mandated": True},
+        {"code": "WI", "mandated": False}, {"code": "WY", "mandated": False}
+    ])
     with open('public/index.html', 'w', encoding='utf-8') as f:
         f.write(index_html)
 
