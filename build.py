@@ -134,7 +134,7 @@ HTML_TEMPLATE = """
                 <!-- NGPF Map Viz -->
                 <div class="viz-card">
                     <div class="viz-title">K-12 Policy Mandates (NGPF)</div>
-                    <div style="font-size: 2.5rem; font-weight: 700; margin-bottom: 20px; letter-spacing: -0.05em; line-height: 1.1;">25 <span style="font-size: 1.2rem; color: var(--accent); font-weight: 400; letter-spacing: normal;">/ 50 States</span></div>
+                    <div style="font-size: 2.5rem; font-weight: 700; margin-bottom: 20px; letter-spacing: -0.05em; line-height: 1.1;">30 <span style="font-size: 1.2rem; color: var(--accent); font-weight: 400; letter-spacing: normal;">/ 50 States</span></div>
                     <div class="states-badge-grid">
                         {% for state in states_list %}
                         <div class="state-badge {% if state.mandated %}active{% endif %}">{{ state.code }}</div>
@@ -394,7 +394,7 @@ def build():
         {"code": "CT", "mandated": True}, {"code": "DE", "mandated": True}, {"code": "FL", "mandated": True},
         {"code": "GA", "mandated": True}, {"code": "HI", "mandated": False}, {"code": "ID", "mandated": True},
         {"code": "IL", "mandated": False}, {"code": "IN", "mandated": True}, {"code": "IA", "mandated": True},
-        {"code": "KS", "mandated": False}, {"code": "KY", "mandated": False}, {"code": "LA", "mandated": True},
+        {"code": "KS", "mandated": False}, {"code": "KY", "mandated": True}, {"code": "LA", "mandated": True},
         {"code": "ME", "mandated": False}, {"code": "MD", "mandated": False}, {"code": "MA", "mandated": False},
         {"code": "MI", "mandated": True}, {"code": "MN", "mandated": True}, {"code": "MS", "mandated": True},
         {"code": "MO", "mandated": True}, {"code": "MT", "mandated": False}, {"code": "NE", "mandated": True},
