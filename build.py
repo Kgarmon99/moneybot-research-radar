@@ -107,10 +107,10 @@ HTML_TEMPLATE = """
         .calc-container { display: none; }
         
         
-        /* Battlefield Styles */
-        .battlefield-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; margin-top: 15px; }
-        .battle-card { background: #080808; border: 1px solid #222; border-left: 3px solid #ffaa00; padding: 15px; border-radius: 4px; transition: all 0.2s; }
-        .battle-card:hover { border-color: #ffaa00; background: #110a00; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(255,170,0,0.05); }
+        /* Momentum Styles */
+        .momentum-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; margin-top: 15px; }
+        .momentum-card { background: #080808; border: 1px solid #222; border-left: 3px solid #00bbff; padding: 15px; border-radius: 4px; transition: all 0.2s; }
+        .momentum-card:hover { border-color: #00bbff; background: #110a00; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,187,255,0.05); }
 
         /* --- MOBILE OPTIMIZATION --- */
         @media(max-width: 768px) { 
@@ -230,24 +230,24 @@ HTML_TEMPLATE = """
             <!-- Active Legislation Watchlist -->
             <div class="viz-card" style="margin-top: 20px;">
                 <div class="viz-title" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #222; padding-bottom: 10px; margin-bottom: 20px;">
-                    <span style="color: #ffaa00; font-weight: 600;">The Battlefield: Active Legislation (2026 Session)</span>
-                    <span style="font-size: 0.7rem; background: #221100; padding: 4px 8px; border-radius: 4px; color: #ffaa00; border: 1px solid #ffaa00; letter-spacing: 0.1em; display: flex; align-items: center;"><span class="live-pulse" style="background-color: #ffaa00; box-shadow: 0 0 8px #ffaa00; width: 6px; height: 6px; margin-right: 6px;"></span>LIVE TRACKING</span>
+                    <span style="color: #00bbff; font-weight: 600;">Policy Momentum: States in Motion (2026)</span>
+                    <span style="font-size: 0.7rem; background: #221100; padding: 4px 8px; border-radius: 4px; color: #00bbff; border: 1px solid #00bbff; letter-spacing: 0.1em; display: flex; align-items: center;"><span class="live-pulse" style="background-color: #00bbff; box-shadow: 0 0 8px #00bbff; width: 6px; height: 6px; margin-right: 6px;"></span>LIVE TRACKING</span>
                 </div>
-                <p style="font-size: 0.95rem; color: #ccc; margin-bottom: 20px;">Tracking states actively debating or drafting bills to upgrade their financial literacy requirements from embedded standards (C/D grades) to guaranteed standalone mandates (A grades).</p>
+                <p style="font-size: 0.95rem; color: #ccc; margin-bottom: 20px;">Tracking states actively collaborating on bills and initiatives to upgrade their financial education standards, ensuring the next generation is fully prepared.</p>
                 <div class="battlefield-grid">
                     <!-- MA -->
                     <div class="battle-card">
                         <div style="display:flex; justify-content: space-between; margin-bottom: 10px; align-items: center;">
-                            <div class="state-badge grade-F" style="padding: 4px 10px; pointer-events: none; border-color: #ffaa00; box-shadow: 0 0 10px rgba(255,170,0,0.2); color: #ffaa00; background: #221100; font-size: 0.8rem; width: auto;">MA</div>
+                            <div class="state-badge grade-F" style="padding: 4px 10px; pointer-events: none; border-color: #00bbff; box-shadow: 0 0 10px rgba(0,187,255,0.2); color: #00bbff; background: #221100; font-size: 0.8rem; width: auto;">MA</div>
                             <span style="color: #888; font-family: monospace; font-size: 0.85rem;">Bill: H.4567</span>
                         </div>
                         <h4 style="margin: 0 0 5px 0; font-size: 1.1rem; color: var(--fg);">Massachusetts</h4>
-                        <p style="margin: 0; font-size: 0.85rem; color: #aaa; line-height: 1.5;">Fierce debate in the state house over a standalone mandate versus integrating it into existing math standards. Advocacy groups are heavily mobilized.</p>
+                        <p style="margin: 0; font-size: 0.85rem; color: #aaa; line-height: 1.5;">Momentum is building in the state house as advocates, educators, and lawmakers collaborate on creating a standalone mandate to elevate student capability.</p>
                     </div>
                     <!-- NY -->
                     <div class="battle-card">
                         <div style="display:flex; justify-content: space-between; margin-bottom: 10px; align-items: center;">
-                            <div class="state-badge grade-A" style="padding: 4px 10px; pointer-events: none; border-color: #ffaa00; box-shadow: 0 0 10px rgba(255,170,0,0.2); color: #ffaa00; background: #221100; font-size: 0.8rem; width: auto;">NY</div>
+                            <div class="state-badge grade-A" style="padding: 4px 10px; pointer-events: none; border-color: #00bbff; box-shadow: 0 0 10px rgba(0,187,255,0.2); color: #00bbff; background: #221100; font-size: 0.8rem; width: auto;">NY</div>
                             <span style="color: #888; font-family: monospace; font-size: 0.85rem;">Board of Regents</span>
                         </div>
                         <h4 style="margin: 0 0 5px 0; font-size: 1.1rem; color: var(--fg);">New York</h4>
@@ -256,11 +256,11 @@ HTML_TEMPLATE = """
                     <!-- CO -->
                     <div class="battle-card">
                         <div style="display:flex; justify-content: space-between; margin-bottom: 10px; align-items: center;">
-                            <div class="state-badge grade-C" style="padding: 4px 10px; pointer-events: none; border-color: #ffaa00; box-shadow: 0 0 10px rgba(255,170,0,0.2); color: #ffaa00; background: #221100; font-size: 0.8rem; width: auto;">CO</div>
+                            <div class="state-badge grade-C" style="padding: 4px 10px; pointer-events: none; border-color: #00bbff; box-shadow: 0 0 10px rgba(0,187,255,0.2); color: #00bbff; background: #221100; font-size: 0.8rem; width: auto;">CO</div>
                             <span style="color: #888; font-family: monospace; font-size: 0.85rem;">Local Control Shift</span>
                         </div>
                         <h4 style="margin: 0 0 5px 0; font-size: 1.1rem; color: var(--fg);">Colorado</h4>
-                        <p style="margin: 0; font-size: 0.85rem; color: #aaa; line-height: 1.5;">Advocates are targeting massive school districts (like Denver Public Schools) to flip them to standalone requirements, bypassing the gridlocked legislature.</p>
+                        <p style="margin: 0; font-size: 0.85rem; color: #aaa; line-height: 1.5;">Pioneering educators are leading the charge in major school districts (like Denver Public Schools) to implement standalone requirements, modeling success for future state-wide adoption.</p>
                     </div>
                 </div>
             </div>
