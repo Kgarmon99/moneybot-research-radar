@@ -177,6 +177,12 @@
             </div>
         </div>
         
+        
+        <div style="background: #110000; border: 1px solid #330000; border-left: 3px solid #ff4444; padding: 15px 20px; margin-bottom: 30px; border-radius: 4px; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+            <div style="color: #ff4444; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 5px; font-weight: 600;">Estimated National Fragility Tax (Annual Cost of Illiteracy)</div>
+            <div id="fragility-ticker" style="font-size: 2.2rem; font-family: monospace; font-weight: 700; color: #fff; letter-spacing: 2px;">$1,420,000,000.00</div>
+        </div>
+
         <p class="intro-text" style="color: var(--accent); max-width: 600px; margin-top: -10px; margin-bottom: 40px;">
             A live, interactive dashboard tracking empirical data and policy changes regarding financial literacy, household finance, and the "Fragility Tax".
         </p>
@@ -189,6 +195,7 @@
             <button class="tab" onclick="switchTab('pioneers')">Pioneers</button>
             <button class="tab" onclick="switchTab('timeline')">Timeline</button>
             <button class="tab" onclick="switchTab('feed')">Live Feed</button>
+            <button class="tab" onclick="switchTab('api')">Developers / API</button>
         </div>
 
 
@@ -627,6 +634,40 @@
             </div>
         </div>
 
+        
+        <!-- TAB: API -->
+        <div id="api" class="tab-content">
+            <div style="margin-bottom: 25px;">
+                <h2 style="font-size: 1.5rem; margin-bottom: 5px;">Public REST API</h2>
+                <p style="color: var(--accent); font-size: 0.95rem;">Build EdTech tools, widgets, and trackers using our live-updating policy infrastructure.</p>
+            </div>
+            
+            <div class="card" style="cursor: default;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                    <span style="background: #00bbff; color: #000; padding: 4px 10px; border-radius: 4px; font-weight: 700; font-size: 0.8rem;">GET</span>
+                    <code style="color: #00bbff;">/api/radar.json</code>
+                </div>
+                <p style="font-size: 0.9rem; color: #ccc;">Returns the current aggregate capability statistics, national mandate counts, and a full 50-state array of NGPF grades and legislative statuses.</p>
+                <div style="background: #000; padding: 15px; border-radius: 4px; border: 1px solid #333; overflow-x: auto;">
+<pre style="margin: 0; color: #888; border: none; padding: 0; font-size: 0.85rem;">{
+  "mandates": 30,
+  "total_states": 50,
+  "finra_adult": 49,
+  "finra_genz": 38,
+  "states": [
+    {
+      "code": "AL",
+      "name": "Alabama",
+      "grade": "A",
+      "details": "..."
+    }
+  ]
+}</pre>
+                </div>
+                <a href="api/radar.json" target="_blank" class="newsletter-btn" style="display: inline-block; margin-top: 20px; text-decoration: none;">View Live Endpoint &rarr;</a>
+            </div>
+        </div>
+
         <!-- TAB: FEED -->
         <div id="feed" class="tab-content">
             
@@ -850,6 +891,19 @@
             }
         }
 
+        
+        // Fragility Tax Ticker Logic
+        // Based on estimates of billions lost annually to financial illiteracy (approx $13,160 per second for $415B)
+        let baseTax = 415000000000; 
+        let startOfYear = new Date(new Date().getFullYear(), 0, 1).getTime();
+        let costPerMs = 415000000000 / (365 * 24 * 60 * 60 * 1000);
+        
+        setInterval(() => {
+            let now = new Date().getTime();
+            let currentTax = baseTax + ((now - startOfYear) * costPerMs);
+            document.getElementById('fragility-ticker').innerText = '$' + currentTax.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+        }, 50);
+
         // Tab Switching Logic
         
         function openStateModal(code, name, grade, details) {
@@ -874,8 +928,28 @@
                 status.style.backgroundColor = '#220000'; status.style.color = '#ff4444';
             }
             
+            
             document.getElementById('modalStateDetails').innerText = details;
+            
+            let seoLink = document.getElementById('seoStateLink');
+            if(!seoLink) {
+                seoLink = document.createElement('a');
+                seoLink.id = 'seoStateLink';
+                seoLink.style.display = 'inline-block';
+                seoLink.style.marginTop = '20px';
+                seoLink.style.color = '#00bbff';
+                seoLink.style.textDecoration = 'none';
+                seoLink.style.fontSize = '0.9rem';
+                seoLink.style.border = '1px solid #00bbff';
+                seoLink.style.padding = '8px 16px';
+                seoLink.style.borderRadius = '4px';
+                document.getElementById('modalStateDetails').parentNode.appendChild(seoLink);
+            }
+            seoLink.href = 'states/' + code.toLowerCase() + '.html';
+            seoLink.innerHTML = 'View Full ' + name + ' Report Card &rarr;';
+            
             modal.style.display = 'flex';
+
         }
 
         function closeStateModal(e) {

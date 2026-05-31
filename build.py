@@ -190,6 +190,12 @@ HTML_TEMPLATE = """
             </div>
         </div>
         
+        
+        <div style="background: #110000; border: 1px solid #330000; border-left: 3px solid #ff4444; padding: 15px 20px; margin-bottom: 30px; border-radius: 4px; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+            <div style="color: #ff4444; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 5px; font-weight: 600;">Estimated National Fragility Tax (Annual Cost of Illiteracy)</div>
+            <div id="fragility-ticker" style="font-size: 2.2rem; font-family: monospace; font-weight: 700; color: #fff; letter-spacing: 2px;">$1,420,000,000.00</div>
+        </div>
+
         <p class="intro-text" style="color: var(--accent); max-width: 600px; margin-top: -10px; margin-bottom: 40px;">
             A live, interactive dashboard tracking empirical data and policy changes regarding financial literacy, household finance, and the "Fragility Tax".
         </p>
@@ -202,6 +208,7 @@ HTML_TEMPLATE = """
             <button class="tab" onclick="switchTab('pioneers')">Pioneers</button>
             <button class="tab" onclick="switchTab('timeline')">Timeline</button>
             <button class="tab" onclick="switchTab('feed')">Live Feed</button>
+            <button class="tab" onclick="switchTab('api')">Developers / API</button>
         </div>
 
 
@@ -484,6 +491,40 @@ HTML_TEMPLATE = """
             </div>
         </div>
 
+        
+        <!-- TAB: API -->
+        <div id="api" class="tab-content">
+            <div style="margin-bottom: 25px;">
+                <h2 style="font-size: 1.5rem; margin-bottom: 5px;">Public REST API</h2>
+                <p style="color: var(--accent); font-size: 0.95rem;">Build EdTech tools, widgets, and trackers using our live-updating policy infrastructure.</p>
+            </div>
+            
+            <div class="card" style="cursor: default;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                    <span style="background: #00bbff; color: #000; padding: 4px 10px; border-radius: 4px; font-weight: 700; font-size: 0.8rem;">GET</span>
+                    <code style="color: #00bbff;">/api/radar.json</code>
+                </div>
+                <p style="font-size: 0.9rem; color: #ccc;">Returns the current aggregate capability statistics, national mandate counts, and a full 50-state array of NGPF grades and legislative statuses.</p>
+                <div style="background: #000; padding: 15px; border-radius: 4px; border: 1px solid #333; overflow-x: auto;">
+<pre style="margin: 0; color: #888; border: none; padding: 0; font-size: 0.85rem;">{
+  "mandates": 30,
+  "total_states": 50,
+  "finra_adult": 49,
+  "finra_genz": 38,
+  "states": [
+    {
+      "code": "AL",
+      "name": "Alabama",
+      "grade": "A",
+      "details": "..."
+    }
+  ]
+}</pre>
+                </div>
+                <a href="api/radar.json" target="_blank" class="newsletter-btn" style="display: inline-block; margin-top: 20px; text-decoration: none;">View Live Endpoint &rarr;</a>
+            </div>
+        </div>
+
         <!-- TAB: FEED -->
         <div id="feed" class="tab-content">
             
@@ -581,6 +622,19 @@ HTML_TEMPLATE = """
             }
         }
 
+        
+        // Fragility Tax Ticker Logic
+        // Based on estimates of billions lost annually to financial illiteracy (approx $13,160 per second for $415B)
+        let baseTax = 415000000000; 
+        let startOfYear = new Date(new Date().getFullYear(), 0, 1).getTime();
+        let costPerMs = 415000000000 / (365 * 24 * 60 * 60 * 1000);
+        
+        setInterval(() => {
+            let now = new Date().getTime();
+            let currentTax = baseTax + ((now - startOfYear) * costPerMs);
+            document.getElementById('fragility-ticker').innerText = '$' + currentTax.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+        }, 50);
+
         // Tab Switching Logic
         
         function openStateModal(code, name, grade, details) {
@@ -605,8 +659,28 @@ HTML_TEMPLATE = """
                 status.style.backgroundColor = '#220000'; status.style.color = '#ff4444';
             }
             
+            
             document.getElementById('modalStateDetails').innerText = details;
+            
+            let seoLink = document.getElementById('seoStateLink');
+            if(!seoLink) {
+                seoLink = document.createElement('a');
+                seoLink.id = 'seoStateLink';
+                seoLink.style.display = 'inline-block';
+                seoLink.style.marginTop = '20px';
+                seoLink.style.color = '#00bbff';
+                seoLink.style.textDecoration = 'none';
+                seoLink.style.fontSize = '0.9rem';
+                seoLink.style.border = '1px solid #00bbff';
+                seoLink.style.padding = '8px 16px';
+                seoLink.style.borderRadius = '4px';
+                document.getElementById('modalStateDetails').parentNode.appendChild(seoLink);
+            }
+            seoLink.href = 'states/' + code.toLowerCase() + '.html';
+            seoLink.innerHTML = 'View Full ' + name + ' Report Card &rarr;';
+            
             modal.style.display = 'flex';
+
         }
 
         function closeStateModal(e) {
@@ -726,6 +800,57 @@ BRIEF_TEMPLATE = """
 </html>
 """
 
+
+
+STATE_TEMPLATE = """
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ state.name }} Financial Literacy Mandate Report Card</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg: #000000; --fg: #FFFFFF; --border: #333333; --accent: #888888; }
+        body { background-color: var(--bg); color: var(--fg); font-family: 'Space Grotesk', sans-serif; margin: 0; padding: 40px 20px; line-height: 1.6; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .grade-A { color: #00ff00; text-shadow: 0 0 15px rgba(0,255,0,0.4); }
+        .grade-B, .grade-C { color: #fff; }
+        .grade-D, .grade-F { color: #ff4444; }
+        .card { background: #050505; border: 1px solid var(--border); padding: 30px; border-radius: 8px; margin-top: 30px; }
+        .back-link { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--accent); text-decoration: none; }
+        .back-link:hover { color: var(--fg); }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="../index.html" class="back-link">&larr; Return to National Dashboard</a>
+        
+        <div class="card">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px;">
+                <div>
+                    <h1 style="margin: 0; font-size: 2.5rem;">{{ state.name }}</h1>
+                    <div style="color: var(--accent); text-transform: uppercase; letter-spacing: 0.05em; margin-top: 5px;">Financial Education Status</div>
+                </div>
+                <div style="text-align: right;">
+                    <div style="font-size: 0.8rem; color: var(--accent); text-transform: uppercase;">NGPF Grade</div>
+                    <div style="font-size: 4rem; font-weight: 700; line-height: 1;" class="grade-{{ state.grade }}">{{ state.grade }}</div>
+                </div>
+            </div>
+            
+            <div style="border-top: 1px solid var(--border); padding-top: 20px; margin-top: 20px;">
+                <h3 style="margin-top: 0; color: var(--fg);">Legislative Details</h3>
+                <p style="color: #ccc; font-size: 1.1rem; line-height: 1.6;">{{ state.details }}</p>
+            </div>
+            
+            <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border); display: flex; gap: 15px;">
+                <a href="https://twitter.com/intent/tweet?text=Check out {{ state.name }}'s financial literacy mandate grade on the State of Financial Literacy Radar: https://kgarmon99.github.io/moneybot-research-radar/states/{{ state.code.lower() }}.html" target="_blank" style="background: var(--fg); color: var(--bg); padding: 10px 20px; text-decoration: none; border-radius: 4px; font-weight: bold;">Share on X</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+"""
 
 EMBED_TEMPLATE = '''
 <!DOCTYPE html>
@@ -931,7 +1056,8 @@ def build():
         "total_states": 50,
         "finra_adult": 49,
         "finra_genz": 38,
-        "title": "RADAR"
+        "title": "RADAR",
+        "states": [{"code": s[0], "name": s[1], "grade": s[2], "details": s[3]} for s in states_data_raw]
     }
     with open('public/api/radar.json', 'w', encoding='utf-8') as f:
         json.dump(api_data, f)
@@ -1008,6 +1134,14 @@ def build():
     finra_js = "setTimeout(() => { document.querySelectorAll('.bar-fill').forEach(bar => { bar.style.width = bar.getAttribute('data-width'); }); }, 200);"
     with open('public/embed/finra.html', 'w', encoding='utf-8') as f:
         f.write(Template(EMBED_TEMPLATE).render(content=finra_html, extra_css=finra_css, extra_js=finra_js))
+
+    
+    # --- Generate State SEO Pages ---
+    os.makedirs('public/states', exist_ok=True)
+    for s in states_list:
+        state_html = Template(STATE_TEMPLATE).render(state=s)
+        with open(f'public/states/{s["code"].lower()}.html', 'w', encoding='utf-8') as f:
+            f.write(state_html)
 
     index_html = Template(HTML_TEMPLATE).render(briefs=briefs, feed_items=feed_items, states_list=states_list)
 
