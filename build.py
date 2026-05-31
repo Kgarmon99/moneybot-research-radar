@@ -126,6 +126,15 @@ HTML_TEMPLATE = """
         .momentum-card { background: #080808; border: 1px solid #222; border-left: 3px solid #00bbff; padding: 15px; border-radius: 4px; transition: all 0.2s; }
         .momentum-card:hover { border-color: #00bbff; background: #110a00; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,187,255,0.05); }
 
+        
+        /* Footer / Data Hub */
+        .footer { margin-top: 60px; padding-top: 30px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+        .footer-text { color: #666; font-size: 0.85rem; }
+        .data-btn { background: #111; border: 1px solid #333; color: #aaa; padding: 8px 16px; border-radius: 4px; font-family: 'Space Grotesk'; font-size: 0.85rem; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 8px; text-decoration: none;}
+        .data-btn:hover { background: #222; color: var(--fg); border-color: #555; }
+        
+        @media(max-width: 600px) { .footer { flex-direction: column; gap: 15px; align-items: flex-start; } }
+
         /* --- MOBILE OPTIMIZATION --- */
         @media(max-width: 768px) { 
             body { padding: 20px 15px; }
@@ -755,6 +764,17 @@ def build():
     ]
     states_list = [{"code": c, "name": n, "grade": g, "details": d.replace('"', '&quot;').replace("'", "&#39;")} for c, n, g, d in states_data_raw]
     
+    
+    # --- Generate Open Data CSV ---
+    os.makedirs('public/data', exist_ok=True)
+    csv_content = "State_Code,State_Name,NGPF_Grade,Details\n"
+    for code, name, grade, details in states_data_raw:
+        safe_details = details.replace('"', '""')
+        csv_content += f'{code},{name},{grade},"{safe_details}"\n'
+    
+    with open('public/data/financial_literacy_dataset.csv', 'w', encoding='utf-8') as f:
+        f.write(csv_content)
+
     index_html = Template(HTML_TEMPLATE).render(briefs=briefs, feed_items=feed_items, states_list=states_list)
     with open('public/index.html', 'w', encoding='utf-8') as f:
         f.write(index_html)
