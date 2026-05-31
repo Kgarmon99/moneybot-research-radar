@@ -915,6 +915,11 @@ def build():
 
     with open('public/index.html', 'w', encoding='utf-8') as f:
         f.write(index_html)
+        
+    try:
+        shutil.copy('apple-touch-icon.png', 'public/apple-touch-icon.png')
+    except:
+        pass
 
 if __name__ == '__main__':
     build()
