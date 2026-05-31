@@ -365,6 +365,27 @@ HTML_TEMPLATE = """
                     <div class="meta" style="margin-bottom: 15px;">Office of Financial Education</div>
                     <p style="font-size: 0.95rem; color: #ccc;">Following the 2008 financial crisis, the Consumer Financial Protection Bureau became the primary federal organ for researching consumer financial well-being, emphasizing action-oriented capability over mere knowledge retention.</p>
                 </div>
+
+                <div class="card" style="margin-bottom:0;">
+                    <h3 style="margin-top: 0; margin-bottom: 5px; font-size: 1.3rem;">Dr. Carly Urban</h3>
+                    <div class="meta" style="margin-bottom: 15px;">Montana State University</div>
+                    <p style="font-size: 0.95rem; color: #ccc;">A leading empirical researcher on the efficacy of state-level mandates. Her landmark studies prove that high school financial education graduation requirements directly lead to better credit scores and lower delinquency rates among young adults.</p>
+                </div>
+                <div class="card" style="margin-bottom:0;">
+                    <h3 style="margin-top: 0; margin-bottom: 5px; font-size: 1.3rem;">John Pelzer & The Jump$tart Coalition</h3>
+                    <div class="meta" style="margin-bottom: 15px;">National Advocacy</div>
+                    <p style="font-size: 0.95rem; color: #ccc;">The Jump$tart Coalition was one of the earliest national organizations to push for K-12 financial education standards. Their national standards laid the groundwork for the modern mandate movement.</p>
+                </div>
+                <div class="card" style="margin-bottom:0;">
+                    <h3 style="margin-top: 0; margin-bottom: 5px; font-size: 1.3rem;">CEE (Council for Economic Education)</h3>
+                    <div class="meta" style="margin-bottom: 15px;">National Standards</div>
+                    <p style="font-size: 0.95rem; color: #ccc;">For over 70 years, CEE has been the leading organization focusing on the economic and financial education of K-12 students, producing the widely cited "Survey of the States" that tracks the legislative progress of the mandate movement.</p>
+                </div>
+                <div class="card" style="margin-bottom:0;">
+                    <h3 style="margin-top: 0; margin-bottom: 5px; font-size: 1.3rem;">Dr. Billy Hensley</h3>
+                    <div class="meta" style="margin-bottom: 15px;">NEFE</div>
+                    <p style="font-size: 0.95rem; color: #ccc;">As CEO of the National Endowment for Financial Education (NEFE), Dr. Hensley has championed rigorous, evidence-based approaches to financial capability, pushing the industry past simple awareness campaigns into measurable behavioral change.</p>
+                </div>
             </div>
         </div>
 
