@@ -29,6 +29,20 @@ HTML_TEMPLATE = """
         .live-pulse { display: inline-block; width: 8px; height: 8px; background-color: #00ff00; border-radius: 50%; margin-right: 8px; box-shadow: 0 0 8px #00ff00; }
         .meta { font-size: 0.85rem; color: var(--accent); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.05em; }
         
+        
+        /* Newsletter Capture */
+        .newsletter-box { background: #050505; border: 1px solid #333; border-top: 3px solid var(--fg); padding: 30px; border-radius: 6px; margin-bottom: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .newsletter-title { margin-top: 0; font-size: 1.4rem; color: var(--fg); margin-bottom: 10px;}
+        .newsletter-desc { color: #aaa; font-size: 0.95rem; margin-bottom: 20px; line-height: 1.5; }
+        .newsletter-form { display: flex; gap: 10px; }
+        .newsletter-input { flex: 1; padding: 14px 15px; background: #000; border: 1px solid #444; color: #fff; font-family: 'Space Grotesk'; font-size: 1rem; border-radius: 4px; outline: none; transition: border-color 0.2s;}
+        .newsletter-input:focus { border-color: var(--fg); }
+        .newsletter-btn { background: var(--fg); color: var(--bg); border: none; padding: 0 25px; font-family: 'Space Grotesk'; font-size: 1rem; font-weight: 700; border-radius: 4px; cursor: pointer; transition: all 0.2s; white-space: nowrap;}
+        .newsletter-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+        .newsletter-success { display: none; color: #00bbff; margin-top: 15px; font-weight: 600; font-size: 0.95rem; align-items: center; gap: 8px;}
+        
+        @media(max-width: 600px) { .newsletter-form { flex-direction: column; } .newsletter-btn { padding: 14px 0; } }
+
         /* Interactive Elements */
         .search-bar { width: 100%; padding: 18px 20px; background: #0a0a0a; border: 1px solid var(--border); color: white; font-family: 'Space Grotesk'; font-size: 1.1rem; border-radius: 6px; margin-bottom: 30px; box-sizing: border-box; transition: all 0.3s ease; -webkit-appearance: none; }
         .search-bar:focus { outline: none; border-color: var(--fg); box-shadow: 0 0 15px rgba(255,255,255,0.1); }
@@ -390,6 +404,24 @@ HTML_TEMPLATE = """
 
         <!-- TAB: FEED -->
         <div id="feed" class="tab-content">
+            
+            <!-- Newsletter Capture -->
+            <div class="newsletter-box">
+                <h3 class="newsletter-title">Get The Weekly Radar</h3>
+                <p class="newsletter-desc">Join educators, policymakers, and founders receiving our automated weekly briefing on financial literacy research and policy momentum.</p>
+                <form class="newsletter-form" onsubmit="subscribeNewsletter(event)">
+                    <input type="email" id="nlEmail" class="newsletter-input" placeholder="Enter your email address..." required>
+                    <button type="submit" class="newsletter-btn">Subscribe &rarr;</button>
+                </form>
+                <div id="nlSuccess" class="newsletter-success">
+                    <span style="font-size: 1.2rem;">&check;</span> You have been added to the briefing list.
+                </div>
+            </div>
+            
+            <div style="display:flex; justify-content: space-between; align-items: baseline; margin-bottom: 15px;">
+                <h2 style="font-size: 1.5rem; margin-bottom: 0;">Automated Data Feed</h2>
+            </div>
+
             <input type="text" id="searchFeed" class="search-bar" placeholder="Search live NBER working papers..." onkeyup="filterCards('feedCards', 'searchFeed')">
             <div id="feedCards">
                 {% for item in feed_items %}
@@ -421,6 +453,19 @@ HTML_TEMPLATE = """
     </div>
 
     <script>
+        
+        // Newsletter Subscription Simulation
+        function subscribeNewsletter(e) {
+            e.preventDefault();
+            const emailInput = document.getElementById('nlEmail');
+            if(emailInput.value) {
+                // Future implementation: POST to Substack/Beehiiv/Mailchimp endpoint here
+                document.getElementById('nlSuccess').style.display = 'flex';
+                emailInput.value = '';
+                setTimeout(() => { document.getElementById('nlSuccess').style.display = 'none'; }, 5000);
+            }
+        }
+
         // Tab Switching Logic
         
         function openStateModal(code, name, grade, details) {
