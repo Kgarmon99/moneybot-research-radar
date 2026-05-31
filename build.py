@@ -19,6 +19,7 @@ HTML_TEMPLATE = """
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jsvectormap/dist/css/jsvectormap.min.css" />
     <script src="https://cdn.jsdelivr.net/npm/jsvectormap"></script>
+    <script>jsVectorMap.prototype.addMap = jsVectorMap.addMap;</script>
     <script src="https://cdn.jsdelivr.net/npm/jsvectormap/dist/maps/us-aea-en.js"></script>
     <style>
         :root { --bg: #000000; --fg: #FFFFFF; --border: #333333; --accent: #888888; }
