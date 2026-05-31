@@ -17,6 +17,19 @@ HTML_TEMPLATE = """
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>Financial Literacy Radar</title>
+    
+    <!-- iOS / Android Web App Meta Tags -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="The Radar">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#000000">
+
+    <!-- Generate simple black/white data icon for home screen -->
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         :root { --bg: #000000; --fg: #FFFFFF; --border: #333333; --accent: #888888; }
@@ -599,6 +612,19 @@ BRIEF_TEMPLATE = """
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>Financial Literacy Radar</title>
+    
+    <!-- iOS / Android Web App Meta Tags -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="The Radar">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#000000">
+
+    <!-- Generate simple black/white data icon for home screen -->
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+
     <title>{{ title }} | Research Radar</title>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
