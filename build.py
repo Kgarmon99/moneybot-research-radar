@@ -314,6 +314,122 @@ HTML_TEMPLATE = """
             </div>
         </div>
 
+        <!-- TAB: LIBRARY -->
+        <div id="library" class="tab-content">
+            <div style="margin-bottom: 25px;">
+                <h2 style="font-size: 1.5rem; margin-bottom: 5px;">Curated Intelligence</h2>
+                <p style="color: var(--accent); font-size: 0.95rem;">Policy briefs, academic syntheses, and macro trend analysis tracking modern financial interventions.</p>
+            </div>
+            <input type="text" id="searchLibrary" class="search-bar" placeholder="Search curated briefs, memos, and tags..." onkeyup="filterCards('libraryCards', 'searchLibrary')">
+            <div id="libraryCards">
+                {% if briefs %}
+                    {% for brief in briefs %}
+                    <div class="card item-card" onclick="window.location.href='brief/{{ brief.html_filename }}'" style="cursor: pointer;">
+                        <div class="meta" style="display: flex; justify-content: space-between;">
+                            <span>{{ brief.date }} &nbsp;|&nbsp; {{ brief.source_quality }}</span>
+                            <span style="color: var(--fg); font-weight: bold;">&rarr;</span>
+                        </div>
+                        <h3 style="margin: 10px 0 15px 0; font-size: 1.4rem;"><a href="brief/{{ brief.html_filename }}" style="text-decoration: none;">{{ brief.title }}</a></h3>
+                        <p style="color: #aaa; font-size: 0.95rem; line-height: 1.5; margin-bottom: 20px;">
+                            {{ brief.preview }}
+                        </p>
+                        {% if brief.tags %}
+                        <div class="tags">
+                            {% for tag in brief.tags %}<span style="background: #111; border: 1px solid #333; padding: 4px 10px; border-radius: 4px; font-size: 0.75rem; color: #888; text-transform: uppercase; letter-spacing: 0.05em;">{{ tag }}</span>{% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <p>No local research briefs found.</p>
+                {% endif %}
+            </div>
+        </div>
+
+        
+        <!-- TAB: PIONEERS -->
+        <div id="pioneers" class="tab-content">
+            <div style="margin-bottom: 25px;">
+                <h2 style="font-size: 1.5rem; margin-bottom: 5px;">Pioneers in Financial Literacy</h2>
+                <p style="color: var(--accent); font-size: 0.95rem;">The researchers and advocates who defined the capability gap and drove the mandate movement.</p>
+            </div>
+            <div class="pioneer-grid">
+                <div class="card" style="margin-bottom:0;">
+                    <h3 style="margin-top: 0; margin-bottom: 5px; font-size: 1.3rem;">Dr. Annamaria Lusardi</h3>
+                    <div class="meta" style="margin-bottom: 15px;">Stanford SIEPR & GFLEC</div>
+                    <p style="font-size: 0.95rem; color: #ccc;">A globally recognized authority on financial literacy. Co-designed the "Big Three" questions, which became the global standard for measuring financial capability. Her research links illiteracy to the "Fragility Tax"—the high costs incurred by vulnerable populations.</p>
+                    <div class="pioneer-links">
+                        <a href="https://siepr.stanford.edu/people/annamaria-lusardi" target="_blank" class="p-link">Stanford Profile &rarr;</a>
+                        <a href="https://gflec.org/" target="_blank" class="p-link">GFLEC &rarr;</a>
+                    </div>
+                </div>
+                <div class="card" style="margin-bottom:0;">
+                    <h3 style="margin-top: 0; margin-bottom: 5px; font-size: 1.3rem;">Dr. Olivia S. Mitchell</h3>
+                    <div class="meta" style="margin-bottom: 15px;">Wharton School</div>
+                    <p style="font-size: 0.95rem; color: #ccc;">Co-creator of the "Big Three" questions. Mitchell's extensive research focuses on pensions and household finance, proving empirically that individuals with higher financial literacy plan better and accumulate more wealth for retirement.</p>
+                    <div class="pioneer-links">
+                        <a href="https://wharton.upenn.edu/profile/mitchelo/" target="_blank" class="p-link">Wharton Profile &rarr;</a>
+                        <a href="https://www.nber.org/system/files/working_papers/w17107/w17107.pdf" target="_blank" class="p-link">"Big Three" Paper &rarr;</a>
+                    </div>
+                </div>
+                <div class="card" style="margin-bottom:0;">
+                    <h3 style="margin-top: 0; margin-bottom: 5px; font-size: 1.3rem;">Tim Ranzetta</h3>
+                    <div class="meta" style="margin-bottom: 15px;">Co-Founder, NGPF</div>
+                    <p style="font-size: 0.95rem; color: #ccc;">The driving force behind the Next Gen Personal Finance movement. By providing high-quality, free curriculum to teachers and lobbying state legislatures, Ranzetta helped catalyze the rapid expansion to 30 states mandating personal finance.</p>
+                    <div class="pioneer-links">
+                        <a href="https://www.ngpf.org/about/" target="_blank" class="p-link">NGPF Mission &rarr;</a>
+                        <a href="https://www.ngpf.org/state-of-financial-education/" target="_blank" class="p-link">State Tracker &rarr;</a>
+                    </div>
+                </div>
+                <div class="card" style="margin-bottom:0;">
+                    <h3 style="margin-top: 0; margin-bottom: 5px; font-size: 1.3rem;">CFPB</h3>
+                    <div class="meta" style="margin-bottom: 15px;">Office of Financial Education</div>
+                    <p style="font-size: 0.95rem; color: #ccc;">Following the 2008 financial crisis, the Consumer Financial Protection Bureau became the primary federal organ for researching consumer financial well-being, emphasizing action-oriented capability over mere knowledge retention.</p>
+                    <div class="pioneer-links">
+                        <a href="https://www.consumerfinance.gov/consumer-tools/educator-tools/financial-well-being-resources/" target="_blank" class="p-link">Well-Being Resources &rarr;</a>
+                    </div>
+                </div>
+
+                <div class="card" style="margin-bottom:0;">
+                    <h3 style="margin-top: 0; margin-bottom: 5px; font-size: 1.3rem;">Dr. Carly Urban</h3>
+                    <div class="meta" style="margin-bottom: 15px;">Montana State University</div>
+                    <p style="font-size: 0.95rem; color: #ccc;">A leading empirical researcher on the efficacy of state-level mandates. Her landmark studies prove that high school financial education graduation requirements directly lead to better credit scores and lower delinquency rates among young adults.</p>
+                    <div class="pioneer-links">
+                        <a href="https://www.montana.edu/econ/directory/1585805/carly-urban" target="_blank" class="p-link">MSU Profile &rarr;</a>
+                        <a href="https://www.carlyurban.com/research" target="_blank" class="p-link">Publications &rarr;</a>
+                    </div>
+                </div>
+                <div class="card" style="margin-bottom:0;">
+                    <h3 style="margin-top: 0; margin-bottom: 5px; font-size: 1.3rem;">John Pelzer & The Jump$tart Coalition</h3>
+                    <div class="meta" style="margin-bottom: 15px;">National Advocacy</div>
+                    <p style="font-size: 0.95rem; color: #ccc;">The Jump$tart Coalition was one of the earliest national organizations to push for K-12 financial education standards. Their national standards laid the groundwork for the modern mandate movement.</p>
+                    <div class="pioneer-links">
+                        <a href="https://www.jumpstart.org/" target="_blank" class="p-link">Jump$tart Hub &rarr;</a>
+                        <a href="https://www.jumpstart.org/what-we-do/support-financial-education/standards/" target="_blank" class="p-link">National Standards &rarr;</a>
+                    </div>
+                </div>
+                <div class="card" style="margin-bottom:0;">
+                    <h3 style="margin-top: 0; margin-bottom: 5px; font-size: 1.3rem;">CEE (Council for Economic Education)</h3>
+                    <div class="meta" style="margin-bottom: 15px;">National Standards</div>
+                    <p style="font-size: 0.95rem; color: #ccc;">For over 70 years, CEE has been the leading organization focusing on the economic and financial education of K-12 students, producing the widely cited "Survey of the States" that tracks the legislative progress of the mandate movement.</p>
+                    <div class="pioneer-links">
+                        <a href="https://www.councilforeconed.org/" target="_blank" class="p-link">CEE Homepage &rarr;</a>
+                        <a href="https://www.councilforeconed.org/survey-of-the-states-2024/" target="_blank" class="p-link">Survey of the States &rarr;</a>
+                    </div>
+                </div>
+                <div class="card" style="margin-bottom:0;">
+                    <h3 style="margin-top: 0; margin-bottom: 5px; font-size: 1.3rem;">Dr. Billy Hensley</h3>
+                    <div class="meta" style="margin-bottom: 15px;">NEFE</div>
+                    <p style="font-size: 0.95rem; color: #ccc;">As CEO of the National Endowment for Financial Education (NEFE), Dr. Hensley has championed rigorous, evidence-based approaches to financial capability, pushing the industry past simple awareness campaigns into measurable behavioral change.</p>
+                    <div class="pioneer-links">
+                        <a href="https://www.nefe.org/about/leadership-and-staff/billy-hensley.aspx" target="_blank" class="p-link">NEFE Profile &rarr;</a>
+                        <a href="https://www.nefe.org/research/" target="_blank" class="p-link">Research Initiatives &rarr;</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        
         <!-- TAB: BLUEPRINT -->
         <div id="blueprint" class="tab-content">
             <div style="margin-bottom: 30px;">
