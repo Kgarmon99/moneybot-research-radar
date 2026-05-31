@@ -48,7 +48,7 @@
         /* State Badges & Grades */
         .states-badge-grid { display: grid; grid-template-columns: repeat(10, 1fr); gap: 6px; margin-bottom: 20px; }
         .state-badge { background-color: #111; border: 1px solid #333; color: #555; border-radius: 4px; padding: 6px 0; text-align: center; font-size: 0.75rem; font-weight: 600; transition: all 0.2s;}
-        .state-badge.grade-A { background-color: var(--fg); color: var(--bg); border-color: var(--fg); box-shadow: 0 0 10px rgba(255,255,255,0.2); }
+        .state-badge.grade-A { background-color: var(--fg); color: var(--bg); border-color: #00ff00; box-shadow: 0 0 12px rgba(0, 255, 0, 0.4); }
         .state-badge.grade-B { background-color: #555; color: #fff; border-color: #777; }
         .state-badge.grade-C { background-color: #333; color: #aaa; border-color: #444; }
         .state-badge.grade-D { background-color: #332222; color: #dd8888; border-color: #553333; }
@@ -694,7 +694,10 @@
             status.innerText = 'NGPF Grade: ' + grade;
             
             if (grade === 'A') {
-                status.style.backgroundColor = 'var(--fg)'; status.style.color = 'var(--bg)';
+                status.style.backgroundColor = 'var(--fg)'; 
+                status.style.color = 'var(--bg)';
+                status.style.boxShadow = '0 0 15px rgba(0, 255, 0, 0.3)';
+                status.style.border = '1px solid #00ff00';
             } else if (grade === 'B' || grade === 'C') {
                 status.style.backgroundColor = '#444'; status.style.color = '#ccc';
             } else {
