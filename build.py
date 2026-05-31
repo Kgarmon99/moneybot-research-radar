@@ -156,6 +156,20 @@ HTML_TEMPLATE = """
         
         @media(max-width: 600px) { .footer { flex-direction: column; gap: 15px; align-items: flex-start; } }
 
+        
+        /* Implementation Blueprint Styles */
+        .blueprint-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px;}
+        .bp-card { background: #080808; border: 1px solid #333; padding: 25px; border-radius: 6px; }
+        .bp-step { display: flex; gap: 15px; margin-bottom: 25px; }
+        .bp-number { background: var(--fg); color: var(--bg); width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; font-weight: bold; border-radius: 50%; flex-shrink: 0; }
+        .bp-content h4 { margin: 0 0 8px 0; color: var(--fg); font-size: 1.1rem; }
+        .bp-content p { margin: 0; color: #aaa; font-size: 0.95rem; line-height: 1.5;}
+        
+        .bp-case-study { background: #111; border-left: 3px solid #00bbff; padding: 15px; margin-top: 15px;}
+        .bp-case-title { font-size: 0.8rem; color: #00bbff; text-transform: uppercase; letter-spacing: 0.05em; font-weight: bold; margin-bottom: 5px;}
+        
+        @media(max-width: 768px) { .blueprint-grid { grid-template-columns: 1fr; } }
+
         /* --- MOBILE OPTIMIZATION --- */
         @media(max-width: 768px) { 
             body { padding: 20px 15px; }
@@ -206,6 +220,7 @@ HTML_TEMPLATE = """
             <button class="tab active" onclick="switchTab('dashboard')">Dashboard</button>
             <button class="tab" onclick="switchTab('library')">Research Library</button>
             <button class="tab" onclick="switchTab('pioneers')">Pioneers</button>
+            <button class="tab" onclick="switchTab('blueprint')">Implementation</button>
             <button class="tab" onclick="switchTab('timeline')">Timeline</button>
             <button class="tab" onclick="switchTab('feed')">Live Feed</button>
             <button class="tab" onclick="switchTab('api')">Developers / API</button>
@@ -428,6 +443,72 @@ HTML_TEMPLATE = """
                     <div class="pioneer-links">
                         <a href="https://www.nefe.org/about/leadership-and-staff/billy-hensley.aspx" target="_blank" class="p-link">NEFE Profile &rarr;</a>
                         <a href="https://www.nefe.org/research/" target="_blank" class="p-link">Research Initiatives &rarr;</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        
+        <!-- TAB: BLUEPRINT -->
+        <div id="blueprint" class="tab-content">
+            <div style="margin-bottom: 30px;">
+                <h2 style="font-size: 1.5rem; margin-bottom: 5px;">The Implementation Blueprint</h2>
+                <p style="color: var(--accent); font-size: 0.95rem;">A tactical deployment manual for lawmakers and school superintendents. Overcoming the three main logistical hurdles to mandating financial capability.</p>
+            </div>
+            
+            <div class="blueprint-grid">
+                <!-- Logistics Column -->
+                <div>
+                    <div class="bp-card">
+                        <div class="bp-step">
+                            <div class="bp-number">1</div>
+                            <div class="bp-content">
+                                <h4>The Curriculum Hurdle</h4>
+                                <p>A common roadblock is the perceived cost of developing or purchasing textbook curriculum. <strong>The Solution:</strong> State legislatures rely on free, constantly-updated, open-source curriculums provided by organizations like Next Gen Personal Finance (NGPF).</p>
+                            </div>
+                        </div>
+                        
+                        <div class="bp-step">
+                            <div class="bp-number">2</div>
+                            <div class="bp-content">
+                                <h4>The Credentialing Hurdle</h4>
+                                <p>Administrators often ask "Who will teach it?" if they lack business teachers. <strong>The Solution:</strong> Cross-credentialing. States allow math, social studies, or family/consumer science teachers to instruct the course after passing free institutional certification programs.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="bp-step" style="margin-bottom: 0;">
+                            <div class="bp-number">3</div>
+                            <div class="bp-content">
+                                <h4>The Scheduling Hurdle</h4>
+                                <p>Schools fear losing elective slots. <strong>The Solution:</strong> The "Carve-Out" method. States integrate the half-credit requirement by substituting it for a pre-existing non-core elective, or absorbing it into a mandatory 12th-grade economics block without extending the school day.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Case Studies Column -->
+                <div>
+                    <h3 style="margin-top: 0; margin-bottom: 15px; color: var(--fg); font-size: 1.2rem; padding-bottom: 10px; border-bottom: 1px solid #333;">Gold Standard Case Studies</h3>
+                    
+                    <div class="bp-case-study">
+                        <div class="bp-case-title">Pioneer Execution: Utah</div>
+                        <div style="font-size: 0.95rem; color: #ccc; line-height: 1.5;">
+                            Utah (Grade: A) is the gold standard because the legislature tied <strong>funding to the mandate</strong>. They didn't just pass a law; they allocated permanent line-item funding in the state budget specifically for teacher professional development and curriculum updates, ensuring the mandate never becomes an unfunded burden on local districts.
+                        </div>
+                    </div>
+                    
+                    <div class="bp-case-study" style="border-left-color: #00ff00;">
+                        <div class="bp-case-title" style="color: #00ff00;">Fast-Track Deployment: Florida</div>
+                        <div style="font-size: 0.95rem; color: #ccc; line-height: 1.5;">
+                            Florida (Grade: A) passed the Dorothy L. Hukill Act in 2022. To handle the massive scale of student deployment by the Class of 2027, the state immediately partnered with third-party advocacy groups to host massive, free teacher-training camps over the summer, solving the credentialing gap in less than 24 months.
+                        </div>
+                    </div>
+                    
+                    <div class="bp-case-study" style="border-left-color: #ff4444;">
+                        <div class="bp-case-title" style="color: #ff4444;">The Failure Pattern: Embedded Standards</div>
+                        <div style="font-size: 0.95rem; color: #ccc; line-height: 1.5;">
+                            States that receive a "C" or "D" grade attempt to implement financial literacy by "embedding" the standards across math or history classes. Empirical data shows this fails completely. Without a standalone 1-semester course, the curriculum is diluted, untested, and ultimately skipped by teachers pressed for time.
+                        </div>
                     </div>
                 </div>
             </div>
