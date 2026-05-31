@@ -1,4 +1,5 @@
 import os
+import re
 import glob
 import yaml
 import markdown
@@ -42,8 +43,8 @@ HTML_TEMPLATE = """
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
         /* Cards */
-        .card { border: 1px solid var(--border); padding: 24px; margin-bottom: 20px; border-radius: 6px; background-color: #050505; transition: all 0.2s; cursor: pointer; position: relative;}
-        .card:hover { border-color: #666; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(255,255,255,0.05);}
+        .card { border: 1px solid var(--border); padding: 24px; margin-bottom: 20px; border-radius: 6px; background-color: #050505; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); cursor: pointer; position: relative;}
+        .card:hover { border-color: #888; transform: translateY(-3px); box-shadow: 0 10px 30px rgba(255,255,255,0.08); background-color: #0a0a0a;}
         a { color: var(--fg); text-decoration: none; transition: color 0.2s;}
         .card a::after { content: ''; display: block; position: absolute; top: 0; left: 0; right: 0; bottom: 0; }
         
@@ -156,16 +157,26 @@ HTML_TEMPLATE = """
 
         <!-- TAB: LIBRARY -->
         <div id="library" class="tab-content">
+            <div style="margin-bottom: 25px;">
+                <h2 style="font-size: 1.5rem; margin-bottom: 5px;">Curated Intelligence</h2>
+                <p style="color: var(--accent); font-size: 0.95rem;">Internal policy briefs, academic syntheses, and macro trend analysis shaping the MoneyBot intervention framework.</p>
+            </div>
             <input type="text" id="searchLibrary" class="search-bar" placeholder="Search curated briefs, memos, and tags..." onkeyup="filterCards('libraryCards', 'searchLibrary')">
             <div id="libraryCards">
                 {% if briefs %}
                     {% for brief in briefs %}
-                    <div class="card item-card">
-                        <div class="meta">{{ brief.date }} &nbsp;|&nbsp; {{ brief.source_quality }}</div>
-                        <h3 style="margin: 0;"><a href="brief/{{ brief.html_filename }}">{{ brief.title }}</a></h3>
+                    <div class="card item-card" onclick="window.location.href='brief/{{ brief.html_filename }}'" style="cursor: pointer;">
+                        <div class="meta" style="display: flex; justify-content: space-between;">
+                            <span>{{ brief.date }} &nbsp;|&nbsp; {{ brief.source_quality }}</span>
+                            <span style="color: var(--fg); font-weight: bold;">&rarr;</span>
+                        </div>
+                        <h3 style="margin: 10px 0 15px 0; font-size: 1.4rem;"><a href="brief/{{ brief.html_filename }}" style="text-decoration: none;">{{ brief.title }}</a></h3>
+                        <p style="color: #aaa; font-size: 0.95rem; line-height: 1.5; margin-bottom: 20px;">
+                            {{ brief.preview }}
+                        </p>
                         {% if brief.tags %}
                         <div class="tags">
-                            {% for tag in brief.tags %}<span>{{ tag }}</span>{% endfor %}
+                            {% for tag in brief.tags %}<span style="background: #111; border: 1px solid #333; padding: 4px 10px; border-radius: 4px; font-size: 0.75rem; color: #888; text-transform: uppercase; letter-spacing: 0.05em;">{{ tag }}</span>{% endfor %}
                         </div>
                         {% endif %}
                     </div>
@@ -316,7 +327,20 @@ def build():
                     except:
                         pass
             
+
             filename = os.path.basename(path)
+            
+            # Extract preview
+            preview = ""
+            match = re.search(r'## Bottom Line\s*(.*?)(?=\n##|\Z)', body, re.DOTALL | re.IGNORECASE)
+            if match:
+                preview = match.group(1).strip()[:180] + "..."
+            else:
+                lines = [line.strip() for line in body.split('\n') if line.strip() and not line.strip().startswith('#') and not line.strip().startswith('**Date')]
+                if lines:
+                    preview = lines[0][:180] + "..."
+            fm['preview'] = preview
+
             html_filename = filename.replace('.md', '.html')
             fm['html_filename'] = html_filename
             briefs.append(fm)

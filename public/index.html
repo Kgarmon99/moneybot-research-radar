@@ -30,8 +30,8 @@
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
         /* Cards */
-        .card { border: 1px solid var(--border); padding: 24px; margin-bottom: 20px; border-radius: 6px; background-color: #050505; transition: all 0.2s; cursor: pointer; position: relative;}
-        .card:hover { border-color: #666; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(255,255,255,0.05);}
+        .card { border: 1px solid var(--border); padding: 24px; margin-bottom: 20px; border-radius: 6px; background-color: #050505; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); cursor: pointer; position: relative;}
+        .card:hover { border-color: #888; transform: translateY(-3px); box-shadow: 0 10px 30px rgba(255,255,255,0.08); background-color: #0a0a0a;}
         a { color: var(--fg); text-decoration: none; transition: color 0.2s;}
         .card a::after { content: ''; display: block; position: absolute; top: 0; left: 0; right: 0; bottom: 0; }
         
@@ -242,71 +242,123 @@
 
         <!-- TAB: LIBRARY -->
         <div id="library" class="tab-content">
+            <div style="margin-bottom: 25px;">
+                <h2 style="font-size: 1.5rem; margin-bottom: 5px;">Curated Intelligence</h2>
+                <p style="color: var(--accent); font-size: 0.95rem;">Internal policy briefs, academic syntheses, and macro trend analysis shaping the MoneyBot intervention framework.</p>
+            </div>
             <input type="text" id="searchLibrary" class="search-bar" placeholder="Search curated briefs, memos, and tags..." onkeyup="filterCards('libraryCards', 'searchLibrary')">
             <div id="libraryCards">
                 
                     
-                    <div class="card item-card">
-                        <div class="meta">2026-05-31 &nbsp;|&nbsp; secondary synthesis</div>
-                        <h3 style="margin: 0;"><a href="brief/2026-05-31-state-of-teen-financial-literacy.html">The State of Teen Financial Literacy in 2026: Access vs. Preparedness</a></h3>
+                    <div class="card item-card" onclick="window.location.href='brief/2026-05-31-state-of-teen-financial-literacy.html'" style="cursor: pointer;">
+                        <div class="meta" style="display: flex; justify-content: space-between;">
+                            <span>2026-05-31 &nbsp;|&nbsp; secondary synthesis</span>
+                            <span style="color: var(--fg); font-weight: bold;">&rarr;</span>
+                        </div>
+                        <h3 style="margin: 10px 0 15px 0; font-size: 1.4rem;"><a href="brief/2026-05-31-state-of-teen-financial-literacy.html" style="text-decoration: none;">The State of Teen Financial Literacy in 2026: Access vs. Preparedness</a></h3>
+                        <p style="color: #aaa; font-size: 0.95rem; line-height: 1.5; margin-bottom: 20px;">
+                            Recent data analysis (Everfi / Fortunly 2026 updates) highlights a growing paradox in high school financial literacy: while *access* to financial education is expanding rapidly via...
+                        </p>
                         
                         <div class="tags">
-                            <span>financial-literacy</span><span>gen-z</span><span>everfi</span><span>high-school</span><span>access</span>
+                            <span style="background: #111; border: 1px solid #333; padding: 4px 10px; border-radius: 4px; font-size: 0.75rem; color: #888; text-transform: uppercase; letter-spacing: 0.05em;">financial-literacy</span><span style="background: #111; border: 1px solid #333; padding: 4px 10px; border-radius: 4px; font-size: 0.75rem; color: #888; text-transform: uppercase; letter-spacing: 0.05em;">gen-z</span><span style="background: #111; border: 1px solid #333; padding: 4px 10px; border-radius: 4px; font-size: 0.75rem; color: #888; text-transform: uppercase; letter-spacing: 0.05em;">everfi</span><span style="background: #111; border: 1px solid #333; padding: 4px 10px; border-radius: 4px; font-size: 0.75rem; color: #888; text-transform: uppercase; letter-spacing: 0.05em;">high-school</span><span style="background: #111; border: 1px solid #333; padding: 4px 10px; border-radius: 4px; font-size: 0.75rem; color: #888; text-transform: uppercase; letter-spacing: 0.05em;">access</span>
                         </div>
                         
                     </div>
                     
-                    <div class="card item-card">
-                        <div class="meta">2026-05-29 &nbsp;|&nbsp; primary sources verified</div>
-                        <h3 style="margin: 0;"><a href="brief/2026-05-29-foundational-financial-literacy-research.html">Foundational Research in Financial Literacy and Education Policy</a></h3>
+                    <div class="card item-card" onclick="window.location.href='brief/2026-05-29-foundational-financial-literacy-research.html'" style="cursor: pointer;">
+                        <div class="meta" style="display: flex; justify-content: space-between;">
+                            <span>2026-05-29 &nbsp;|&nbsp; primary sources verified</span>
+                            <span style="color: var(--fg); font-weight: bold;">&rarr;</span>
+                        </div>
+                        <h3 style="margin: 10px 0 15px 0; font-size: 1.4rem;"><a href="brief/2026-05-29-foundational-financial-literacy-research.html" style="text-decoration: none;">Foundational Research in Financial Literacy and Education Policy</a></h3>
+                        <p style="color: #aaa; font-size: 0.95rem; line-height: 1.5; margin-bottom: 20px;">
+                            The field of financial literacy is anchored by a few foundational studies that transition it from an abstract idea to a measurable economic imperative. The research proves a distin...
+                        </p>
                         
                         <div class="tags">
-                            <span>finance</span><span>policy</span><span>financial-literacy</span><span>gflec</span><span>nber</span><span>finra</span><span>ngpf</span>
+                            <span style="background: #111; border: 1px solid #333; padding: 4px 10px; border-radius: 4px; font-size: 0.75rem; color: #888; text-transform: uppercase; letter-spacing: 0.05em;">finance</span><span style="background: #111; border: 1px solid #333; padding: 4px 10px; border-radius: 4px; font-size: 0.75rem; color: #888; text-transform: uppercase; letter-spacing: 0.05em;">policy</span><span style="background: #111; border: 1px solid #333; padding: 4px 10px; border-radius: 4px; font-size: 0.75rem; color: #888; text-transform: uppercase; letter-spacing: 0.05em;">financial-literacy</span><span style="background: #111; border: 1px solid #333; padding: 4px 10px; border-radius: 4px; font-size: 0.75rem; color: #888; text-transform: uppercase; letter-spacing: 0.05em;">gflec</span><span style="background: #111; border: 1px solid #333; padding: 4px 10px; border-radius: 4px; font-size: 0.75rem; color: #888; text-transform: uppercase; letter-spacing: 0.05em;">nber</span><span style="background: #111; border: 1px solid #333; padding: 4px 10px; border-radius: 4px; font-size: 0.75rem; color: #888; text-transform: uppercase; letter-spacing: 0.05em;">finra</span><span style="background: #111; border: 1px solid #333; padding: 4px 10px; border-radius: 4px; font-size: 0.75rem; color: #888; text-transform: uppercase; letter-spacing: 0.05em;">ngpf</span>
                         </div>
                         
                     </div>
                     
-                    <div class="card item-card">
-                        <div class="meta">2026-05-28 &nbsp;|&nbsp; primary sources verified</div>
-                        <h3 style="margin: 0;"><a href="brief/2026-05-28-trust-financial-literacy.html">Trust, Financial Literacy, and Financial Behaviors</a></h3>
+                    <div class="card item-card" onclick="window.location.href='brief/2026-05-28-trust-financial-literacy.html'" style="cursor: pointer;">
+                        <div class="meta" style="display: flex; justify-content: space-between;">
+                            <span>2026-05-28 &nbsp;|&nbsp; primary sources verified</span>
+                            <span style="color: var(--fg); font-weight: bold;">&rarr;</span>
+                        </div>
+                        <h3 style="margin: 10px 0 15px 0; font-size: 1.4rem;"><a href="brief/2026-05-28-trust-financial-literacy.html" style="text-decoration: none;">Trust, Financial Literacy, and Financial Behaviors</a></h3>
+                        <p style="color: #aaa; font-size: 0.95rem; line-height: 1.5; margin-bottom: 20px;">
+                            A new NBER working paper by Maya Haran Rosen, Annamaria Lusardi (Stanford SIEPR), and Olivia S. Mitchell demonstrates that financial literacy's impact on retirement security is dee...
+                        </p>
                         
                         <div class="tags">
-                            <span>finance</span><span>policy</span><span>nber</span><span>financial-literacy</span><span>retirement</span>
+                            <span style="background: #111; border: 1px solid #333; padding: 4px 10px; border-radius: 4px; font-size: 0.75rem; color: #888; text-transform: uppercase; letter-spacing: 0.05em;">finance</span><span style="background: #111; border: 1px solid #333; padding: 4px 10px; border-radius: 4px; font-size: 0.75rem; color: #888; text-transform: uppercase; letter-spacing: 0.05em;">policy</span><span style="background: #111; border: 1px solid #333; padding: 4px 10px; border-radius: 4px; font-size: 0.75rem; color: #888; text-transform: uppercase; letter-spacing: 0.05em;">nber</span><span style="background: #111; border: 1px solid #333; padding: 4px 10px; border-radius: 4px; font-size: 0.75rem; color: #888; text-transform: uppercase; letter-spacing: 0.05em;">financial-literacy</span><span style="background: #111; border: 1px solid #333; padding: 4px 10px; border-radius: 4px; font-size: 0.75rem; color: #888; text-transform: uppercase; letter-spacing: 0.05em;">retirement</span>
                         </div>
                         
                     </div>
                     
-                    <div class="card item-card">
-                        <div class="meta">2026-05-27 06:46:43 &nbsp;|&nbsp; local validation</div>
-                        <h3 style="margin: 0;"><a href="brief/2026-05-27-pipeline-validation-brief.html">Pipeline validation brief</a></h3>
+                    <div class="card item-card" onclick="window.location.href='brief/2026-05-27-pipeline-validation-brief.html'" style="cursor: pointer;">
+                        <div class="meta" style="display: flex; justify-content: space-between;">
+                            <span>2026-05-27 06:46:43 &nbsp;|&nbsp; local validation</span>
+                            <span style="color: var(--fg); font-weight: bold;">&rarr;</span>
+                        </div>
+                        <h3 style="margin: 10px 0 15px 0; font-size: 1.4rem;"><a href="brief/2026-05-27-pipeline-validation-brief.html" style="text-decoration: none;">Pipeline validation brief</a></h3>
+                        <p style="color: #aaa; font-size: 0.95rem; line-height: 1.5; margin-bottom: 20px;">
+                            The research brief pipeline can save reusable Markdown notes....
+                        </p>
                         
                         <div class="tags">
-                            <span>test</span><span>pipeline</span>
+                            <span style="background: #111; border: 1px solid #333; padding: 4px 10px; border-radius: 4px; font-size: 0.75rem; color: #888; text-transform: uppercase; letter-spacing: 0.05em;">test</span><span style="background: #111; border: 1px solid #333; padding: 4px 10px; border-radius: 4px; font-size: 0.75rem; color: #888; text-transform: uppercase; letter-spacing: 0.05em;">pipeline</span>
                         </div>
                         
                     </div>
                     
-                    <div class="card item-card">
-                        <div class="meta"> &nbsp;|&nbsp; Unknown</div>
-                        <h3 style="margin: 0;"><a href="brief/moneybot-siepr-alignment.html">moneybot-siepr-alignment</a></h3>
+                    <div class="card item-card" onclick="window.location.href='brief/moneybot-siepr-alignment.html'" style="cursor: pointer;">
+                        <div class="meta" style="display: flex; justify-content: space-between;">
+                            <span> &nbsp;|&nbsp; Unknown</span>
+                            <span style="color: var(--fg); font-weight: bold;">&rarr;</span>
+                        </div>
+                        <h3 style="margin: 10px 0 15px 0; font-size: 1.4rem;"><a href="brief/moneybot-siepr-alignment.html" style="text-decoration: none;">moneybot-siepr-alignment</a></h3>
+                        <p style="color: #aaa; font-size: 0.95rem; line-height: 1.5; margin-bottom: 20px;">
+                            **Topic:** Aligning MoneyBot's product strategy with GFLEC, FINRA, and Stanford SIEPR research....
+                        </p>
                         
                     </div>
                     
-                    <div class="card item-card">
-                        <div class="meta"> &nbsp;|&nbsp; Unknown</div>
-                        <h3 style="margin: 0;"><a href="brief/Stanford-SIEPR-Executive-Memo.html">Stanford-SIEPR-Executive-Memo</a></h3>
+                    <div class="card item-card" onclick="window.location.href='brief/Stanford-SIEPR-Executive-Memo.html'" style="cursor: pointer;">
+                        <div class="meta" style="display: flex; justify-content: space-between;">
+                            <span> &nbsp;|&nbsp; Unknown</span>
+                            <span style="color: var(--fg); font-weight: bold;">&rarr;</span>
+                        </div>
+                        <h3 style="margin: 10px 0 15px 0; font-size: 1.4rem;"><a href="brief/Stanford-SIEPR-Executive-Memo.html" style="text-decoration: none;">Stanford-SIEPR-Executive-Memo</a></h3>
+                        <p style="color: #aaa; font-size: 0.95rem; line-height: 1.5; margin-bottom: 20px;">
+                            **To:** Stakeholders, Partners, and Educators...
+                        </p>
                         
                     </div>
                     
-                    <div class="card item-card">
-                        <div class="meta"> &nbsp;|&nbsp; Unknown</div>
-                        <h3 style="margin: 0;"><a href="brief/financial-literacy-presentation-narrative.html">financial-literacy-presentation-narrative</a></h3>
+                    <div class="card item-card" onclick="window.location.href='brief/financial-literacy-presentation-narrative.html'" style="cursor: pointer;">
+                        <div class="meta" style="display: flex; justify-content: space-between;">
+                            <span> &nbsp;|&nbsp; Unknown</span>
+                            <span style="color: var(--fg); font-weight: bold;">&rarr;</span>
+                        </div>
+                        <h3 style="margin: 10px 0 15px 0; font-size: 1.4rem;"><a href="brief/financial-literacy-presentation-narrative.html" style="text-decoration: none;">financial-literacy-presentation-narrative</a></h3>
+                        <p style="color: #aaa; font-size: 0.95rem; line-height: 1.5; margin-bottom: 20px;">
+                            **Presentation / Report Narrative Outline**...
+                        </p>
                         
                     </div>
                     
-                    <div class="card item-card">
-                        <div class="meta"> &nbsp;|&nbsp; Unknown</div>
-                        <h3 style="margin: 0;"><a href="brief/2025-financial-literacy-snapshot.html">2025-financial-literacy-snapshot</a></h3>
+                    <div class="card item-card" onclick="window.location.href='brief/2025-financial-literacy-snapshot.html'" style="cursor: pointer;">
+                        <div class="meta" style="display: flex; justify-content: space-between;">
+                            <span> &nbsp;|&nbsp; Unknown</span>
+                            <span style="color: var(--fg); font-weight: bold;">&rarr;</span>
+                        </div>
+                        <h3 style="margin: 10px 0 15px 0; font-size: 1.4rem;"><a href="brief/2025-financial-literacy-snapshot.html" style="text-decoration: none;">2025-financial-literacy-snapshot</a></h3>
+                        <p style="color: #aaa; font-size: 0.95rem; line-height: 1.5; margin-bottom: 20px;">
+                            **Primary Sources:** TIAA Institute-GFLEC, FINRA Investor Education Foundation, Next Gen Personal Finance (NGPF)...
+                        </p>
                         
                     </div>
                     
