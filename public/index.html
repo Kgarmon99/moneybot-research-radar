@@ -60,15 +60,7 @@
         .bar-fill.danger { background-color: #ff4444; box-shadow: 0 0 8px rgba(255,68,68,0.4); }
         
         /* Interactive Calculator */
-        .calc-container { display: flex; flex-wrap: wrap; gap: 30px; align-items: flex-start; justify-content: space-between; }
-        .calc-left { flex: 1 1 300px; }
-        .calc-right { flex: 0 0 auto; min-width: 200px; background: #111; padding: 20px; border-radius: 6px; border: 1px solid var(--border); }
-        
-        input[type=range] { -webkit-appearance: none; width: 100%; background: transparent; margin: 20px 0; }
-        input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; height: 24px; width: 24px; border-radius: 50%; background: var(--fg); cursor: pointer; margin-top: -10px; box-shadow: 0 0 10px rgba(255,255,255,0.5); transition: transform 0.1s;}
-        input[type=range]::-webkit-slider-thumb:hover { transform: scale(1.1); }
-        input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 4px; cursor: pointer; background: var(--border); border-radius: 2px; }
-        .tax-result { font-size: 3rem; font-weight: 700; color: #ff4444; margin: 5px 0; text-shadow: 0 0 20px rgba(255,68,68,0.2); letter-spacing: -0.05em; line-height: 1.1;}
+        .calc-container { display: none; }
         
         /* --- MOBILE OPTIMIZATION --- */
         @media(max-width: 768px) { 
@@ -246,31 +238,6 @@
                 </div>
             </div>
 
-            <!-- Fragility Tax Calculator (Interactive) -->
-            <div class="viz-card" style="margin-bottom: 40px;">
-                <div class="viz-title" style="display: flex; justify-content: space-between;">
-                    <span>Interactive: The "Fragility Tax" Calculator</span>
-                    <a href="https://twitter.com/intent/tweet?text=My%20lack%20of%20financial%20literacy%20could%20cost%20me%20hundreds%20in%20the%20annual%20%27Fragility%20Tax.%27%20Calculate%20yours%20on%20the%20MoneyBot%20Research%20Radar.&url=https://Kgarmon99.github.io/moneybot-research-radar/" target="_blank" style="color: #1DA1F2; font-weight: 600; font-size: 0.75rem; border: 1px solid #1DA1F2; padding: 2px 8px; border-radius: 4px; text-transform: none; letter-spacing: normal;">Share to X / Twitter</a>
-                </div>
-                <div class="calc-container">
-                    <div class="calc-left">
-                        <label style="font-weight: 600; font-size: 1.1rem; display: block; margin-bottom: 10px;">Average Credit Card Balance: $<span id="debtDisplay">5,000</span></label>
-                        <input type="range" id="debtSlider" min="500" max="25000" step="500" value="5000" oninput="calcTax()">
-                        <p style="font-size: 0.85rem; color: var(--accent); line-height: 1.5; margin-top: 15px; margin-bottom: 0;">
-                            Based on Stanford SIEPR research, individuals with low financial literacy pay roughly a <strong>6% premium</strong> in transaction fees, higher interest rates, and minimum payment traps.
-                        </p>
-                    </div>
-                    <div class="calc-right">
-                        <div style="font-size: 0.85rem; color: var(--accent); text-transform: uppercase; letter-spacing: 0.05em;">Annual Fragility Tax</div>
-                        <div class="tax-result">$<span id="taxDisplay">300.00</span></div>
-                        <div style="font-size: 0.85rem; color: #ff4444; margin-bottom: 15px;">Lost wealth per year</div>
-                        <div style="font-size: 0.7rem; color: #555; background: #0a0a0a; padding: 10px; border-radius: 4px; border: 1px dashed #222;">
-                            <code style="background: transparent; padding: 0; border: none; display: block; color: var(--accent); margin-bottom: 5px;">&lt;iframe src="https://Kgarmon99.github.io/moneybot-research-radar"&gt;&lt;/iframe&gt;</code>
-                            Embed this calculator
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
 
         <!-- TAB: LIBRARY -->
@@ -462,11 +429,13 @@
 
         // Interactive Fragility Tax Calculator
         function calcTax() {
-            const debt = document.getElementById('debtSlider').value;
-            document.getElementById('debtDisplay').innerText = Number(debt).toLocaleString();
-            
-            const tax = debt * 0.06; 
-            document.getElementById('taxDisplay').innerText = tax.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+            const debtElem = document.getElementById('debtSlider');
+            if (debtElem) {
+                const debt = debtElem.value;
+                document.getElementById('debtDisplay').innerText = Number(debt).toLocaleString();
+                const tax = debt * 0.06; 
+                document.getElementById('taxDisplay').innerText = tax.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+            }
         }
 
         // Animate Bars on Load
