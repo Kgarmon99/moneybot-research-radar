@@ -1,0 +1,16 @@
+{
+  "name": "State of Financial Literacy Radar",
+  "short_name": "RADAR",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#000000",
+  "description": "Live tracking of financial literacy policy and data.",
+  "icons": [
+    {
+      "src": "apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ]
+}

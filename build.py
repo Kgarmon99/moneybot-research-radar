@@ -27,6 +27,8 @@ HTML_TEMPLATE = """
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="theme-color" content="#000000">
 
+    <!-- Android Web App Manifest -->
+    <link rel="manifest" href="manifest.json">
     <!-- Generate simple black/white data icon for home screen -->
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
 
@@ -622,6 +624,8 @@ BRIEF_TEMPLATE = """
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="theme-color" content="#000000">
 
+    <!-- Android Web App Manifest -->
+    <link rel="manifest" href="manifest.json">
     <!-- Generate simple black/white data icon for home screen -->
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
 
@@ -873,6 +877,27 @@ def build():
     }
     with open('public/api/radar.json', 'w', encoding='utf-8') as f:
         json.dump(api_data, f)
+
+    # --- Generate Android Web App Manifest ---
+    manifest_json = '''{
+  "name": "State of Financial Literacy Radar",
+  "short_name": "RADAR",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#000000",
+  "description": "Live tracking of financial literacy policy and data.",
+  "icons": [
+    {
+      "src": "apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ]
+}'''
+    with open('public/manifest.json', 'w', encoding='utf-8') as f:
+        f.write(manifest_json)
+
 
 
     
