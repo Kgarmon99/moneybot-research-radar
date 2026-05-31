@@ -1,0 +1,85 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg: #000000; --fg: #FFFFFF; --border: #333333; --accent: #888888; }
+        body { background-color: var(--bg); color: var(--fg); font-family: 'Space Grotesk', sans-serif; margin: 0; padding: 20px; overflow: hidden; display: flex; flex-direction: column; justify-content: center; height: 100vh; box-sizing: border-box;}
+        
+        .states-badge-grid { display: grid; grid-template-columns: repeat(10, 1fr); gap: 6px; }
+        .state-badge { background-color: #111; border: 1px solid #333; color: #555; border-radius: 4px; padding: 6px 0; text-align: center; font-size: 0.75rem; font-weight: 600; }
+        .state-badge.grade-A { background-color: var(--fg); color: var(--bg); border-color: #00ff00; box-shadow: 0 0 12px rgba(0, 255, 0, 0.4); }
+        .state-badge.grade-B { background-color: #555; color: #fff; border-color: #777; }
+        .state-badge.grade-C { background-color: #333; color: #aaa; border-color: #444; }
+        .state-badge.grade-D { background-color: #332222; color: #dd8888; border-color: #553333; }
+        .state-badge.grade-F { background-color: #220000; color: #ff4444; border-color: #440000; box-shadow: 0 0 8px rgba(255,68,68,0.2); }
+        @media(max-width: 600px) { .states-badge-grid { grid-template-columns: repeat(7, 1fr); gap: 5px; } }
+        @media(max-width: 400px) { .states-badge-grid { grid-template-columns: repeat(5, 1fr); } }
+    
+        .watermark { margin-top: 20px; font-size: 0.75rem; color: #666; text-transform: uppercase; letter-spacing: 0.05em; text-decoration: none; display: block; text-align: center; transition: color 0.2s;}
+        .watermark:hover { color: var(--fg); }
+    </style>
+</head>
+<body>
+    <div style="font-size: 1.6rem; font-weight: 700; margin-bottom: 15px; letter-spacing: -0.05em; line-height: 1.1; text-align: left;">30 <span style="font-size: 1rem; color: var(--accent); font-weight: 400; letter-spacing: normal;">/ 50 States Mandate K-12 Finance</span></div>
+<div class="states-badge-grid">
+<div class="state-badge grade-A" title="Alabama">AL</div>
+<div class="state-badge grade-F" title="Alaska">AK</div>
+<div class="state-badge grade-B" title="Arizona">AZ</div>
+<div class="state-badge grade-A" title="Arkansas">AR</div>
+<div class="state-badge grade-A" title="California">CA</div>
+<div class="state-badge grade-C" title="Colorado">CO</div>
+<div class="state-badge grade-A" title="Connecticut">CT</div>
+<div class="state-badge grade-C" title="Delaware">DE</div>
+<div class="state-badge grade-A" title="Florida">FL</div>
+<div class="state-badge grade-A" title="Georgia">GA</div>
+<div class="state-badge grade-F" title="Hawaii">HI</div>
+<div class="state-badge grade-A" title="Idaho">ID</div>
+<div class="state-badge grade-B" title="Illinois">IL</div>
+<div class="state-badge grade-A" title="Indiana">IN</div>
+<div class="state-badge grade-A" title="Iowa">IA</div>
+<div class="state-badge grade-C" title="Kansas">KS</div>
+<div class="state-badge grade-A" title="Kentucky">KY</div>
+<div class="state-badge grade-A" title="Louisiana">LA</div>
+<div class="state-badge grade-C" title="Maine">ME</div>
+<div class="state-badge grade-B" title="Maryland">MD</div>
+<div class="state-badge grade-F" title="Massachusetts">MA</div>
+<div class="state-badge grade-A" title="Michigan">MI</div>
+<div class="state-badge grade-A" title="Minnesota">MN</div>
+<div class="state-badge grade-A" title="Mississippi">MS</div>
+<div class="state-badge grade-A" title="Missouri">MO</div>
+<div class="state-badge grade-D" title="Montana">MT</div>
+<div class="state-badge grade-A" title="Nebraska">NE</div>
+<div class="state-badge grade-A" title="Nevada">NV</div>
+<div class="state-badge grade-A" title="New Hampshire">NH</div>
+<div class="state-badge grade-B" title="New Jersey">NJ</div>
+<div class="state-badge grade-C" title="New Mexico">NM</div>
+<div class="state-badge grade-A" title="New York">NY</div>
+<div class="state-badge grade-A" title="North Carolina">NC</div>
+<div class="state-badge grade-C" title="North Dakota">ND</div>
+<div class="state-badge grade-A" title="Ohio">OH</div>
+<div class="state-badge grade-B" title="Oklahoma">OK</div>
+<div class="state-badge grade-A" title="Oregon">OR</div>
+<div class="state-badge grade-A" title="Pennsylvania">PA</div>
+<div class="state-badge grade-A" title="Rhode Island">RI</div>
+<div class="state-badge grade-A" title="South Carolina">SC</div>
+<div class="state-badge grade-F" title="South Dakota">SD</div>
+<div class="state-badge grade-A" title="Tennessee">TN</div>
+<div class="state-badge grade-B" title="Texas">TX</div>
+<div class="state-badge grade-A" title="Utah">UT</div>
+<div class="state-badge grade-C" title="Vermont">VT</div>
+<div class="state-badge grade-A" title="Virginia">VA</div>
+<div class="state-badge grade-C" title="Washington">WA</div>
+<div class="state-badge grade-A" title="West Virginia">WV</div>
+<div class="state-badge grade-A" title="Wisconsin">WI</div>
+<div class="state-badge grade-D" title="Wyoming">WY</div>
+</div>
+    <a href="https://kgarmon99.github.io/moneybot-research-radar/" target="_blank" class="watermark">Powered by State of Financial Literacy Radar &rarr;</a>
+    <script>
+        
+    </script>
+</body>
+</html>

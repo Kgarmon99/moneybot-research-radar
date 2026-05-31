@@ -189,7 +189,7 @@ HTML_TEMPLATE = """
             <div class="dashboard-grid">
                 <!-- NGPF Map Viz -->
                 <div class="viz-card">
-                    <div class="viz-title">K-12 Policy Mandates (NGPF)</div>
+                    <div class="viz-title" style="display: flex; justify-content: space-between; align-items: center;"><span>K-12 Policy Mandates (NGPF)</span><button onclick="openEmbedModal(\'map\')" style="background: none; border: 1px solid #333; color: #aaa; border-radius: 4px; padding: 4px 8px; font-size: 0.7rem; cursor: pointer; font-family: \'Space Grotesk\'; transition: all 0.2s;" onmouseover="this.style.color=\'#fff\'; this.style.borderColor=\'#666\'" onmouseout="this.style.color=\'#aaa\'; this.style.borderColor=\'#333\'">&lt;/&gt; Embed</button></div>
                     <div style="font-size: 2.5rem; font-weight: 700; margin-bottom: 20px; letter-spacing: -0.05em; line-height: 1.1;">30 <span style="font-size: 1.2rem; color: var(--accent); font-weight: 400; letter-spacing: normal;">/ 50 States</span></div>
                     <div class="states-badge-grid">
                         {% for state in states_list %}
@@ -201,7 +201,7 @@ HTML_TEMPLATE = """
 
                 <!-- FINRA Gap Viz -->
                 <div class="viz-card">
-                    <div class="viz-title">Financial Capability (FINRA)</div>
+                    <div class="viz-title" style="display: flex; justify-content: space-between; align-items: center;"><span>Financial Capability (FINRA)</span><button onclick="openEmbedModal(\'finra\')" style="background: none; border: 1px solid #333; color: #aaa; border-radius: 4px; padding: 4px 8px; font-size: 0.7rem; cursor: pointer; font-family: \'Space Grotesk\'; transition: all 0.2s;" onmouseover="this.style.color=\'#fff\'; this.style.borderColor=\'#666\'" onmouseout="this.style.color=\'#aaa\'; this.style.borderColor=\'#333\'">&lt;/&gt; Embed</button></div>
                     <div class="bar-chart">
                         <div class="bar-row">
                             <div class="bar-label"><span style="color: var(--accent);">Adult Average</span><span>49%</span></div>
@@ -446,7 +446,19 @@ HTML_TEMPLATE = """
             </div>
         </div>
 
-        <!-- State Modal -->
+        
+        <!-- Embed Modal -->
+        <div id="embedModal" class="modal" onclick="closeEmbedModal(event)">
+            <div class="modal-content" onclick="event.stopPropagation()">
+                <span class="close-btn" onclick="closeEmbedModal()">&times;</span>
+                <h2 style="margin-top: 0; font-size: 1.5rem; border: none; padding-bottom: 0;">Embed this Visualization</h2>
+                <p style="color: #aaa; font-size: 0.95rem; margin-bottom: 20px;">Copy the HTML below to embed this live-updating chart on your website or blog.</p>
+                <textarea id="embedCode" style="width: 100%; height: 100px; background: #000; color: #00bbff; border: 1px solid #333; border-radius: 4px; padding: 10px; font-family: monospace; font-size: 0.85rem; resize: none; box-sizing: border-box;" readonly></textarea>
+                <button onclick="copyEmbedCode()" id="copyBtn" style="margin-top: 15px; width: 100%; background: var(--fg); color: var(--bg); border: none; padding: 12px; font-family: 'Space Grotesk'; font-size: 1rem; font-weight: 700; border-radius: 4px; cursor: pointer; transition: all 0.2s;">Copy to Clipboard</button>
+            </div>
+        </div>
+
+    <!-- State Modal -->
         <div id="stateModal" class="modal" onclick="closeStateModal(event)">
             <div class="modal-content" onclick="event.stopPropagation()">
                 <span class="close-btn" onclick="closeStateModal()">&times;</span>
@@ -463,6 +475,27 @@ HTML_TEMPLATE = """
 
     <script>
         
+        
+        function openEmbedModal(type) {
+            const baseUrl = 'https://kgarmon99.github.io/moneybot-research-radar/';
+            const iframeUrl = baseUrl + 'embed/' + type + '.html';
+            const height = type === 'map' ? '280' : '260';
+            const code = `<iframe src="${iframeUrl}" width="100%" height="${height}" frameborder="0" style="border: 1px solid #333; border-radius: 8px; background: #050505;"></iframe>`;
+            document.getElementById('embedCode').value = code;
+            document.getElementById('copyBtn').innerText = 'Copy to Clipboard';
+            document.getElementById('embedModal').style.display = 'flex';
+        }
+        function closeEmbedModal(e) {
+            if (e && e.target !== document.getElementById('embedModal') && e.type === 'click' && !e.target.classList.contains('close-btn')) { return; }
+            document.getElementById('embedModal').style.display = 'none';
+        }
+        function copyEmbedCode() {
+            let copyText = document.getElementById('embedCode');
+            copyText.select();
+            document.execCommand('copy');
+            document.getElementById('copyBtn').innerText = '✓ Copied!';
+        }
+
         // Newsletter Subscription Simulation
         function subscribeNewsletter(e) {
             e.preventDefault();
@@ -604,6 +637,32 @@ BRIEF_TEMPLATE = """
 </body>
 </html>
 """
+
+
+EMBED_TEMPLATE = '''
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg: #000000; --fg: #FFFFFF; --border: #333333; --accent: #888888; }
+        body { background-color: var(--bg); color: var(--fg); font-family: 'Space Grotesk', sans-serif; margin: 0; padding: 20px; overflow: hidden; display: flex; flex-direction: column; justify-content: center; height: 100vh; box-sizing: border-box;}
+        {{ extra_css|safe }}
+        .watermark { margin-top: 20px; font-size: 0.75rem; color: #666; text-transform: uppercase; letter-spacing: 0.05em; text-decoration: none; display: block; text-align: center; transition: color 0.2s;}
+        .watermark:hover { color: var(--fg); }
+    </style>
+</head>
+<body>
+    {{ content|safe }}
+    <a href="https://kgarmon99.github.io/moneybot-research-radar/" target="_blank" class="watermark">Powered by State of Financial Literacy Radar &rarr;</a>
+    <script>
+        {{ extra_js|safe }}
+    </script>
+</body>
+</html>
+'''
 
 def build():
     if os.path.exists('public'):
@@ -775,7 +834,59 @@ def build():
     with open('public/data/financial_literacy_dataset.csv', 'w', encoding='utf-8') as f:
         f.write(csv_content)
 
+    
+    # --- Generate Embed Files ---
+    os.makedirs('public/embed', exist_ok=True)
+    
+    # Map Embed
+    map_css = '''
+        .states-badge-grid { display: grid; grid-template-columns: repeat(10, 1fr); gap: 6px; }
+        .state-badge { background-color: #111; border: 1px solid #333; color: #555; border-radius: 4px; padding: 6px 0; text-align: center; font-size: 0.75rem; font-weight: 600; }
+        .state-badge.grade-A { background-color: var(--fg); color: var(--bg); border-color: #00ff00; box-shadow: 0 0 12px rgba(0, 255, 0, 0.4); }
+        .state-badge.grade-B { background-color: #555; color: #fff; border-color: #777; }
+        .state-badge.grade-C { background-color: #333; color: #aaa; border-color: #444; }
+        .state-badge.grade-D { background-color: #332222; color: #dd8888; border-color: #553333; }
+        .state-badge.grade-F { background-color: #220000; color: #ff4444; border-color: #440000; box-shadow: 0 0 8px rgba(255,68,68,0.2); }
+        @media(max-width: 600px) { .states-badge-grid { grid-template-columns: repeat(7, 1fr); gap: 5px; } }
+        @media(max-width: 400px) { .states-badge-grid { grid-template-columns: repeat(5, 1fr); } }
+    '''
+    map_html = '<div style="font-size: 1.6rem; font-weight: 700; margin-bottom: 15px; letter-spacing: -0.05em; line-height: 1.1; text-align: left;">30 <span style="font-size: 1rem; color: var(--accent); font-weight: 400; letter-spacing: normal;">/ 50 States Mandate K-12 Finance</span></div>\n'
+    map_html += '<div class="states-badge-grid">\n'
+    for s in states_list:
+        map_html += f'<div class="state-badge grade-{s["grade"]}" title="{s["name"]}">{s["code"]}</div>\n'
+    map_html += '</div>'
+    
+    with open('public/embed/map.html', 'w', encoding='utf-8') as f:
+        f.write(Template(EMBED_TEMPLATE).render(content=map_html, extra_css=map_css, extra_js=''))
+
+    # Finra Embed
+    finra_css = '''
+        .bar-chart { display: flex; flex-direction: column; gap: 20px; }
+        .bar-row { display: flex; flex-direction: column; gap: 8px; }
+        .bar-label { font-size: 1rem; display: flex; justify-content: space-between; font-weight: 600;}
+        .bar-track { height: 16px; background-color: #222; border-radius: 8px; overflow: hidden; }
+        .bar-fill { height: 100%; background-color: var(--fg); border-radius: 8px; transition: width 1s ease-in-out;}
+        .bar-fill.danger { background-color: #ff4444; box-shadow: 0 0 8px rgba(255,68,68,0.4); }
+    '''
+    finra_html = '<div style="font-size: 1.4rem; font-weight: 700; margin-bottom: 25px; letter-spacing: -0.03em; text-align: left;">The Capability Gap</div>\n'
+    finra_html += '''
+        <div class="bar-chart">
+            <div class="bar-row">
+                <div class="bar-label"><span style="color: var(--accent);">Adult Average</span><span>49%</span></div>
+                <div class="bar-track"><div class="bar-fill" style="width: 0%;" data-width="49%"></div></div>
+            </div>
+            <div class="bar-row" style="margin-top: 15px;">
+                <div class="bar-label"><span style="color: var(--accent);">Gen Z Average</span><span style="color: #ff4444;">38%</span></div>
+                <div class="bar-track"><div class="bar-fill danger" style="width: 0%;" data-width="38%"></div></div>
+            </div>
+        </div>
+    '''
+    finra_js = "setTimeout(() => { document.querySelectorAll('.bar-fill').forEach(bar => { bar.style.width = bar.getAttribute('data-width'); }); }, 200);"
+    with open('public/embed/finra.html', 'w', encoding='utf-8') as f:
+        f.write(Template(EMBED_TEMPLATE).render(content=finra_html, extra_css=finra_css, extra_js=finra_js))
+
     index_html = Template(HTML_TEMPLATE).render(briefs=briefs, feed_items=feed_items, states_list=states_list)
+
     with open('public/index.html', 'w', encoding='utf-8') as f:
         f.write(index_html)
 
