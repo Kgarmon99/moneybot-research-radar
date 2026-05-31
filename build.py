@@ -103,10 +103,9 @@ HTML_TEMPLATE = """
 <body>
     <div class="container">
         <div class="header-bar">
-            <h1>MONEYBOT RESEARCH RADAR</h1>
+            <h1>STATE OF FINANCIAL LITERACY</h1>
             <div class="header-actions" style="display: flex; gap: 15px; align-items: center;">
                 <span class="meta" style="margin-bottom: 0;"><span class="live-pulse"></span>AUTO-UPDATED DAILY</span>
-                <a href="https://getmoneybot.com" target="_blank" style="background: var(--fg); color: var(--bg); padding: 8px 16px; border-radius: 4px; font-weight: 700; font-size: 0.9rem; text-decoration: none; border: none; white-space: nowrap;">Try MoneyBot &rarr;</a>
             </div>
         </div>
         
@@ -153,10 +152,10 @@ HTML_TEMPLATE = """
                 </div>
             </div>
 
-            <!-- Stanford Validation / MoneyBot Solution Viz -->
+            <!-- Stanford Validation / Solution Viz -->
             <div class="viz-card" style="margin-top: 20px; border-color: var(--fg);">
                 <div class="viz-title" style="color: var(--fg); font-weight: 600;">The Solution: Just-In-Time Gamification (Stanford SIEPR)</div>
-                <p style="font-size: 0.95rem; color: #ddd; margin-bottom: 25px; line-height: 1.6;">Stanford economic data proves that short, narrative-driven interventions significantly outperform traditional 14-week lectures. MoneyBot bridges the Gen-Z capability gap by delivering education <strong>at the point of decision</strong>.</p>
+                <p style="font-size: 0.95rem; color: #ddd; margin-bottom: 25px; line-height: 1.6;">Stanford economic data proves that short, narrative-driven interventions significantly outperform traditional 14-week lectures. Empirical evidence points to bridging the Gen-Z capability gap by delivering education <strong>at the point of decision</strong>.</p>
                 
                 <div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: stretch;">
                     <!-- Traditional -->
@@ -171,19 +170,16 @@ HTML_TEMPLATE = """
                         </ul>
                     </div>
                     
-                    <!-- MoneyBot -->
+                    <!-- Modern -->
                     <div style="flex: 1 1 300px; padding: 20px; border: 1px solid #333; border-radius: 6px; background: #111; position: relative; overflow: hidden; box-shadow: 0 0 20px rgba(255, 255, 255, 0.05);">
                         <div style="position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: var(--fg);"></div>
-                        <h4 style="margin: 0 0 15px 0; color: var(--fg); font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.05em;">MoneyBot Interventions</h4>
+                        <h4 style="margin: 0 0 15px 0; color: var(--fg); font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.05em;">Targeted Interventions</h4>
                         <div style="font-size: 1.4rem; font-weight: 600; margin-bottom: 15px;">"Just-In-Time"</div>
                         <ul style="list-style: none; padding: 0; margin: 0; color: #ccc; font-size: 0.9rem;">
-                            <li style="margin-bottom: 10px;">&check; Delivered at point-of-sale (e.g. car lot)</li>
+                            <li style="margin-bottom: 10px;">&check; Delivered at point-of-decision</li>
                             <li style="margin-bottom: 10px;">&check; 2-minute gamified storytelling</li>
                             <li style="margin-bottom: 10px;">&check; Dramatically lowers the "Fragility Tax"</li>
                         </ul>
-                        <div style="margin-top: 25px;">
-                            <a href="https://getmoneybot.com" target="_blank" style="display: inline-block; background: var(--fg); color: var(--bg); padding: 8px 16px; border-radius: 4px; font-weight: 700; font-size: 0.85rem; text-decoration: none;">Experience MoneyBot &rarr;</a>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -194,7 +190,7 @@ HTML_TEMPLATE = """
         <div id="library" class="tab-content">
             <div style="margin-bottom: 25px;">
                 <h2 style="font-size: 1.5rem; margin-bottom: 5px;">Curated Intelligence</h2>
-                <p style="color: var(--accent); font-size: 0.95rem;">Internal policy briefs, academic syntheses, and macro trend analysis shaping the MoneyBot intervention framework.</p>
+                <p style="color: var(--accent); font-size: 0.95rem;">Policy briefs, academic syntheses, and macro trend analysis tracking modern financial interventions.</p>
             </div>
             <input type="text" id="searchLibrary" class="search-bar" placeholder="Search curated briefs, memos, and tags..." onkeyup="filterCards('libraryCards', 'searchLibrary')">
             <div id="libraryCards">
@@ -395,15 +391,15 @@ def build():
     try:
         d = feedparser.parse("https://www.nber.org/rss/new.xml")
         for entry in d.entries[:10]:
-            # Generate a 1-sentence "MoneyBot Takeaway" prompt locally
+            # Generate a 1-sentence "Key Takeaway" prompt locally
             summary = entry.get('summary', '').replace('<p>', '').replace('</p>', '')
             # For a static build script, we will synthesize a simple automated takeaway based on keywords
             takeaway = ""
             lower_title = entry.title.lower()
-            if 'tax' in lower_title: takeaway = "MoneyBot Takeaway: This highlights how taxation systems systematically impact household wealth retention."
-            elif 'mortgage' in lower_title or 'housing' in lower_title: takeaway = "MoneyBot Takeaway: Real estate structural dynamics are actively making homeownership a harder hurdle for Gen Z."
-            elif 'literacy' in lower_title or 'education' in lower_title: takeaway = "MoneyBot Takeaway: Direct empirical proof that financial capability requires scalable, early intervention."
-            else: takeaway = "MoneyBot Takeaway: Macroeconomic shifts directly dictate the purchasing power and fragility of everyday consumers."
+            if 'tax' in lower_title: takeaway = "Key Takeaway: This highlights how taxation systems systematically impact household wealth retention."
+            elif 'mortgage' in lower_title or 'housing' in lower_title: takeaway = "Key Takeaway: Real estate structural dynamics are actively making homeownership a harder hurdle for Gen Z."
+            elif 'literacy' in lower_title or 'education' in lower_title: takeaway = "Key Takeaway: Direct empirical proof that financial capability requires scalable, early intervention."
+            else: takeaway = "Key Takeaway: Macroeconomic shifts directly dictate the purchasing power and fragility of everyday consumers."
             
             feed_items.append({
                 'source': 'NBER Working Papers',
