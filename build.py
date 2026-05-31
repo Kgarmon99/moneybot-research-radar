@@ -920,7 +920,6 @@ def build():
     # --- LegiScan API Integration for Active Bills ---
     import urllib.request
     import json
-    import os
     
     active_bills = []
     legiscan_key = os.environ.get('LEGISCAN_API_KEY')
