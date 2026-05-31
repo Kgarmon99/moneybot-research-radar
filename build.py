@@ -57,12 +57,23 @@ HTML_TEMPLATE = """
         .viz-card:hover { border-color: #555; }
         .viz-title { font-size: 0.85rem; color: var(--accent); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 15px; border-bottom: 1px solid #222; padding-bottom: 10px;}
         
-        /* State Badges */
+        
+        /* State Badges & Grades */
         .states-badge-grid { display: grid; grid-template-columns: repeat(10, 1fr); gap: 6px; margin-bottom: 20px; }
         .state-badge { background-color: #111; border: 1px solid #333; color: #555; border-radius: 4px; padding: 6px 0; text-align: center; font-size: 0.75rem; font-weight: 600; transition: all 0.2s;}
-        .state-badge.active { background-color: var(--fg); color: var(--bg); border-color: var(--fg); box-shadow: 0 0 10px rgba(255,255,255,0.2); }
-        @media(max-width: 768px) { .states-badge-grid { grid-template-columns: repeat(7, 1fr); gap: 5px; } }
-        @media(max-width: 480px) { .states-badge-grid { grid-template-columns: repeat(5, 1fr); } }
+        .state-badge.grade-A { background-color: var(--fg); color: var(--bg); border-color: var(--fg); box-shadow: 0 0 10px rgba(255,255,255,0.2); }
+        .state-badge.grade-B { background-color: #555; color: #fff; border-color: #777; }
+        .state-badge.grade-C { background-color: #333; color: #aaa; border-color: #444; }
+        .state-badge.grade-D { background-color: #332222; color: #dd8888; border-color: #553333; }
+        .state-badge.grade-F { background-color: #220000; color: #ff4444; border-color: #440000; box-shadow: 0 0 8px rgba(255,68,68,0.2); }
+        
+        /* Demographic Viz */
+        .demo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 25px; border-top: 1px solid #222; padding-top: 20px;}
+        .demo-box { background: #080808; border: 1px solid #222; padding: 15px; border-radius: 4px; }
+        .demo-title { font-size: 0.8rem; color: #888; text-transform: uppercase; margin-bottom: 12px; letter-spacing: 0.05em; border-bottom: 1px solid #222; padding-bottom: 5px; }
+        .demo-stat { display: flex; justify-content: space-between; font-size: 0.95rem; margin-bottom: 8px; font-family: monospace;}
+        @media(max-width: 480px) { .demo-grid { grid-template-columns: 1fr; } }
+
         
         
         /* Modal Styles */
@@ -153,7 +164,9 @@ HTML_TEMPLATE = """
                     <div style="font-size: 2.5rem; font-weight: 700; margin-bottom: 20px; letter-spacing: -0.05em; line-height: 1.1;">30 <span style="font-size: 1.2rem; color: var(--accent); font-weight: 400; letter-spacing: normal;">/ 50 States</span></div>
                     <div class="states-badge-grid">
                         {% for state in states_list %}
-                        <div class="state-badge {% if state.mandated %}active{% endif %}" onclick="openStateModal('{{ state.code }}', '{{ state.name }}', {{ 'true' if state.mandated else 'false' }}, '{{ state.details }}')" style="cursor: pointer;" title="Tap for info">{{ state.code }}</div>
+                        <div class="state-badge grade-{{ state.grade }}" onclick="openStateModal('{{ state.code }}', '{{ state.name }}', '{{ state.grade }}', '{{ state.details }}')" style="cursor: pointer;" title="Tap for info">{{ state.code }}</div>
+                        {% endfor %}
+                    </div>
                         {% endfor %}
                     </div>
                     <p style="font-size: 0.85rem; color: var(--accent); margin-top: 15px; line-height: 1.5; margin-bottom: 0;">States guaranteeing a standalone Personal Finance course for high school graduation.</p>
@@ -366,24 +379,23 @@ HTML_TEMPLATE = """
     <script>
         // Tab Switching Logic
         
-        function openStateModal(code, name, isMandated, details) {
+        function openStateModal(code, name, grade, details) {
             const modal = document.getElementById('stateModal');
             document.getElementById('modalStateName').innerText = name;
             
             const badge = document.getElementById('modalStateBadge');
             badge.innerText = code;
+            badge.className = 'state-badge grade-' + grade;
             
             const status = document.getElementById('modalStateStatus');
-            if (isMandated) {
-                status.innerText = 'Mandated';
-                status.style.backgroundColor = 'var(--fg)';
-                status.style.color = 'var(--bg)';
-                badge.classList.add('active');
+            status.innerText = 'NGPF Grade: ' + grade;
+            
+            if (grade === 'A') {
+                status.style.backgroundColor = 'var(--fg)'; status.style.color = 'var(--bg)';
+            } else if (grade === 'B' || grade === 'C') {
+                status.style.backgroundColor = '#444'; status.style.color = '#ccc';
             } else {
-                status.innerText = 'Not Mandated';
-                status.style.backgroundColor = '#222';
-                status.style.color = '#888';
-                badge.classList.remove('active');
+                status.style.backgroundColor = '#220000'; status.style.color = '#ff4444';
             }
             
             document.getElementById('modalStateDetails').innerText = details;
@@ -547,83 +559,109 @@ def build():
     briefs.sort(key=lambda x: str(x.get('date', '')), reverse=True)
 
     feed_items = []
+    
+    # 1. NBER Working Papers
     try:
         d = feedparser.parse("https://www.nber.org/rss/new.xml")
-        for entry in d.entries[:10]:
-            # Generate a 1-sentence "Key Takeaway" prompt locally
-            summary = entry.get('summary', '').replace('<p>', '').replace('</p>', '')
-            # For a static build script, we will synthesize a simple automated takeaway based on keywords
-            takeaway = ""
+        for entry in d.entries[:5]:
+            takeaway = "Academic insight into economic structures and household finance."
             lower_title = entry.title.lower()
-            if 'tax' in lower_title: takeaway = "Key Takeaway: This highlights how taxation systems systematically impact household wealth retention."
-            elif 'mortgage' in lower_title or 'housing' in lower_title: takeaway = "Key Takeaway: Real estate structural dynamics are actively making homeownership a harder hurdle for Gen Z."
-            elif 'literacy' in lower_title or 'education' in lower_title: takeaway = "Key Takeaway: Direct empirical proof that financial capability requires scalable, early intervention."
-            else: takeaway = "Key Takeaway: Macroeconomic shifts directly dictate the purchasing power and fragility of everyday consumers."
-            
+            if 'tax' in lower_title: takeaway = "Highlights how taxation systems systematically impact household wealth retention."
+            elif 'mortgage' in lower_title or 'housing' in lower_title: takeaway = "Real estate structural dynamics are actively making homeownership a harder hurdle for Gen Z."
+            elif 'literacy' in lower_title or 'education' in lower_title: takeaway = "Direct empirical proof that financial capability requires scalable, early intervention."
             feed_items.append({
-                'source': 'NBER Working Papers',
+                'source': 'NBER',
                 'title': entry.title,
                 'link': entry.link,
-                'date': '2026-05-31',
-                'summary': summary[:200],
+                'date': getattr(entry, 'published', 'Recent')[:16],
+                'summary': entry.get('summary', '').replace('<p>', '').replace('</p>', '')[:200] + "...",
                 'takeaway': takeaway
             })
-    except Exception as e:
-        print("RSS error:", e)
+    except: pass
+    
+    # 2. CFPB Newsroom
+    try:
+        d = feedparser.parse("https://www.consumerfinance.gov/about-us/newsroom/feed/")
+        for entry in d.entries[:5]:
+            feed_items.append({
+                'source': 'CFPB',
+                'title': entry.title,
+                'link': entry.link,
+                'date': getattr(entry, 'published', 'Recent')[:16],
+                'summary': entry.get('summary', '').replace('<p>', '').replace('</p>', '')[:200] + "...",
+                'takeaway': "Federal regulatory/enforcement action directly impacting consumer financial protection."
+            })
+    except: pass
+    
+    # 3. Industry News
+    try:
+        d = feedparser.parse("https://news.google.com/rss/search?q=%22financial+literacy%22+OR+%22financial+education%22")
+        for entry in d.entries[:5]:
+            feed_items.append({
+                'source': 'Industry News',
+                'title': entry.title,
+                'link': entry.link,
+                'date': getattr(entry, 'published', 'Recent')[:16],
+                'summary': "Coverage of state-level mandates, institutional changes, or broad industry trends.",
+                'takeaway': "Tracking public sentiment and legislative momentum for capability initiatives."
+            })
+    except: pass
+    
+    # Sort feeds by date fallback (just keep them grouped for now is fine, or random, they are strings)
 
     states_data_raw = [
-        ("AL", "Alabama", True, "Implemented for the Class of 2017. Requires a one-half credit course in Personal Finance."),
-        ("AK", "Alaska", False, "No state-wide standalone personal finance requirement for high school graduation."),
-        ("AZ", "Arizona", False, "Requires personal finance concepts to be embedded in economics or math, but no standalone course mandate."),
-        ("AR", "Arkansas", True, "Requires a standalone personal finance course. The requirement was strengthened by recent legislation."),
-        ("CA", "California", True, "AB 2927 signed in 2024. Guarantees a one-semester personal finance course starting with the Class of 2031."),
-        ("CO", "Colorado", False, "Standards are embedded in other courses; local districts make standalone decisions."),
-        ("CT", "Connecticut", True, "Passed legislation in 2023 requiring a personal finance course for the Class of 2027."),
-        ("DE", "Delaware", True, "Requires a half-credit course or equivalent integrated instruction for the Class of 2011 and beyond."),
-        ("FL", "Florida", True, "The Dorothy L. Hukill Financial Literacy Act guarantees a standalone course starting with the Class of 2027."),
-        ("GA", "Georgia", True, "Mandated a half-credit course in personal finance starting in 2024."),
-        ("HI", "Hawaii", False, "No state-wide standalone requirement. Schools offer courses as electives."),
-        ("ID", "Idaho", True, "Requires a financial literacy course integrated or as a standalone for graduation."),
-        ("IL", "Illinois", False, "Requires 9 weeks of consumer education, but not necessarily a standalone full semester course."),
-        ("IN", "Indiana", True, "SB 35 (2023) mandates a personal finance course for high school graduation (Class of 2028)."),
-        ("IA", "Iowa", True, "Requires a standalone personal finance course for graduation starting with the Class of 2023."),
-        ("KS", "Kansas", False, "No standalone course required, though standards exist."),
-        ("KY", "Kentucky", True, "Requires a financial literacy course for graduation, implemented for the Class of 2024."),
-        ("LA", "Louisiana", True, "Passed a mandate in 2023 requiring personal finance for graduation."),
-        ("ME", "Maine", False, "Embedded standards, but no standalone course requirement."),
-        ("MD", "Maryland", False, "Embedded standards, but no uniform statewide standalone requirement."),
-        ("MA", "Massachusetts", False, "No statewide requirement, though legislation has been frequently debated."),
-        ("MI", "Michigan", True, "Requires a half-credit personal finance course for graduation starting with the Class of 2028."),
-        ("MN", "Minnesota", True, "Signed into law in 2023, requiring a personal finance course for graduation."),
-        ("MS", "Mississippi", True, "Requires a standalone personal finance course for graduation."),
-        ("MO", "Missouri", True, "A pioneer state. Has required a one-half credit personal finance course for graduation since 2010."),
-        ("MT", "Montana", False, "No standalone requirement for high school graduation."),
-        ("NE", "Nebraska", True, "Requires a financial literacy course for graduation starting with the Class of 2024."),
-        ("NV", "Nevada", True, "Requires a standalone personal finance course for high school graduation."),
-        ("NH", "New Hampshire", True, "Requires a standalone personal finance course starting with the Class of 2027."),
-        ("NJ", "New Jersey", False, "Requires a half-credit of financial, economic, business, and entrepreneurial literacy. Not tracked as a standalone mandate by NGPF."),
-        ("NM", "New Mexico", False, "Requires personal finance as an elective option, but not a strict graduation mandate for all."),
-        ("NY", "New York", True, "Board of Regents recently moved to require personal finance for graduation."),
-        ("NC", "North Carolina", True, "Requires the EPF (Economics and Personal Finance) course for graduation starting Class of 2024."),
-        ("ND", "North Dakota", False, "No standalone mandate. Currently embedded in other subjects."),
-        ("OH", "Ohio", True, "Requires a one-half unit course in financial literacy for graduation starting Class of 2026."),
-        ("OK", "Oklahoma", False, "Requires the Passport to Financial Literacy, embedded rather than a strict standalone 1-semester course."),
-        ("OR", "Oregon", True, "Signed SB 3 in 2023, requiring a one-half credit personal finance course starting Class of 2027."),
-        ("PA", "Pennsylvania", True, "Passed Act 73 in 2023, requiring a standalone course starting Class of 2027."),
-        ("RI", "Rhode Island", True, "Requires a financial literacy course for graduation starting with the Class of 2024."),
-        ("SC", "South Carolina", True, "Requires a half-credit personal finance course starting with the Class of 2027."),
-        ("SD", "South Dakota", False, "Embedded within economics, no standalone requirement."),
-        ("TN", "Tennessee", True, "A pioneering state. Requires a standalone personal finance course for graduation since 2013."),
-        ("TX", "Texas", False, "Embedded in economics, but no standalone requirement for all graduation plans."),
-        ("UT", "Utah", True, "The gold standard pioneer. Required a half-credit standalone course since 2008 and fully funds it."),
-        ("VT", "Vermont", False, "No standalone state requirement."),
-        ("VA", "Virginia", True, "Requires a standalone Economics and Personal Finance course for graduation since 2015."),
-        ("WA", "Washington", False, "Requires districts to offer it, but it is not a state-mandated graduation requirement for students."),
-        ("WV", "West Virginia", True, "Requires a civics and personal finance course for graduation."),
-        ("WI", "Wisconsin", True, "Passed Act 60 in 2023, requiring a personal finance course for graduation starting Class of 2028."),
-        ("WY", "Wyoming", False, "No state-wide standalone personal finance requirement.")
+        ("AL", "Alabama", "A", "Implemented for the Class of 2017. Requires a one-half credit course in Personal Finance."),
+        ("AK", "Alaska", "F", "No state-wide standalone personal finance requirement for high school graduation."),
+        ("AZ", "Arizona", "B", "Requires personal finance concepts to be embedded in economics or math, but no standalone course mandate."),
+        ("AR", "Arkansas", "A", "Requires a standalone personal finance course. The requirement was strengthened by recent legislation."),
+        ("CA", "California", "A", "AB 2927 signed in 2024. Guarantees a one-semester personal finance course starting with the Class of 2031."),
+        ("CO", "Colorado", "C", "Standards are embedded in other courses; local districts make standalone decisions."),
+        ("CT", "Connecticut", "A", "Passed legislation in 2023 requiring a personal finance course for the Class of 2027."),
+        ("DE", "Delaware", "C", "Requires a half-credit course or equivalent integrated instruction for the Class of 2011 and beyond."),
+        ("FL", "Florida", "A", "The Dorothy L. Hukill Financial Literacy Act guarantees a standalone course starting with the Class of 2027."),
+        ("GA", "Georgia", "A", "Mandated a half-credit course in personal finance starting in 2024."),
+        ("HI", "Hawaii", "F", "No state-wide standalone requirement. Schools offer courses as electives."),
+        ("ID", "Idaho", "A", "Requires a financial literacy course integrated or as a standalone for graduation."),
+        ("IL", "Illinois", "B", "Requires 9 weeks of consumer education, but not necessarily a standalone full semester course."),
+        ("IN", "Indiana", "A", "SB 35 (2023) mandates a personal finance course for high school graduation (Class of 2028)."),
+        ("IA", "Iowa", "A", "Requires a standalone personal finance course for graduation starting with the Class of 2023."),
+        ("KS", "Kansas", "C", "No standalone course required, though standards exist."),
+        ("KY", "Kentucky", "A", "Requires a financial literacy course for graduation, implemented for the Class of 2024."),
+        ("LA", "Louisiana", "A", "Passed a mandate in 2023 requiring personal finance for graduation."),
+        ("ME", "Maine", "C", "Embedded standards, but no standalone course requirement."),
+        ("MD", "Maryland", "B", "Embedded standards, but no uniform statewide standalone requirement."),
+        ("MA", "Massachusetts", "F", "No statewide requirement, though legislation has been frequently debated."),
+        ("MI", "Michigan", "A", "Requires a half-credit personal finance course for graduation starting with the Class of 2028."),
+        ("MN", "Minnesota", "A", "Signed into law in 2023, requiring a personal finance course for graduation."),
+        ("MS", "Mississippi", "A", "Requires a standalone personal finance course for graduation."),
+        ("MO", "Missouri", "A", "A pioneer state. Has required a one-half credit personal finance course for graduation since 2010."),
+        ("MT", "Montana", "D", "No standalone requirement for high school graduation."),
+        ("NE", "Nebraska", "A", "Requires a financial literacy course for graduation starting with the Class of 2024."),
+        ("NV", "Nevada", "A", "Requires a standalone personal finance course for high school graduation."),
+        ("NH", "New Hampshire", "A", "Requires a standalone personal finance course starting with the Class of 2027."),
+        ("NJ", "New Jersey", "B", "Requires a half-credit of financial, economic, business, and entrepreneurial literacy. Not tracked as a standalone mandate by NGPF."),
+        ("NM", "New Mexico", "C", "Requires personal finance as an elective option, but not a strict graduation mandate for all."),
+        ("NY", "New York", "A", "Board of Regents recently moved to require personal finance for graduation."),
+        ("NC", "North Carolina", "A", "Requires the EPF (Economics and Personal Finance) course for graduation starting Class of 2024."),
+        ("ND", "North Dakota", "C", "No standalone mandate. Currently embedded in other subjects."),
+        ("OH", "Ohio", "A", "Requires a one-half unit course in financial literacy for graduation starting Class of 2026."),
+        ("OK", "Oklahoma", "B", "Requires the Passport to Financial Literacy, embedded rather than a strict standalone 1-semester course."),
+        ("OR", "Oregon", "A", "Signed SB 3 in 2023, requiring a one-half credit personal finance course starting Class of 2027."),
+        ("PA", "Pennsylvania", "A", "Passed Act 73 in 2023, requiring a standalone course starting Class of 2027."),
+        ("RI", "Rhode Island", "A", "Requires a financial literacy course for graduation starting with the Class of 2024."),
+        ("SC", "South Carolina", "A", "Requires a half-credit personal finance course starting with the Class of 2027."),
+        ("SD", "South Dakota", "F", "Embedded within economics, no standalone requirement."),
+        ("TN", "Tennessee", "A", "A pioneering state. Requires a standalone personal finance course for graduation since 2013."),
+        ("TX", "Texas", "B", "Embedded in economics, but no standalone requirement for all graduation plans."),
+        ("UT", "Utah", "A", "The gold standard pioneer. Required a half-credit standalone course since 2008 and fully funds it."),
+        ("VT", "Vermont", "C", "No standalone state requirement."),
+        ("VA", "Virginia", "A", "Requires a standalone Economics and Personal Finance course for graduation since 2015."),
+        ("WA", "Washington", "C", "Requires districts to offer it, but it is not a state-mandated graduation requirement for students."),
+        ("WV", "West Virginia", "A", "Requires a civics and personal finance course for graduation."),
+        ("WI", "Wisconsin", "A", "Passed Act 60 in 2023, requiring a personal finance course for graduation starting Class of 2028."),
+        ("WY", "Wyoming", "D", "No state-wide standalone personal finance requirement.")
     ]
-    states_list = [{"code": c, "name": n, "mandated": m, "details": d.replace('"', '&quot;').replace("'", "&#39;")} for c, n, m, d in states_data_raw]
+    states_list = [{"code": c, "name": n, "grade": g, "details": d.replace('"', '&quot;').replace("'", "&#39;")} for c, n, g, d in states_data_raw]
     
     index_html = Template(HTML_TEMPLATE).render(briefs=briefs, feed_items=feed_items, states_list=states_list)
     with open('public/index.html', 'w', encoding='utf-8') as f:
