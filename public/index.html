@@ -51,6 +51,26 @@
         @media(max-width: 768px) { .states-badge-grid { grid-template-columns: repeat(7, 1fr); gap: 5px; } }
         @media(max-width: 480px) { .states-badge-grid { grid-template-columns: repeat(5, 1fr); } }
         
+        
+        /* Modal Styles */
+        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.85); backdrop-filter: blur(5px); align-items: center; justify-content: center; }
+        .modal-content { background-color: #0a0a0a; padding: 30px; border: 1px solid var(--border); border-radius: 8px; width: 90%; max-width: 500px; position: relative; animation: modalFadeIn 0.3s ease; }
+        .close-btn { position: absolute; top: 15px; right: 20px; color: #888; font-size: 24px; font-weight: bold; cursor: pointer; transition: color 0.2s;}
+        .close-btn:hover { color: var(--fg); }
+        @keyframes modalFadeIn { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Timeline Styles */
+        .timeline { position: relative; border-left: 2px solid var(--border); padding-left: 30px; margin-left: 15px; margin-top: 20px;}
+        .timeline-item { position: relative; margin-bottom: 30px; }
+        .timeline-dot { position: absolute; left: -37px; top: 5px; width: 12px; height: 12px; border-radius: 50%; background: var(--fg); box-shadow: 0 0 10px rgba(255,255,255,0.3);}
+        .timeline-date { color: var(--accent); font-size: 0.85rem; font-weight: bold; margin-bottom: 5px; letter-spacing: 0.05em; }
+        .timeline-content { background: #050505; border: 1px solid var(--border); padding: 20px; border-radius: 6px; transition: border-color 0.3s; }
+        .timeline-content:hover { border-color: #555; }
+        
+        /* Pioneer Styles */
+        .pioneer-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px; }
+        @media(max-width: 768px) { .pioneer-grid { grid-template-columns: 1fr; } }
+
         /* Bar Chart */
         .bar-chart { display: flex; flex-direction: column; gap: 20px; margin-top: 20px;}
         .bar-row { display: flex; flex-direction: column; gap: 8px; }
@@ -100,12 +120,16 @@
             A live, interactive dashboard tracking empirical data and policy changes regarding financial literacy, household finance, and the "Fragility Tax".
         </p>
 
+        
         <!-- TABS -->
         <div class="tabs">
             <button class="tab active" onclick="switchTab('dashboard')">Dashboard</button>
             <button class="tab" onclick="switchTab('library')">Research Library</button>
+            <button class="tab" onclick="switchTab('pioneers')">Pioneers</button>
+            <button class="tab" onclick="switchTab('timeline')">Timeline</button>
             <button class="tab" onclick="switchTab('feed')">Live Feed</button>
         </div>
+
 
         <!-- TAB: DASHBOARD -->
         <div id="dashboard" class="tab-content active">
@@ -116,105 +140,105 @@
                     <div style="font-size: 2.5rem; font-weight: 700; margin-bottom: 20px; letter-spacing: -0.05em; line-height: 1.1;">30 <span style="font-size: 1.2rem; color: var(--accent); font-weight: 400; letter-spacing: normal;">/ 50 States</span></div>
                     <div class="states-badge-grid">
                         
-                        <div class="state-badge active">AL</div>
+                        <div class="state-badge active" onclick="openStateModal('AL', 'Alabama', true, 'Implemented for the Class of 2017. Requires a one-half credit course in Personal Finance.')" style="cursor: pointer;" title="Tap for info">AL</div>
                         
-                        <div class="state-badge ">AK</div>
+                        <div class="state-badge " onclick="openStateModal('AK', 'Alaska', false, 'No state-wide standalone personal finance requirement for high school graduation.')" style="cursor: pointer;" title="Tap for info">AK</div>
                         
-                        <div class="state-badge ">AZ</div>
+                        <div class="state-badge " onclick="openStateModal('AZ', 'Arizona', false, 'Requires personal finance concepts to be embedded in economics or math, but no standalone course mandate.')" style="cursor: pointer;" title="Tap for info">AZ</div>
                         
-                        <div class="state-badge active">AR</div>
+                        <div class="state-badge active" onclick="openStateModal('AR', 'Arkansas', true, 'Requires a standalone personal finance course. The requirement was strengthened by recent legislation.')" style="cursor: pointer;" title="Tap for info">AR</div>
                         
-                        <div class="state-badge active">CA</div>
+                        <div class="state-badge active" onclick="openStateModal('CA', 'California', true, 'AB 2927 signed in 2024. Guarantees a one-semester personal finance course starting with the Class of 2031.')" style="cursor: pointer;" title="Tap for info">CA</div>
                         
-                        <div class="state-badge ">CO</div>
+                        <div class="state-badge " onclick="openStateModal('CO', 'Colorado', false, 'Standards are embedded in other courses; local districts make standalone decisions.')" style="cursor: pointer;" title="Tap for info">CO</div>
                         
-                        <div class="state-badge active">CT</div>
+                        <div class="state-badge active" onclick="openStateModal('CT', 'Connecticut', true, 'Passed legislation in 2023 requiring a personal finance course for the Class of 2027.')" style="cursor: pointer;" title="Tap for info">CT</div>
                         
-                        <div class="state-badge active">DE</div>
+                        <div class="state-badge active" onclick="openStateModal('DE', 'Delaware', true, 'Requires a half-credit course or equivalent integrated instruction for the Class of 2011 and beyond.')" style="cursor: pointer;" title="Tap for info">DE</div>
                         
-                        <div class="state-badge active">FL</div>
+                        <div class="state-badge active" onclick="openStateModal('FL', 'Florida', true, 'The Dorothy L. Hukill Financial Literacy Act guarantees a standalone course starting with the Class of 2027.')" style="cursor: pointer;" title="Tap for info">FL</div>
                         
-                        <div class="state-badge active">GA</div>
+                        <div class="state-badge active" onclick="openStateModal('GA', 'Georgia', true, 'Mandated a half-credit course in personal finance starting in 2024.')" style="cursor: pointer;" title="Tap for info">GA</div>
                         
-                        <div class="state-badge ">HI</div>
+                        <div class="state-badge " onclick="openStateModal('HI', 'Hawaii', false, 'No state-wide standalone requirement. Schools offer courses as electives.')" style="cursor: pointer;" title="Tap for info">HI</div>
                         
-                        <div class="state-badge active">ID</div>
+                        <div class="state-badge active" onclick="openStateModal('ID', 'Idaho', true, 'Requires a financial literacy course integrated or as a standalone for graduation.')" style="cursor: pointer;" title="Tap for info">ID</div>
                         
-                        <div class="state-badge ">IL</div>
+                        <div class="state-badge " onclick="openStateModal('IL', 'Illinois', false, 'Requires 9 weeks of consumer education, but not necessarily a standalone full semester course.')" style="cursor: pointer;" title="Tap for info">IL</div>
                         
-                        <div class="state-badge active">IN</div>
+                        <div class="state-badge active" onclick="openStateModal('IN', 'Indiana', true, 'SB 35 (2023) mandates a personal finance course for high school graduation (Class of 2028).')" style="cursor: pointer;" title="Tap for info">IN</div>
                         
-                        <div class="state-badge active">IA</div>
+                        <div class="state-badge active" onclick="openStateModal('IA', 'Iowa', true, 'Requires a standalone personal finance course for graduation starting with the Class of 2023.')" style="cursor: pointer;" title="Tap for info">IA</div>
                         
-                        <div class="state-badge ">KS</div>
+                        <div class="state-badge " onclick="openStateModal('KS', 'Kansas', false, 'No standalone course required, though standards exist.')" style="cursor: pointer;" title="Tap for info">KS</div>
                         
-                        <div class="state-badge active">KY</div>
+                        <div class="state-badge active" onclick="openStateModal('KY', 'Kentucky', true, 'Requires a financial literacy course for graduation, implemented for the Class of 2024.')" style="cursor: pointer;" title="Tap for info">KY</div>
                         
-                        <div class="state-badge active">LA</div>
+                        <div class="state-badge active" onclick="openStateModal('LA', 'Louisiana', true, 'Passed a mandate in 2023 requiring personal finance for graduation.')" style="cursor: pointer;" title="Tap for info">LA</div>
                         
-                        <div class="state-badge ">ME</div>
+                        <div class="state-badge " onclick="openStateModal('ME', 'Maine', false, 'Embedded standards, but no standalone course requirement.')" style="cursor: pointer;" title="Tap for info">ME</div>
                         
-                        <div class="state-badge ">MD</div>
+                        <div class="state-badge " onclick="openStateModal('MD', 'Maryland', false, 'Embedded standards, but no uniform statewide standalone requirement.')" style="cursor: pointer;" title="Tap for info">MD</div>
                         
-                        <div class="state-badge ">MA</div>
+                        <div class="state-badge " onclick="openStateModal('MA', 'Massachusetts', false, 'No statewide requirement, though legislation has been frequently debated.')" style="cursor: pointer;" title="Tap for info">MA</div>
                         
-                        <div class="state-badge active">MI</div>
+                        <div class="state-badge active" onclick="openStateModal('MI', 'Michigan', true, 'Requires a half-credit personal finance course for graduation starting with the Class of 2028.')" style="cursor: pointer;" title="Tap for info">MI</div>
                         
-                        <div class="state-badge active">MN</div>
+                        <div class="state-badge active" onclick="openStateModal('MN', 'Minnesota', true, 'Signed into law in 2023, requiring a personal finance course for graduation.')" style="cursor: pointer;" title="Tap for info">MN</div>
                         
-                        <div class="state-badge active">MS</div>
+                        <div class="state-badge active" onclick="openStateModal('MS', 'Mississippi', true, 'Requires a standalone personal finance course for graduation.')" style="cursor: pointer;" title="Tap for info">MS</div>
                         
-                        <div class="state-badge active">MO</div>
+                        <div class="state-badge active" onclick="openStateModal('MO', 'Missouri', true, 'A pioneer state. Has required a one-half credit personal finance course for graduation since 2010.')" style="cursor: pointer;" title="Tap for info">MO</div>
                         
-                        <div class="state-badge ">MT</div>
+                        <div class="state-badge " onclick="openStateModal('MT', 'Montana', false, 'No standalone requirement for high school graduation.')" style="cursor: pointer;" title="Tap for info">MT</div>
                         
-                        <div class="state-badge active">NE</div>
+                        <div class="state-badge active" onclick="openStateModal('NE', 'Nebraska', true, 'Requires a financial literacy course for graduation starting with the Class of 2024.')" style="cursor: pointer;" title="Tap for info">NE</div>
                         
-                        <div class="state-badge active">NV</div>
+                        <div class="state-badge active" onclick="openStateModal('NV', 'Nevada', true, 'Requires a standalone personal finance course for high school graduation.')" style="cursor: pointer;" title="Tap for info">NV</div>
                         
-                        <div class="state-badge active">NH</div>
+                        <div class="state-badge active" onclick="openStateModal('NH', 'New Hampshire', true, 'Requires a standalone personal finance course starting with the Class of 2027.')" style="cursor: pointer;" title="Tap for info">NH</div>
                         
-                        <div class="state-badge ">NJ</div>
+                        <div class="state-badge " onclick="openStateModal('NJ', 'New Jersey', false, 'Requires a half-credit of financial, economic, business, and entrepreneurial literacy. Not tracked as a standalone mandate by NGPF.')" style="cursor: pointer;" title="Tap for info">NJ</div>
                         
-                        <div class="state-badge ">NM</div>
+                        <div class="state-badge " onclick="openStateModal('NM', 'New Mexico', false, 'Requires personal finance as an elective option, but not a strict graduation mandate for all.')" style="cursor: pointer;" title="Tap for info">NM</div>
                         
-                        <div class="state-badge active">NY</div>
+                        <div class="state-badge active" onclick="openStateModal('NY', 'New York', true, 'Board of Regents recently moved to require personal finance for graduation.')" style="cursor: pointer;" title="Tap for info">NY</div>
                         
-                        <div class="state-badge active">NC</div>
+                        <div class="state-badge active" onclick="openStateModal('NC', 'North Carolina', true, 'Requires the EPF (Economics and Personal Finance) course for graduation starting Class of 2024.')" style="cursor: pointer;" title="Tap for info">NC</div>
                         
-                        <div class="state-badge ">ND</div>
+                        <div class="state-badge " onclick="openStateModal('ND', 'North Dakota', false, 'No standalone mandate. Currently embedded in other subjects.')" style="cursor: pointer;" title="Tap for info">ND</div>
                         
-                        <div class="state-badge active">OH</div>
+                        <div class="state-badge active" onclick="openStateModal('OH', 'Ohio', true, 'Requires a one-half unit course in financial literacy for graduation starting Class of 2026.')" style="cursor: pointer;" title="Tap for info">OH</div>
                         
-                        <div class="state-badge ">OK</div>
+                        <div class="state-badge " onclick="openStateModal('OK', 'Oklahoma', false, 'Requires the Passport to Financial Literacy, embedded rather than a strict standalone 1-semester course.')" style="cursor: pointer;" title="Tap for info">OK</div>
                         
-                        <div class="state-badge active">OR</div>
+                        <div class="state-badge active" onclick="openStateModal('OR', 'Oregon', true, 'Signed SB 3 in 2023, requiring a one-half credit personal finance course starting Class of 2027.')" style="cursor: pointer;" title="Tap for info">OR</div>
                         
-                        <div class="state-badge active">PA</div>
+                        <div class="state-badge active" onclick="openStateModal('PA', 'Pennsylvania', true, 'Passed Act 73 in 2023, requiring a standalone course starting Class of 2027.')" style="cursor: pointer;" title="Tap for info">PA</div>
                         
-                        <div class="state-badge active">RI</div>
+                        <div class="state-badge active" onclick="openStateModal('RI', 'Rhode Island', true, 'Requires a financial literacy course for graduation starting with the Class of 2024.')" style="cursor: pointer;" title="Tap for info">RI</div>
                         
-                        <div class="state-badge active">SC</div>
+                        <div class="state-badge active" onclick="openStateModal('SC', 'South Carolina', true, 'Requires a half-credit personal finance course starting with the Class of 2027.')" style="cursor: pointer;" title="Tap for info">SC</div>
                         
-                        <div class="state-badge ">SD</div>
+                        <div class="state-badge " onclick="openStateModal('SD', 'South Dakota', false, 'Embedded within economics, no standalone requirement.')" style="cursor: pointer;" title="Tap for info">SD</div>
                         
-                        <div class="state-badge active">TN</div>
+                        <div class="state-badge active" onclick="openStateModal('TN', 'Tennessee', true, 'A pioneering state. Requires a standalone personal finance course for graduation since 2013.')" style="cursor: pointer;" title="Tap for info">TN</div>
                         
-                        <div class="state-badge ">TX</div>
+                        <div class="state-badge " onclick="openStateModal('TX', 'Texas', false, 'Embedded in economics, but no standalone requirement for all graduation plans.')" style="cursor: pointer;" title="Tap for info">TX</div>
                         
-                        <div class="state-badge active">UT</div>
+                        <div class="state-badge active" onclick="openStateModal('UT', 'Utah', true, 'The gold standard pioneer. Required a half-credit standalone course since 2008 and fully funds it.')" style="cursor: pointer;" title="Tap for info">UT</div>
                         
-                        <div class="state-badge ">VT</div>
+                        <div class="state-badge " onclick="openStateModal('VT', 'Vermont', false, 'No standalone state requirement.')" style="cursor: pointer;" title="Tap for info">VT</div>
                         
-                        <div class="state-badge active">VA</div>
+                        <div class="state-badge active" onclick="openStateModal('VA', 'Virginia', true, 'Requires a standalone Economics and Personal Finance course for graduation since 2015.')" style="cursor: pointer;" title="Tap for info">VA</div>
                         
-                        <div class="state-badge ">WA</div>
+                        <div class="state-badge " onclick="openStateModal('WA', 'Washington', false, 'Requires districts to offer it, but it is not a state-mandated graduation requirement for students.')" style="cursor: pointer;" title="Tap for info">WA</div>
                         
-                        <div class="state-badge active">WV</div>
+                        <div class="state-badge active" onclick="openStateModal('WV', 'West Virginia', true, 'Requires a civics and personal finance course for graduation.')" style="cursor: pointer;" title="Tap for info">WV</div>
                         
-                        <div class="state-badge active">WI</div>
+                        <div class="state-badge active" onclick="openStateModal('WI', 'Wisconsin', true, 'Passed Act 60 in 2023, requiring a personal finance course for graduation starting Class of 2028.')" style="cursor: pointer;" title="Tap for info">WI</div>
                         
-                        <div class="state-badge ">WY</div>
+                        <div class="state-badge " onclick="openStateModal('WY', 'Wyoming', false, 'No state-wide standalone personal finance requirement.')" style="cursor: pointer;" title="Tap for info">WY</div>
                         
                     </div>
                     <p style="font-size: 0.85rem; color: var(--accent); margin-top: 15px; line-height: 1.5; margin-bottom: 0;">States guaranteeing a standalone Personal Finance course for high school graduation.</p>
@@ -397,6 +421,95 @@
             </div>
         </div>
 
+        
+        <!-- TAB: PIONEERS -->
+        <div id="pioneers" class="tab-content">
+            <div style="margin-bottom: 25px;">
+                <h2 style="font-size: 1.5rem; margin-bottom: 5px;">Pioneers in Financial Literacy</h2>
+                <p style="color: var(--accent); font-size: 0.95rem;">The researchers and advocates who defined the capability gap and drove the mandate movement.</p>
+            </div>
+            <div class="pioneer-grid">
+                <div class="card" style="margin-bottom:0;">
+                    <h3 style="margin-top: 0; margin-bottom: 5px; font-size: 1.3rem;">Dr. Annamaria Lusardi</h3>
+                    <div class="meta" style="margin-bottom: 15px;">Stanford SIEPR & GFLEC</div>
+                    <p style="font-size: 0.95rem; color: #ccc;">A globally recognized authority on financial literacy. Co-designed the "Big Three" questions, which became the global standard for measuring financial capability. Her research links illiteracy to the "Fragility Tax"—the high costs incurred by vulnerable populations.</p>
+                </div>
+                <div class="card" style="margin-bottom:0;">
+                    <h3 style="margin-top: 0; margin-bottom: 5px; font-size: 1.3rem;">Dr. Olivia S. Mitchell</h3>
+                    <div class="meta" style="margin-bottom: 15px;">Wharton School</div>
+                    <p style="font-size: 0.95rem; color: #ccc;">Co-creator of the "Big Three" questions. Mitchell's extensive research focuses on pensions and household finance, proving empirically that individuals with higher financial literacy plan better and accumulate more wealth for retirement.</p>
+                </div>
+                <div class="card" style="margin-bottom:0;">
+                    <h3 style="margin-top: 0; margin-bottom: 5px; font-size: 1.3rem;">Tim Ranzetta</h3>
+                    <div class="meta" style="margin-bottom: 15px;">Co-Founder, NGPF</div>
+                    <p style="font-size: 0.95rem; color: #ccc;">The driving force behind the Next Gen Personal Finance movement. By providing high-quality, free curriculum to teachers and lobbying state legislatures, Ranzetta helped catalyze the rapid expansion to 30 states mandating personal finance.</p>
+                </div>
+                <div class="card" style="margin-bottom:0;">
+                    <h3 style="margin-top: 0; margin-bottom: 5px; font-size: 1.3rem;">CFPB</h3>
+                    <div class="meta" style="margin-bottom: 15px;">Office of Financial Education</div>
+                    <p style="font-size: 0.95rem; color: #ccc;">Following the 2008 financial crisis, the Consumer Financial Protection Bureau became the primary federal organ for researching consumer financial well-being, emphasizing action-oriented capability over mere knowledge retention.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB: TIMELINE -->
+        <div id="timeline" class="tab-content">
+            <div style="margin-bottom: 25px;">
+                <h2 style="font-size: 1.5rem; margin-bottom: 5px;">The Mandate Movement</h2>
+                <p style="color: var(--accent); font-size: 0.95rem;">Key milestones in the fight to make financial literacy a national standard.</p>
+            </div>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-date">2004</div>
+                    <div class="timeline-content">
+                        <h4 style="margin: 0 0 10px 0; font-size: 1.1rem; color: var(--fg);">The "Big Three" Created</h4>
+                        <p style="margin: 0; font-size: 0.9rem; color: #ccc; line-height: 1.5;">Lusardi and Mitchell add three basic financial literacy questions (Compound Interest, Inflation, Risk Diversification) to the Health and Retirement Study, creating the global benchmark for measuring financial capability.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-date">2008 - 2010</div>
+                    <div class="timeline-content">
+                        <h4 style="margin: 0 0 10px 0; font-size: 1.1rem; color: var(--fg);">Pioneer States Emerge</h4>
+                        <p style="margin: 0; font-size: 0.9rem; color: #ccc; line-height: 1.5;">States like Utah and Missouri establish the first rigorous, standalone personal finance requirements for high school graduation, setting the "gold standard" for funding and curriculum.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-date">2011</div>
+                    <div class="timeline-content">
+                        <h4 style="margin: 0 0 10px 0; font-size: 1.1rem; color: var(--fg);">CFPB Established</h4>
+                        <p style="margin: 0; font-size: 0.9rem; color: #ccc; line-height: 1.5;">In the wake of the 2008 financial crisis, the Consumer Financial Protection Bureau is established, launching dedicated federal research into consumer financial well-being.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-date">2014</div>
+                    <div class="timeline-content">
+                        <h4 style="margin: 0 0 10px 0; font-size: 1.1rem; color: var(--fg);">NGPF Founded</h4>
+                        <p style="margin: 0; font-size: 0.9rem; color: #ccc; line-height: 1.5;">Next Gen Personal Finance is launched to provide free, up-to-date curriculum to high school teachers, removing the cost barrier for schools to implement financial education programs.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-date">2023 - 2024</div>
+                    <div class="timeline-content">
+                        <h4 style="margin: 0 0 10px 0; font-size: 1.1rem; color: var(--fg);">The Legislative Tipping Point</h4>
+                        <p style="margin: 0; font-size: 0.9rem; color: #ccc; line-height: 1.5;">A massive wave of state legislation passes. States like Pennsylvania, Wisconsin, and Connecticut mandate personal finance courses. The total number of states guaranteeing courses jumps dramatically.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-date">Present Day</div>
+                    <div class="timeline-content">
+                        <h4 style="margin: 0 0 10px 0; font-size: 1.1rem; color: var(--fg);">The Adult Capability Gap</h4>
+                        <p style="margin: 0; font-size: 0.9rem; color: #ccc; line-height: 1.5;">While 30 states now protect high schoolers with mandates, data reveals Gen Z adults who missed the mandates are struggling, with only 38% financial literacy capability, necessitating targeted technological interventions.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- TAB: FEED -->
         <div id="feed" class="tab-content">
             <input type="text" id="searchFeed" class="search-bar" placeholder="Search live NBER working papers..." onkeyup="filterCards('feedCards', 'searchFeed')">
@@ -494,10 +607,56 @@
                 
             </div>
         </div>
+
+        <!-- State Modal -->
+        <div id="stateModal" class="modal" onclick="closeStateModal(event)">
+            <div class="modal-content" onclick="event.stopPropagation()">
+                <span class="close-btn" onclick="closeStateModal()">&times;</span>
+                <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px;">
+                    <div id="modalStateBadge" class="state-badge" style="font-size: 1.2rem; padding: 10px 15px; width: auto; pointer-events: none;">TX</div>
+                    <h2 id="modalStateName" style="margin: 0; border: none; font-size: 1.8rem; padding: 0;">Texas</h2>
+                </div>
+                <div id="modalStateStatus" style="display: inline-block; padding: 6px 12px; border-radius: 4px; font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 20px;">STATUS</div>
+                <p id="modalStateDetails" style="color: #ccc; font-size: 1rem; line-height: 1.6; border-top: 1px solid var(--border); padding-top: 20px; margin-bottom: 0;"></p>
+            </div>
+        </div>
+
     </div>
 
     <script>
         // Tab Switching Logic
+        
+        function openStateModal(code, name, isMandated, details) {
+            const modal = document.getElementById('stateModal');
+            document.getElementById('modalStateName').innerText = name;
+            
+            const badge = document.getElementById('modalStateBadge');
+            badge.innerText = code;
+            
+            const status = document.getElementById('modalStateStatus');
+            if (isMandated) {
+                status.innerText = 'Mandated';
+                status.style.backgroundColor = 'var(--fg)';
+                status.style.color = 'var(--bg)';
+                badge.classList.add('active');
+            } else {
+                status.innerText = 'Not Mandated';
+                status.style.backgroundColor = '#222';
+                status.style.color = '#888';
+                badge.classList.remove('active');
+            }
+            
+            document.getElementById('modalStateDetails').innerText = details;
+            modal.style.display = 'flex';
+        }
+
+        function closeStateModal(e) {
+            if (e && e.target !== document.getElementById('stateModal') && e.type === 'click' && !e.target.classList.contains('close-btn')) {
+                return;
+            }
+            document.getElementById('stateModal').style.display = 'none';
+        }
+
         function switchTab(tabId) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.tab').forEach(el => el.classList.remove('active'));

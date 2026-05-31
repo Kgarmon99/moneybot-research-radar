@@ -64,6 +64,26 @@ HTML_TEMPLATE = """
         @media(max-width: 768px) { .states-badge-grid { grid-template-columns: repeat(7, 1fr); gap: 5px; } }
         @media(max-width: 480px) { .states-badge-grid { grid-template-columns: repeat(5, 1fr); } }
         
+        
+        /* Modal Styles */
+        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.85); backdrop-filter: blur(5px); align-items: center; justify-content: center; }
+        .modal-content { background-color: #0a0a0a; padding: 30px; border: 1px solid var(--border); border-radius: 8px; width: 90%; max-width: 500px; position: relative; animation: modalFadeIn 0.3s ease; }
+        .close-btn { position: absolute; top: 15px; right: 20px; color: #888; font-size: 24px; font-weight: bold; cursor: pointer; transition: color 0.2s;}
+        .close-btn:hover { color: var(--fg); }
+        @keyframes modalFadeIn { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Timeline Styles */
+        .timeline { position: relative; border-left: 2px solid var(--border); padding-left: 30px; margin-left: 15px; margin-top: 20px;}
+        .timeline-item { position: relative; margin-bottom: 30px; }
+        .timeline-dot { position: absolute; left: -37px; top: 5px; width: 12px; height: 12px; border-radius: 50%; background: var(--fg); box-shadow: 0 0 10px rgba(255,255,255,0.3);}
+        .timeline-date { color: var(--accent); font-size: 0.85rem; font-weight: bold; margin-bottom: 5px; letter-spacing: 0.05em; }
+        .timeline-content { background: #050505; border: 1px solid var(--border); padding: 20px; border-radius: 6px; transition: border-color 0.3s; }
+        .timeline-content:hover { border-color: #555; }
+        
+        /* Pioneer Styles */
+        .pioneer-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px; }
+        @media(max-width: 768px) { .pioneer-grid { grid-template-columns: 1fr; } }
+
         /* Bar Chart */
         .bar-chart { display: flex; flex-direction: column; gap: 20px; margin-top: 20px;}
         .bar-row { display: flex; flex-direction: column; gap: 8px; }
@@ -113,12 +133,16 @@ HTML_TEMPLATE = """
             A live, interactive dashboard tracking empirical data and policy changes regarding financial literacy, household finance, and the "Fragility Tax".
         </p>
 
+        
         <!-- TABS -->
         <div class="tabs">
             <button class="tab active" onclick="switchTab('dashboard')">Dashboard</button>
             <button class="tab" onclick="switchTab('library')">Research Library</button>
+            <button class="tab" onclick="switchTab('pioneers')">Pioneers</button>
+            <button class="tab" onclick="switchTab('timeline')">Timeline</button>
             <button class="tab" onclick="switchTab('feed')">Live Feed</button>
         </div>
+
 
         <!-- TAB: DASHBOARD -->
         <div id="dashboard" class="tab-content active">
@@ -129,7 +153,7 @@ HTML_TEMPLATE = """
                     <div style="font-size: 2.5rem; font-weight: 700; margin-bottom: 20px; letter-spacing: -0.05em; line-height: 1.1;">30 <span style="font-size: 1.2rem; color: var(--accent); font-weight: 400; letter-spacing: normal;">/ 50 States</span></div>
                     <div class="states-badge-grid">
                         {% for state in states_list %}
-                        <div class="state-badge {% if state.mandated %}active{% endif %}">{{ state.code }}</div>
+                        <div class="state-badge {% if state.mandated %}active{% endif %}" onclick="openStateModal('{{ state.code }}', '{{ state.name }}', {{ 'true' if state.mandated else 'false' }}, '{{ state.details }}')" style="cursor: pointer;" title="Tap for info">{{ state.code }}</div>
                         {% endfor %}
                     </div>
                     <p style="font-size: 0.85rem; color: var(--accent); margin-top: 15px; line-height: 1.5; margin-bottom: 0;">States guaranteeing a standalone Personal Finance course for high school graduation.</p>
@@ -218,6 +242,95 @@ HTML_TEMPLATE = """
             </div>
         </div>
 
+        
+        <!-- TAB: PIONEERS -->
+        <div id="pioneers" class="tab-content">
+            <div style="margin-bottom: 25px;">
+                <h2 style="font-size: 1.5rem; margin-bottom: 5px;">Pioneers in Financial Literacy</h2>
+                <p style="color: var(--accent); font-size: 0.95rem;">The researchers and advocates who defined the capability gap and drove the mandate movement.</p>
+            </div>
+            <div class="pioneer-grid">
+                <div class="card" style="margin-bottom:0;">
+                    <h3 style="margin-top: 0; margin-bottom: 5px; font-size: 1.3rem;">Dr. Annamaria Lusardi</h3>
+                    <div class="meta" style="margin-bottom: 15px;">Stanford SIEPR & GFLEC</div>
+                    <p style="font-size: 0.95rem; color: #ccc;">A globally recognized authority on financial literacy. Co-designed the "Big Three" questions, which became the global standard for measuring financial capability. Her research links illiteracy to the "Fragility Tax"—the high costs incurred by vulnerable populations.</p>
+                </div>
+                <div class="card" style="margin-bottom:0;">
+                    <h3 style="margin-top: 0; margin-bottom: 5px; font-size: 1.3rem;">Dr. Olivia S. Mitchell</h3>
+                    <div class="meta" style="margin-bottom: 15px;">Wharton School</div>
+                    <p style="font-size: 0.95rem; color: #ccc;">Co-creator of the "Big Three" questions. Mitchell's extensive research focuses on pensions and household finance, proving empirically that individuals with higher financial literacy plan better and accumulate more wealth for retirement.</p>
+                </div>
+                <div class="card" style="margin-bottom:0;">
+                    <h3 style="margin-top: 0; margin-bottom: 5px; font-size: 1.3rem;">Tim Ranzetta</h3>
+                    <div class="meta" style="margin-bottom: 15px;">Co-Founder, NGPF</div>
+                    <p style="font-size: 0.95rem; color: #ccc;">The driving force behind the Next Gen Personal Finance movement. By providing high-quality, free curriculum to teachers and lobbying state legislatures, Ranzetta helped catalyze the rapid expansion to 30 states mandating personal finance.</p>
+                </div>
+                <div class="card" style="margin-bottom:0;">
+                    <h3 style="margin-top: 0; margin-bottom: 5px; font-size: 1.3rem;">CFPB</h3>
+                    <div class="meta" style="margin-bottom: 15px;">Office of Financial Education</div>
+                    <p style="font-size: 0.95rem; color: #ccc;">Following the 2008 financial crisis, the Consumer Financial Protection Bureau became the primary federal organ for researching consumer financial well-being, emphasizing action-oriented capability over mere knowledge retention.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB: TIMELINE -->
+        <div id="timeline" class="tab-content">
+            <div style="margin-bottom: 25px;">
+                <h2 style="font-size: 1.5rem; margin-bottom: 5px;">The Mandate Movement</h2>
+                <p style="color: var(--accent); font-size: 0.95rem;">Key milestones in the fight to make financial literacy a national standard.</p>
+            </div>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-date">2004</div>
+                    <div class="timeline-content">
+                        <h4 style="margin: 0 0 10px 0; font-size: 1.1rem; color: var(--fg);">The "Big Three" Created</h4>
+                        <p style="margin: 0; font-size: 0.9rem; color: #ccc; line-height: 1.5;">Lusardi and Mitchell add three basic financial literacy questions (Compound Interest, Inflation, Risk Diversification) to the Health and Retirement Study, creating the global benchmark for measuring financial capability.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-date">2008 - 2010</div>
+                    <div class="timeline-content">
+                        <h4 style="margin: 0 0 10px 0; font-size: 1.1rem; color: var(--fg);">Pioneer States Emerge</h4>
+                        <p style="margin: 0; font-size: 0.9rem; color: #ccc; line-height: 1.5;">States like Utah and Missouri establish the first rigorous, standalone personal finance requirements for high school graduation, setting the "gold standard" for funding and curriculum.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-date">2011</div>
+                    <div class="timeline-content">
+                        <h4 style="margin: 0 0 10px 0; font-size: 1.1rem; color: var(--fg);">CFPB Established</h4>
+                        <p style="margin: 0; font-size: 0.9rem; color: #ccc; line-height: 1.5;">In the wake of the 2008 financial crisis, the Consumer Financial Protection Bureau is established, launching dedicated federal research into consumer financial well-being.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-date">2014</div>
+                    <div class="timeline-content">
+                        <h4 style="margin: 0 0 10px 0; font-size: 1.1rem; color: var(--fg);">NGPF Founded</h4>
+                        <p style="margin: 0; font-size: 0.9rem; color: #ccc; line-height: 1.5;">Next Gen Personal Finance is launched to provide free, up-to-date curriculum to high school teachers, removing the cost barrier for schools to implement financial education programs.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-date">2023 - 2024</div>
+                    <div class="timeline-content">
+                        <h4 style="margin: 0 0 10px 0; font-size: 1.1rem; color: var(--fg);">The Legislative Tipping Point</h4>
+                        <p style="margin: 0; font-size: 0.9rem; color: #ccc; line-height: 1.5;">A massive wave of state legislation passes. States like Pennsylvania, Wisconsin, and Connecticut mandate personal finance courses. The total number of states guaranteeing courses jumps dramatically.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-date">Present Day</div>
+                    <div class="timeline-content">
+                        <h4 style="margin: 0 0 10px 0; font-size: 1.1rem; color: var(--fg);">The Adult Capability Gap</h4>
+                        <p style="margin: 0; font-size: 0.9rem; color: #ccc; line-height: 1.5;">While 30 states now protect high schoolers with mandates, data reveals Gen Z adults who missed the mandates are struggling, with only 38% financial literacy capability, necessitating targeted technological interventions.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- TAB: FEED -->
         <div id="feed" class="tab-content">
             <input type="text" id="searchFeed" class="search-bar" placeholder="Search live NBER working papers..." onkeyup="filterCards('feedCards', 'searchFeed')">
@@ -234,10 +347,56 @@ HTML_TEMPLATE = """
                 {% endfor %}
             </div>
         </div>
+
+        <!-- State Modal -->
+        <div id="stateModal" class="modal" onclick="closeStateModal(event)">
+            <div class="modal-content" onclick="event.stopPropagation()">
+                <span class="close-btn" onclick="closeStateModal()">&times;</span>
+                <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px;">
+                    <div id="modalStateBadge" class="state-badge" style="font-size: 1.2rem; padding: 10px 15px; width: auto; pointer-events: none;">TX</div>
+                    <h2 id="modalStateName" style="margin: 0; border: none; font-size: 1.8rem; padding: 0;">Texas</h2>
+                </div>
+                <div id="modalStateStatus" style="display: inline-block; padding: 6px 12px; border-radius: 4px; font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 20px;">STATUS</div>
+                <p id="modalStateDetails" style="color: #ccc; font-size: 1rem; line-height: 1.6; border-top: 1px solid var(--border); padding-top: 20px; margin-bottom: 0;"></p>
+            </div>
+        </div>
+
     </div>
 
     <script>
         // Tab Switching Logic
+        
+        function openStateModal(code, name, isMandated, details) {
+            const modal = document.getElementById('stateModal');
+            document.getElementById('modalStateName').innerText = name;
+            
+            const badge = document.getElementById('modalStateBadge');
+            badge.innerText = code;
+            
+            const status = document.getElementById('modalStateStatus');
+            if (isMandated) {
+                status.innerText = 'Mandated';
+                status.style.backgroundColor = 'var(--fg)';
+                status.style.color = 'var(--bg)';
+                badge.classList.add('active');
+            } else {
+                status.innerText = 'Not Mandated';
+                status.style.backgroundColor = '#222';
+                status.style.color = '#888';
+                badge.classList.remove('active');
+            }
+            
+            document.getElementById('modalStateDetails').innerText = details;
+            modal.style.display = 'flex';
+        }
+
+        function closeStateModal(e) {
+            if (e && e.target !== document.getElementById('stateModal') && e.type === 'click' && !e.target.classList.contains('close-btn')) {
+                return;
+            }
+            document.getElementById('stateModal').style.display = 'none';
+        }
+
         function switchTab(tabId) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.tab').forEach(el => el.classList.remove('active'));
@@ -412,25 +571,59 @@ def build():
     except Exception as e:
         print("RSS error:", e)
 
-    states_list = [
-        {"code": "AL", "mandated": True}, {"code": "AK", "mandated": False}, {"code": "AZ", "mandated": False},
-        {"code": "AR", "mandated": True}, {"code": "CA", "mandated": True}, {"code": "CO", "mandated": False},
-        {"code": "CT", "mandated": True}, {"code": "DE", "mandated": True}, {"code": "FL", "mandated": True},
-        {"code": "GA", "mandated": True}, {"code": "HI", "mandated": False}, {"code": "ID", "mandated": True},
-        {"code": "IL", "mandated": False}, {"code": "IN", "mandated": True}, {"code": "IA", "mandated": True},
-        {"code": "KS", "mandated": False}, {"code": "KY", "mandated": True}, {"code": "LA", "mandated": True},
-        {"code": "ME", "mandated": False}, {"code": "MD", "mandated": False}, {"code": "MA", "mandated": False},
-        {"code": "MI", "mandated": True}, {"code": "MN", "mandated": True}, {"code": "MS", "mandated": True},
-        {"code": "MO", "mandated": True}, {"code": "MT", "mandated": False}, {"code": "NE", "mandated": True},
-        {"code": "NV", "mandated": True}, {"code": "NH", "mandated": True}, {"code": "NJ", "mandated": False},
-        {"code": "NM", "mandated": False}, {"code": "NY", "mandated": True}, {"code": "NC", "mandated": True},
-        {"code": "ND", "mandated": False}, {"code": "OH", "mandated": True}, {"code": "OK", "mandated": False},
-        {"code": "OR", "mandated": True}, {"code": "PA", "mandated": True}, {"code": "RI", "mandated": True},
-        {"code": "SC", "mandated": True}, {"code": "SD", "mandated": False}, {"code": "TN", "mandated": True},
-        {"code": "TX", "mandated": False}, {"code": "UT", "mandated": True}, {"code": "VT", "mandated": False},
-        {"code": "VA", "mandated": True}, {"code": "WA", "mandated": False}, {"code": "WV", "mandated": True},
-        {"code": "WI", "mandated": True}, {"code": "WY", "mandated": False}
+    states_data_raw = [
+        ("AL", "Alabama", True, "Implemented for the Class of 2017. Requires a one-half credit course in Personal Finance."),
+        ("AK", "Alaska", False, "No state-wide standalone personal finance requirement for high school graduation."),
+        ("AZ", "Arizona", False, "Requires personal finance concepts to be embedded in economics or math, but no standalone course mandate."),
+        ("AR", "Arkansas", True, "Requires a standalone personal finance course. The requirement was strengthened by recent legislation."),
+        ("CA", "California", True, "AB 2927 signed in 2024. Guarantees a one-semester personal finance course starting with the Class of 2031."),
+        ("CO", "Colorado", False, "Standards are embedded in other courses; local districts make standalone decisions."),
+        ("CT", "Connecticut", True, "Passed legislation in 2023 requiring a personal finance course for the Class of 2027."),
+        ("DE", "Delaware", True, "Requires a half-credit course or equivalent integrated instruction for the Class of 2011 and beyond."),
+        ("FL", "Florida", True, "The Dorothy L. Hukill Financial Literacy Act guarantees a standalone course starting with the Class of 2027."),
+        ("GA", "Georgia", True, "Mandated a half-credit course in personal finance starting in 2024."),
+        ("HI", "Hawaii", False, "No state-wide standalone requirement. Schools offer courses as electives."),
+        ("ID", "Idaho", True, "Requires a financial literacy course integrated or as a standalone for graduation."),
+        ("IL", "Illinois", False, "Requires 9 weeks of consumer education, but not necessarily a standalone full semester course."),
+        ("IN", "Indiana", True, "SB 35 (2023) mandates a personal finance course for high school graduation (Class of 2028)."),
+        ("IA", "Iowa", True, "Requires a standalone personal finance course for graduation starting with the Class of 2023."),
+        ("KS", "Kansas", False, "No standalone course required, though standards exist."),
+        ("KY", "Kentucky", True, "Requires a financial literacy course for graduation, implemented for the Class of 2024."),
+        ("LA", "Louisiana", True, "Passed a mandate in 2023 requiring personal finance for graduation."),
+        ("ME", "Maine", False, "Embedded standards, but no standalone course requirement."),
+        ("MD", "Maryland", False, "Embedded standards, but no uniform statewide standalone requirement."),
+        ("MA", "Massachusetts", False, "No statewide requirement, though legislation has been frequently debated."),
+        ("MI", "Michigan", True, "Requires a half-credit personal finance course for graduation starting with the Class of 2028."),
+        ("MN", "Minnesota", True, "Signed into law in 2023, requiring a personal finance course for graduation."),
+        ("MS", "Mississippi", True, "Requires a standalone personal finance course for graduation."),
+        ("MO", "Missouri", True, "A pioneer state. Has required a one-half credit personal finance course for graduation since 2010."),
+        ("MT", "Montana", False, "No standalone requirement for high school graduation."),
+        ("NE", "Nebraska", True, "Requires a financial literacy course for graduation starting with the Class of 2024."),
+        ("NV", "Nevada", True, "Requires a standalone personal finance course for high school graduation."),
+        ("NH", "New Hampshire", True, "Requires a standalone personal finance course starting with the Class of 2027."),
+        ("NJ", "New Jersey", False, "Requires a half-credit of financial, economic, business, and entrepreneurial literacy. Not tracked as a standalone mandate by NGPF."),
+        ("NM", "New Mexico", False, "Requires personal finance as an elective option, but not a strict graduation mandate for all."),
+        ("NY", "New York", True, "Board of Regents recently moved to require personal finance for graduation."),
+        ("NC", "North Carolina", True, "Requires the EPF (Economics and Personal Finance) course for graduation starting Class of 2024."),
+        ("ND", "North Dakota", False, "No standalone mandate. Currently embedded in other subjects."),
+        ("OH", "Ohio", True, "Requires a one-half unit course in financial literacy for graduation starting Class of 2026."),
+        ("OK", "Oklahoma", False, "Requires the Passport to Financial Literacy, embedded rather than a strict standalone 1-semester course."),
+        ("OR", "Oregon", True, "Signed SB 3 in 2023, requiring a one-half credit personal finance course starting Class of 2027."),
+        ("PA", "Pennsylvania", True, "Passed Act 73 in 2023, requiring a standalone course starting Class of 2027."),
+        ("RI", "Rhode Island", True, "Requires a financial literacy course for graduation starting with the Class of 2024."),
+        ("SC", "South Carolina", True, "Requires a half-credit personal finance course starting with the Class of 2027."),
+        ("SD", "South Dakota", False, "Embedded within economics, no standalone requirement."),
+        ("TN", "Tennessee", True, "A pioneering state. Requires a standalone personal finance course for graduation since 2013."),
+        ("TX", "Texas", False, "Embedded in economics, but no standalone requirement for all graduation plans."),
+        ("UT", "Utah", True, "The gold standard pioneer. Required a half-credit standalone course since 2008 and fully funds it."),
+        ("VT", "Vermont", False, "No standalone state requirement."),
+        ("VA", "Virginia", True, "Requires a standalone Economics and Personal Finance course for graduation since 2015."),
+        ("WA", "Washington", False, "Requires districts to offer it, but it is not a state-mandated graduation requirement for students."),
+        ("WV", "West Virginia", True, "Requires a civics and personal finance course for graduation."),
+        ("WI", "Wisconsin", True, "Passed Act 60 in 2023, requiring a personal finance course for graduation starting Class of 2028."),
+        ("WY", "Wyoming", False, "No state-wide standalone personal finance requirement.")
     ]
+    states_list = [{"code": c, "name": n, "mandated": m, "details": d.replace('"', '&quot;').replace("'", "&#39;")} for c, n, m, d in states_data_raw]
     
     index_html = Template(HTML_TEMPLATE).render(briefs=briefs, feed_items=feed_items, states_list=states_list)
     with open('public/index.html', 'w', encoding='utf-8') as f:
