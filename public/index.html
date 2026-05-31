@@ -84,14 +84,15 @@
             
             .tabs { overflow-x: auto; -webkit-overflow-scrolling: touch; padding-bottom: 5px; gap: 15px; margin-bottom: 20px; }
             .tab { font-size: 0.95rem; padding: 8px 0; }
-            .tabs::-webkit-scrollbar { display: none; } /* Hide scrollbar for clean look on mobile */
+            .tabs::-webkit-scrollbar { display: none; }
             
             .card { padding: 18px; margin-bottom: 15px; }
             .viz-card { padding: 18px; }
             
-            .calc-container { flex-direction: column; align-items: flex-start; }
-            .calc-left { padding-right: 0; width: 100%; margin-bottom: 20px; }
-            .calc-right { text-align: left; padding-left: 0; border-left: none; border-top: 1px solid var(--border); padding-top: 20px; width: 100%; }
+            /* FORCE STACKING ON MOBILE */
+            .calc-container { display: block !important; }
+            .calc-left { padding-right: 0 !important; width: 100% !important; margin-bottom: 20px !important; display: block !important; }
+            .calc-right { text-align: left !important; padding-left: 0 !important; border-left: none !important; border-top: 1px solid var(--border) !important; padding-top: 20px !important; width: 100% !important; display: block !important; }
             
             .states-grid { gap: 4px; }
             
