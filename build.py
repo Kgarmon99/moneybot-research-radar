@@ -167,8 +167,6 @@ HTML_TEMPLATE = """
                         <div class="state-badge grade-{{ state.grade }}" onclick="openStateModal('{{ state.code }}', '{{ state.name }}', '{{ state.grade }}', '{{ state.details }}')" style="cursor: pointer;" title="Tap for info">{{ state.code }}</div>
                         {% endfor %}
                     </div>
-                        {% endfor %}
-                    </div>
                     <p style="font-size: 0.85rem; color: var(--accent); margin-top: 15px; line-height: 1.5; margin-bottom: 0;">States guaranteeing a standalone Personal Finance course for high school graduation.</p>
                 </div>
 
