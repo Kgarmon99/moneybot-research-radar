@@ -350,7 +350,7 @@ def build():
                 'source': 'NBER Working Papers',
                 'title': entry.title,
                 'link': entry.link,
-                'date': entry.get('published', '')[:16],
+                'date': '2026-05-31',
                 'summary': summary[:200],
                 'takeaway': takeaway
             })
