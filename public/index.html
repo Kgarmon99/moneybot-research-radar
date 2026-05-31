@@ -192,11 +192,6 @@
         </div>
         
         
-        <div style="background: #110000; border: 1px solid #330000; border-left: 3px solid #ff4444; padding: 15px 20px; margin-bottom: 30px; border-radius: 4px; display: flex; flex-direction: column; align-items: center; justify-content: center;">
-            <div style="color: #ff4444; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 5px; font-weight: 600;">Estimated National Fragility Tax (Annual Cost of Illiteracy)</div>
-            <div id="fragility-ticker" style="font-size: 2.2rem; font-family: monospace; font-weight: 700; color: #fff; letter-spacing: 2px;">$1,420,000,000.00</div>
-        </div>
-
         <p class="intro-text" style="color: var(--accent); max-width: 600px; margin-top: -10px; margin-bottom: 40px;">
             A live, interactive dashboard tracking empirical data and policy changes regarding financial literacy, household finance, and the "Fragility Tax".
         </p>
@@ -973,18 +968,6 @@
         }
 
         
-        // Fragility Tax Ticker Logic
-        // Based on estimates of billions lost annually to financial illiteracy (approx $13,160 per second for $415B)
-        let baseTax = 415000000000; 
-        let startOfYear = new Date(new Date().getFullYear(), 0, 1).getTime();
-        let costPerMs = 415000000000 / (365 * 24 * 60 * 60 * 1000);
-        
-        setInterval(() => {
-            let now = new Date().getTime();
-            let currentTax = baseTax + ((now - startOfYear) * costPerMs);
-            document.getElementById('fragility-ticker').innerText = '$' + currentTax.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
-        }, 50);
-
         // Tab Switching Logic
         
         function openStateModal(code, name, grade, details) {
