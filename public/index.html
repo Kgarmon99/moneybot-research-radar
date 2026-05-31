@@ -107,6 +107,12 @@
         .timeline-content { background: #050505; border: 1px solid var(--border); padding: 20px; border-radius: 6px; transition: border-color 0.3s; }
         .timeline-content:hover { border-color: #555; }
         
+        
+        /* Pioneer Links */
+        .pioneer-links { margin-top: 15px; border-top: 1px solid #222; padding-top: 15px; display: flex; gap: 10px; flex-wrap: wrap; }
+        .p-link { font-size: 0.8rem; color: #888; text-decoration: none; border: 1px solid #333; padding: 4px 10px; border-radius: 4px; transition: all 0.2s; text-transform: uppercase; letter-spacing: 0.05em; display: flex; align-items: center; gap: 5px;}
+        .p-link:hover { color: var(--fg); border-color: var(--fg); background: #111;}
+
         /* Pioneer Styles */
         .pioneer-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px; }
         @media(max-width: 768px) { .pioneer-grid { grid-template-columns: 1fr; } }
@@ -492,42 +498,73 @@
                     <h3 style="margin-top: 0; margin-bottom: 5px; font-size: 1.3rem;">Dr. Annamaria Lusardi</h3>
                     <div class="meta" style="margin-bottom: 15px;">Stanford SIEPR & GFLEC</div>
                     <p style="font-size: 0.95rem; color: #ccc;">A globally recognized authority on financial literacy. Co-designed the "Big Three" questions, which became the global standard for measuring financial capability. Her research links illiteracy to the "Fragility Tax"—the high costs incurred by vulnerable populations.</p>
+                    <div class="pioneer-links">
+                        <a href="https://siepr.stanford.edu/people/annamaria-lusardi" target="_blank" class="p-link">Stanford Profile &rarr;</a>
+                        <a href="https://gflec.org/" target="_blank" class="p-link">GFLEC &rarr;</a>
+                    </div>
                 </div>
                 <div class="card" style="margin-bottom:0;">
                     <h3 style="margin-top: 0; margin-bottom: 5px; font-size: 1.3rem;">Dr. Olivia S. Mitchell</h3>
                     <div class="meta" style="margin-bottom: 15px;">Wharton School</div>
                     <p style="font-size: 0.95rem; color: #ccc;">Co-creator of the "Big Three" questions. Mitchell's extensive research focuses on pensions and household finance, proving empirically that individuals with higher financial literacy plan better and accumulate more wealth for retirement.</p>
+                    <div class="pioneer-links">
+                        <a href="https://wharton.upenn.edu/profile/mitchelo/" target="_blank" class="p-link">Wharton Profile &rarr;</a>
+                        <a href="https://www.nber.org/system/files/working_papers/w17107/w17107.pdf" target="_blank" class="p-link">"Big Three" Paper &rarr;</a>
+                    </div>
                 </div>
                 <div class="card" style="margin-bottom:0;">
                     <h3 style="margin-top: 0; margin-bottom: 5px; font-size: 1.3rem;">Tim Ranzetta</h3>
                     <div class="meta" style="margin-bottom: 15px;">Co-Founder, NGPF</div>
                     <p style="font-size: 0.95rem; color: #ccc;">The driving force behind the Next Gen Personal Finance movement. By providing high-quality, free curriculum to teachers and lobbying state legislatures, Ranzetta helped catalyze the rapid expansion to 30 states mandating personal finance.</p>
+                    <div class="pioneer-links">
+                        <a href="https://www.ngpf.org/about/" target="_blank" class="p-link">NGPF Mission &rarr;</a>
+                        <a href="https://www.ngpf.org/state-of-financial-education/" target="_blank" class="p-link">State Tracker &rarr;</a>
+                    </div>
                 </div>
                 <div class="card" style="margin-bottom:0;">
                     <h3 style="margin-top: 0; margin-bottom: 5px; font-size: 1.3rem;">CFPB</h3>
                     <div class="meta" style="margin-bottom: 15px;">Office of Financial Education</div>
                     <p style="font-size: 0.95rem; color: #ccc;">Following the 2008 financial crisis, the Consumer Financial Protection Bureau became the primary federal organ for researching consumer financial well-being, emphasizing action-oriented capability over mere knowledge retention.</p>
+                    <div class="pioneer-links">
+                        <a href="https://www.consumerfinance.gov/consumer-tools/educator-tools/financial-well-being-resources/" target="_blank" class="p-link">Well-Being Resources &rarr;</a>
+                    </div>
                 </div>
 
                 <div class="card" style="margin-bottom:0;">
                     <h3 style="margin-top: 0; margin-bottom: 5px; font-size: 1.3rem;">Dr. Carly Urban</h3>
                     <div class="meta" style="margin-bottom: 15px;">Montana State University</div>
                     <p style="font-size: 0.95rem; color: #ccc;">A leading empirical researcher on the efficacy of state-level mandates. Her landmark studies prove that high school financial education graduation requirements directly lead to better credit scores and lower delinquency rates among young adults.</p>
+                    <div class="pioneer-links">
+                        <a href="https://www.montana.edu/econ/directory/1585805/carly-urban" target="_blank" class="p-link">MSU Profile &rarr;</a>
+                        <a href="https://www.carlyurban.com/research" target="_blank" class="p-link">Publications &rarr;</a>
+                    </div>
                 </div>
                 <div class="card" style="margin-bottom:0;">
                     <h3 style="margin-top: 0; margin-bottom: 5px; font-size: 1.3rem;">John Pelzer & The Jump$tart Coalition</h3>
                     <div class="meta" style="margin-bottom: 15px;">National Advocacy</div>
                     <p style="font-size: 0.95rem; color: #ccc;">The Jump$tart Coalition was one of the earliest national organizations to push for K-12 financial education standards. Their national standards laid the groundwork for the modern mandate movement.</p>
+                    <div class="pioneer-links">
+                        <a href="https://www.jumpstart.org/" target="_blank" class="p-link">Jump$tart Hub &rarr;</a>
+                        <a href="https://www.jumpstart.org/what-we-do/support-financial-education/standards/" target="_blank" class="p-link">National Standards &rarr;</a>
+                    </div>
                 </div>
                 <div class="card" style="margin-bottom:0;">
                     <h3 style="margin-top: 0; margin-bottom: 5px; font-size: 1.3rem;">CEE (Council for Economic Education)</h3>
                     <div class="meta" style="margin-bottom: 15px;">National Standards</div>
                     <p style="font-size: 0.95rem; color: #ccc;">For over 70 years, CEE has been the leading organization focusing on the economic and financial education of K-12 students, producing the widely cited "Survey of the States" that tracks the legislative progress of the mandate movement.</p>
+                    <div class="pioneer-links">
+                        <a href="https://www.councilforeconed.org/" target="_blank" class="p-link">CEE Homepage &rarr;</a>
+                        <a href="https://www.councilforeconed.org/survey-of-the-states-2024/" target="_blank" class="p-link">Survey of the States &rarr;</a>
+                    </div>
                 </div>
                 <div class="card" style="margin-bottom:0;">
                     <h3 style="margin-top: 0; margin-bottom: 5px; font-size: 1.3rem;">Dr. Billy Hensley</h3>
                     <div class="meta" style="margin-bottom: 15px;">NEFE</div>
                     <p style="font-size: 0.95rem; color: #ccc;">As CEO of the National Endowment for Financial Education (NEFE), Dr. Hensley has championed rigorous, evidence-based approaches to financial capability, pushing the industry past simple awareness campaigns into measurable behavioral change.</p>
+                    <div class="pioneer-links">
+                        <a href="https://www.nefe.org/about/leadership-and-staff/billy-hensley.aspx" target="_blank" class="p-link">NEFE Profile &rarr;</a>
+                        <a href="https://www.nefe.org/research/" target="_blank" class="p-link">Research Initiatives &rarr;</a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -704,8 +741,8 @@
                 </div>
                 
                 <div class="card item-card">
-                    <div class="meta">Industry News &nbsp;|&nbsp; Wed, 27 May 2026</div>
-                    <h3 style="margin: 0; font-size: 1.1rem;"><a href="https://news.google.com/rss/articles/CBMiY0FVX3lxTE9GNDNMVFFKUEJBWnFKbGV3c0ZONm1wLXZPTGVJSkhNY0NmeG1pdFpRSERESEVJQVBTQ0VLYWh2ek1ubm1TNHJRTE1Ga1lvRWY0ZVdzYkwtZE9nOHJZMHkxbGxiRQ?oc=5" target="_blank">Gopal, McKnight Bill Requiring Standalone Financial Literacy Course Advances - New Jersey Senate Democrats</a></h3>
+                    <div class="meta">Industry News &nbsp;|&nbsp; Sun, 31 May 2026</div>
+                    <h3 style="margin: 0; font-size: 1.1rem;"><a href="https://news.google.com/rss/articles/CBMi_AFBVV95cUxNc2VFX0FtRlBSYWh3WWtPLVFCTnNKcGpKSmlzV0QtNHU1cTdEY0prSU5JU0hJYWxBOTdMcEg1cjJlUFZtQnhvRDZaakJkNGFRRUhFV0ZjcHpOOEpUOHUwdjhBbVVzTUJoU296d3o0bW1uQ25OMDFORjdOdDZrcjhHVVJPeU1Rb2ZIVGE2ZUNtUVNOY2JsM3EwMUZXVkk1ZVVsZWQxNGpNZldiLUh4U0JlVHFYZlZIVmo0T0FfajFSUGxrMndWdFBRNndlNjJUckx3TzJiRWVGZ2RLeGpLcmNVaTNNUXR4SUt1dEJ0bUZBWnJoRUR1YUR1M21yYk0?oc=5" target="_blank">Ravenswood students learn financial literacy through interactive 'Get A Life' program - WV News</a></h3>
                     <p style="color: var(--accent); font-size: 0.9rem; margin-top: 10px; margin-bottom: 10px;">Coverage of state-level mandates, institutional changes, or broad industry trends....</p>
                     <div style="background: #111; padding: 10px 15px; border-left: 3px solid var(--fg); border-radius: 4px; font-size: 0.85rem; font-weight: 600; color: #ddd;">
                         🤖 Tracking public sentiment and legislative momentum for capability initiatives.
@@ -713,8 +750,8 @@
                 </div>
                 
                 <div class="card item-card">
-                    <div class="meta">Industry News &nbsp;|&nbsp; Sun, 31 May 2026</div>
-                    <h3 style="margin: 0; font-size: 1.1rem;"><a href="https://news.google.com/rss/articles/CBMi_AFBVV95cUxNc2VFX0FtRlBSYWh3WWtPLVFCTnNKcGpKSmlzV0QtNHU1cTdEY0prSU5JU0hJYWxBOTdMcEg1cjJlUFZtQnhvRDZaakJkNGFRRUhFV0ZjcHpOOEpUOHUwdjhBbVVzTUJoU296d3o0bW1uQ25OMDFORjdOdDZrcjhHVVJPeU1Rb2ZIVGE2ZUNtUVNOY2JsM3EwMUZXVkk1ZVVsZWQxNGpNZldiLUh4U0JlVHFYZlZIVmo0T0FfajFSUGxrMndWdFBRNndlNjJUckx3TzJiRWVGZ2RLeGpLcmNVaTNNUXR4SUt1dEJ0bUZBWnJoRUR1YUR1M21yYk0?oc=5" target="_blank">Ravenswood students learn financial literacy through interactive 'Get A Life' program - WV News</a></h3>
+                    <div class="meta">Industry News &nbsp;|&nbsp; Wed, 27 May 2026</div>
+                    <h3 style="margin: 0; font-size: 1.1rem;"><a href="https://news.google.com/rss/articles/CBMiY0FVX3lxTE9GNDNMVFFKUEJBWnFKbGV3c0ZONm1wLXZPTGVJSkhNY0NmeG1pdFpRSERESEVJQVBTQ0VLYWh2ek1ubm1TNHJRTE1Ga1lvRWY0ZVdzYkwtZE9nOHJZMHkxbGxiRQ?oc=5" target="_blank">Gopal, McKnight Bill Requiring Standalone Financial Literacy Course Advances - New Jersey Senate Democrats</a></h3>
                     <p style="color: var(--accent); font-size: 0.9rem; margin-top: 10px; margin-bottom: 10px;">Coverage of state-level mandates, institutional changes, or broad industry trends....</p>
                     <div style="background: #111; padding: 10px 15px; border-left: 3px solid var(--fg); border-radius: 4px; font-size: 0.85rem; font-weight: 600; color: #ddd;">
                         🤖 Tracking public sentiment and legislative momentum for capability initiatives.
