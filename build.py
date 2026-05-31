@@ -16,8 +16,10 @@ HTML_TEMPLATE = """
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>MoneyBot Research Radar</title>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jsvectormap/dist/css/jsvectormap.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/jsvectormap"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jsvectormap/dist/maps/us-aea-en.js"></script>
     <style>
         :root { --bg: #000000; --fg: #FFFFFF; --border: #333333; --accent: #888888; }
         body { background-color: var(--bg); color: var(--fg); font-family: 'Space Grotesk', sans-serif; margin: 0; padding: 40px 20px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
@@ -57,13 +59,17 @@ HTML_TEMPLATE = """
         .viz-card:hover { border-color: #555; }
         .viz-title { font-size: 0.85rem; color: var(--accent); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 15px; border-bottom: 1px solid #222; padding-bottom: 10px;}
         
-        /* Map Tooltips */
-        .states-grid { display: grid; grid-template-columns: repeat(10, 1fr); gap: 6px; margin-bottom: 15px; }
-        .state-dot { aspect-ratio: 1; border-radius: 3px; background-color: #222; transition: all 0.3s ease; position: relative; cursor: help;}
-        .state-dot.active { background-color: var(--fg); box-shadow: 0 0 8px rgba(255,255,255,0.3); }
-        .state-dot:hover { transform: scale(1.2); z-index: 10;}
-        .state-dot .tooltip { visibility: hidden; width: max-content; background-color: #111; color: #fff; text-align: center; border-radius: 4px; padding: 6px 10px; position: absolute; z-index: 100; bottom: 125%; left: 50%; transform: translateX(-50%); opacity: 0; transition: opacity 0.2s; font-size: 0.75rem; border: 1px solid #444; pointer-events: none;}
-        .state-dot:hover .tooltip { visibility: visible; opacity: 1; }
+        /* Map styles */
+        #us-map { width: 100%; height: 400px; margin-bottom: 20px; }
+        .jvm-tooltip {
+            background-color: #111 !important;
+            color: #fff !important;
+            border: 1px solid var(--border) !important;
+            border-radius: 4px !important;
+            font-family: 'Space Grotesk', sans-serif !important;
+            padding: 8px 12px !important;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5) !important;
+        }
         
         /* Bar Chart */
         .bar-chart { display: flex; flex-direction: column; gap: 20px; margin-top: 20px;}
@@ -88,7 +94,8 @@ HTML_TEMPLATE = """
         @media(max-width: 768px) { 
             body { padding: 20px 15px; }
             h1 { font-size: 1.8rem; margin-bottom: 10px; line-height: 1.2; border-bottom: none; }
-            .header-bar { flex-direction: column; align-items: flex-start; gap: 5px; margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 15px;}
+            .header-bar { flex-direction: column; align-items: flex-start; gap: 15px; margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 15px;}
+            .header-actions { width: 100%; justify-content: space-between; margin-top: 5px; }
             
             p.intro-text { margin-top: 0; font-size: 0.95rem; margin-bottom: 25px;}
             
@@ -112,7 +119,10 @@ HTML_TEMPLATE = """
     <div class="container">
         <div class="header-bar">
             <h1>MONEYBOT RESEARCH RADAR</h1>
-            <span class="meta"><span class="live-pulse"></span>AUTO-UPDATED DAILY</span>
+            <div class="header-actions" style="display: flex; gap: 15px; align-items: center;">
+                <span class="meta" style="margin-bottom: 0;"><span class="live-pulse"></span>AUTO-UPDATED DAILY</span>
+                <a href="https://getmoneybot.com" target="_blank" style="background: var(--fg); color: var(--bg); padding: 8px 16px; border-radius: 4px; font-weight: 700; font-size: 0.9rem; text-decoration: none; border: none; white-space: nowrap;">Try MoneyBot &rarr;</a>
+            </div>
         </div>
         
         <p class="intro-text" style="color: var(--accent); max-width: 600px; margin-top: -10px; margin-bottom: 40px;">
@@ -133,10 +143,7 @@ HTML_TEMPLATE = """
                 <div class="viz-card">
                     <div class="viz-title">K-12 Policy Mandates (NGPF)</div>
                     <div style="font-size: 2.5rem; font-weight: 700; margin-bottom: 20px; letter-spacing: -0.05em; line-height: 1.1;">25 <span style="font-size: 1.2rem; color: var(--accent); font-weight: 400; letter-spacing: normal;">/ 50 States</span></div>
-                    <div class="states-grid">
-                        {% for i in range(25) %}<div class="state-dot active"><span class="tooltip">Mandated State</span></div>{% endfor %}
-                        {% for i in range(25) %}<div class="state-dot"><span class="tooltip">Pending / No Mandate</span></div>{% endfor %}
-                    </div>
+                    <div id="us-map"></div>
                     <p style="font-size: 0.85rem; color: var(--accent); margin-top: 15px; line-height: 1.5; margin-bottom: 0;">States guaranteeing a standalone Personal Finance course for high school graduation.</p>
                 </div>
 
@@ -159,7 +166,10 @@ HTML_TEMPLATE = """
 
             <!-- Fragility Tax Calculator (Interactive) -->
             <div class="viz-card" style="margin-bottom: 40px;">
-                <div class="viz-title">Interactive: The "Fragility Tax" Calculator</div>
+                <div class="viz-title" style="display: flex; justify-content: space-between;">
+                    <span>Interactive: The "Fragility Tax" Calculator</span>
+                    <a href="https://twitter.com/intent/tweet?text=My%20lack%20of%20financial%20literacy%20could%20cost%20me%20hundreds%20in%20the%20annual%20%27Fragility%20Tax.%27%20Calculate%20yours%20on%20the%20MoneyBot%20Research%20Radar.&url=https://Kgarmon99.github.io/moneybot-research-radar/" target="_blank" style="color: #1DA1F2; font-weight: 600; font-size: 0.75rem; border: 1px solid #1DA1F2; padding: 2px 8px; border-radius: 4px; text-transform: none; letter-spacing: normal;">Share to X / Twitter</a>
+                </div>
                 <div class="calc-container">
                     <div class="calc-left">
                         <label style="font-weight: 600; font-size: 1.1rem; display: block; margin-bottom: 10px;">Average Credit Card Balance: $<span id="debtDisplay">5,000</span></label>
@@ -171,7 +181,11 @@ HTML_TEMPLATE = """
                     <div class="calc-right">
                         <div style="font-size: 0.85rem; color: var(--accent); text-transform: uppercase; letter-spacing: 0.05em;">Annual Fragility Tax</div>
                         <div class="tax-result">$<span id="taxDisplay">300.00</span></div>
-                        <div style="font-size: 0.85rem; color: #ff4444;">Lost wealth per year</div>
+                        <div style="font-size: 0.85rem; color: #ff4444; margin-bottom: 15px;">Lost wealth per year</div>
+                        <div style="font-size: 0.7rem; color: #555; background: #0a0a0a; padding: 10px; border-radius: 4px; border: 1px dashed #222;">
+                            <code style="background: transparent; padding: 0; border: none; display: block; color: var(--accent); margin-bottom: 5px;">&lt;iframe src="https://Kgarmon99.github.io/moneybot-research-radar"&gt;&lt;/iframe&gt;</code>
+                            Embed this calculator
+                        </div>
                     </div>
                 </div>
             </div>
@@ -207,7 +221,10 @@ HTML_TEMPLATE = """
                 <div class="card item-card">
                     <div class="meta">{{ item.source }} &nbsp;|&nbsp; {{ item.date }}</div>
                     <h3 style="margin: 0; font-size: 1.1rem;"><a href="{{ item.link }}" target="_blank">{{ item.title }}</a></h3>
-                    <p style="color: var(--accent); font-size: 0.9rem; margin-top: 10px;">{{ item.summary[:200] }}...</p>
+                    <p style="color: var(--accent); font-size: 0.9rem; margin-top: 10px; margin-bottom: 10px;">{{ item.summary[:200] }}...</p>
+                    <div style="background: #111; padding: 10px 15px; border-left: 3px solid var(--fg); border-radius: 4px; font-size: 0.85rem; font-weight: 600; color: #ddd;">
+                        🤖 {{ item.takeaway }}
+                    </div>
                 </div>
                 {% endfor %}
             </div>
@@ -254,10 +271,36 @@ HTML_TEMPLATE = """
             });
         }
 
+        // JSVectorMap Initialization
+        const mandatedStates = ['US-AL', 'US-AR', 'US-CT', 'US-FL', 'US-GA', 'US-ID', 'US-IN', 'US-IA', 'US-KS', 'US-LA', 'US-MI', 'US-MN', 'US-MS', 'US-MO', 'US-NE', 'US-NV', 'US-NH', 'US-NC', 'US-OH', 'US-OR', 'US-PA', 'US-RI', 'US-SC', 'US-TN', 'US-UT', 'US-VA', 'US-WV'];
+        
+        const map = new jsVectorMap({
+            selector: '#us-map',
+            map: 'us_aea_en',
+            backgroundColor: 'transparent',
+            zoomButtons: false,
+            zoomOnScroll: false,
+            regionStyle: {
+                initial: { fill: '#222222', stroke: '#333333', strokeWidth: 0.5 },
+                hover: { fill: '#444444' },
+                selected: { fill: '#FFFFFF' },
+                selectedHover: { fill: '#cccccc' }
+            },
+            selectedRegions: mandatedStates,
+            onRegionTooltipShow(event, tooltip, code) {
+                if (mandatedStates.includes(code)) {
+                    tooltip.html('<strong>' + tooltip.text() + '</strong><br><span style="color:#00ff00;">Guaranteed Personal Finance</span>');
+                } else {
+                    tooltip.html('<strong>' + tooltip.text() + '</strong><br><span style="color:#888888;">No Guarantee Yet</span>');
+                }
+            }
+        });
+
         // Initialize
         window.onload = () => {
             calcTax();
             setTimeout(animateBars, 300);
+            setTimeout(() => map.updateSize(), 500);
         };
     </script>
 </body>
@@ -354,12 +397,23 @@ def build():
     try:
         d = feedparser.parse("https://www.nber.org/rss/new.xml")
         for entry in d.entries[:10]:
+            # Generate a 1-sentence "MoneyBot Takeaway" prompt locally
+            summary = entry.get('summary', '').replace('<p>', '').replace('</p>', '')
+            # For a static build script, we will synthesize a simple automated takeaway based on keywords
+            takeaway = ""
+            lower_title = entry.title.lower()
+            if 'tax' in lower_title: takeaway = "MoneyBot Takeaway: This highlights how taxation systems systematically impact household wealth retention."
+            elif 'mortgage' in lower_title or 'housing' in lower_title: takeaway = "MoneyBot Takeaway: Real estate structural dynamics are actively making homeownership a harder hurdle for Gen Z."
+            elif 'literacy' in lower_title or 'education' in lower_title: takeaway = "MoneyBot Takeaway: Direct empirical proof that financial capability requires scalable, early intervention."
+            else: takeaway = "MoneyBot Takeaway: Macroeconomic shifts directly dictate the purchasing power and fragility of everyday consumers."
+            
             feed_items.append({
                 'source': 'NBER Working Papers',
                 'title': entry.title,
                 'link': entry.link,
                 'date': entry.get('published', '')[:16],
-                'summary': entry.get('summary', '').replace('<p>', '').replace('</p>', '')
+                'summary': summary[:200],
+                'takeaway': takeaway
             })
     except Exception as e:
         print("RSS error:", e)
