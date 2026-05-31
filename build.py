@@ -860,6 +860,21 @@ def build():
     with open('public/data/financial_literacy_dataset.csv', 'w', encoding='utf-8') as f:
         f.write(csv_content)
 
+    # --- Generate JSON API for iOS Widgets ---
+    import json
+    os.makedirs('public/api', exist_ok=True)
+    mandates_count = sum(1 for s in states_data_raw if s[2] == 'A')
+    api_data = {
+        "mandates": mandates_count,
+        "total_states": 50,
+        "finra_adult": 49,
+        "finra_genz": 38,
+        "title": "RADAR"
+    }
+    with open('public/api/radar.json', 'w', encoding='utf-8') as f:
+        json.dump(api_data, f)
+
+
     
     # --- Generate Embed Files ---
     os.makedirs('public/embed', exist_ok=True)
