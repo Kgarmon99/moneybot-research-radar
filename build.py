@@ -7,7 +7,6 @@ from jinja2 import Template
 import ssl
 import shutil
 
-# Bypass SSL checks for scraping RSS feeds
 if hasattr(ssl, '_create_unverified_context'):
     ssl._create_default_https_context = ssl._create_unverified_context
 
@@ -35,6 +34,24 @@ HTML_TEMPLATE = """
         .tags span { background: #111; border: 1px solid var(--border); padding: 4px 10px; font-size: 0.75rem; border-radius: 12px; margin-right: 8px; text-transform: lowercase; }
         .header-bar { display: flex; justify-content: space-between; align-items: baseline; }
         .live-pulse { display: inline-block; width: 8px; height: 8px; background-color: #00ff00; border-radius: 50%; margin-right: 8px; box-shadow: 0 0 8px #00ff00; }
+        
+        /* Dashboard Viz Styles */
+        .dashboard-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 40px; margin-top: 30px;}
+        .viz-card { border: 1px solid var(--border); padding: 24px; border-radius: 4px; background-color: #050505; }
+        .viz-title { font-size: 0.85rem; color: var(--accent); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 15px; border-bottom: 1px solid #222; padding-bottom: 10px;}
+        
+        .states-grid { display: grid; grid-template-columns: repeat(10, 1fr); gap: 6px; margin-bottom: 15px; }
+        .state-dot { aspect-ratio: 1; border-radius: 2px; background-color: #222; transition: all 0.3s ease;}
+        .state-dot.active { background-color: var(--fg); box-shadow: 0 0 8px rgba(255,255,255,0.3); }
+        
+        .bar-chart { display: flex; flex-direction: column; gap: 20px; margin-top: 20px;}
+        .bar-row { display: flex; flex-direction: column; gap: 8px; }
+        .bar-label { font-size: 0.9rem; display: flex; justify-content: space-between; font-weight: 600;}
+        .bar-track { height: 12px; background-color: #222; border-radius: 6px; overflow: hidden; }
+        .bar-fill { height: 100%; background-color: var(--fg); border-radius: 6px;}
+        .bar-fill.danger { background-color: #ff4444; box-shadow: 0 0 8px rgba(255,68,68,0.4); }
+        
+        @media(max-width: 768px) { .dashboard-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
@@ -46,6 +63,35 @@ HTML_TEMPLATE = """
         <p style="color: var(--accent); max-width: 600px; margin-top: -20px;">
             A centralized dashboard tracking the latest empirical data and policy changes regarding financial literacy, household finance, and the "Fragility Tax".
         </p>
+
+        <!-- VISUALIZATIONS DASHBOARD -->
+        <div class="dashboard-grid">
+            <div class="viz-card">
+                <div class="viz-title">K-12 Policy Mandates (NGPF Data)</div>
+                <div style="font-size: 2.2rem; font-weight: 700; margin-bottom: 20px;">25 <span style="font-size: 1.2rem; color: var(--accent); font-weight: 400;">/ 50 States</span></div>
+                <div class="states-grid">
+                    {% for i in range(25) %}<div class="state-dot active"></div>{% endfor %}
+                    {% for i in range(25) %}<div class="state-dot"></div>{% endfor %}
+                </div>
+                <p style="font-size: 0.85rem; color: var(--accent); margin-top: 15px; line-height: 1.4;">States currently guaranteeing a standalone Personal Finance course for high school graduation.</p>
+            </div>
+
+            <div class="viz-card">
+                <div class="viz-title">Financial Capability (FINRA Data)</div>
+                <div class="bar-chart">
+                    <div class="bar-row">
+                        <div class="bar-label"><span>Adult Average</span><span>49%</span></div>
+                        <div class="bar-track"><div class="bar-fill" style="width: 49%;"></div></div>
+                    </div>
+                    <div class="bar-row" style="margin-top: 15px;">
+                        <div class="bar-label"><span>Gen Z Average</span><span style="color: #ff4444;">38%</span></div>
+                        <div class="bar-track"><div class="bar-fill danger" style="width: 38%;"></div></div>
+                    </div>
+                </div>
+                <p style="font-size: 0.85rem; color: var(--accent); margin-top: 30px; line-height: 1.4;">Percentage of core financial literacy questions answered correctly. The capability gap is rapidly widening for younger generations.</p>
+            </div>
+        </div>
+
         <h2>Curated Briefs & Memos</h2>
         {% if briefs %}
             {% for brief in briefs %}
@@ -62,6 +108,7 @@ HTML_TEMPLATE = """
         {% else %}
             <p>No local research briefs found.</p>
         {% endif %}
+        
         <h2>Live Feed (NBER Working Papers)</h2>
         {% for item in feed_items %}
         <div class="card">
@@ -113,7 +160,6 @@ BRIEF_TEMPLATE = """
 """
 
 def build():
-    # Clean and setup output dir
     if os.path.exists('public'):
         shutil.rmtree('public')
     os.makedirs('public/brief', exist_ok=True)
@@ -143,7 +189,6 @@ def build():
             fm['html_filename'] = html_filename
             briefs.append(fm)
             
-            # Generate brief HTML
             html_content = markdown.markdown(body, extensions=['tables', 'fenced_code'])
             brief_html = Template(BRIEF_TEMPLATE).render(content=html_content, title=fm['title'])
             
@@ -155,7 +200,6 @@ def build():
             
     briefs.sort(key=lambda x: str(x.get('date', '')), reverse=True)
 
-    # Fetch NBER
     feed_items = []
     try:
         d = feedparser.parse("https://www.nber.org/rss/new.xml")
