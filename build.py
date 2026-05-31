@@ -388,10 +388,10 @@ def build():
     except Exception as e:
         print("RSS error:", e)
 
-    index_html = Template(HTML_TEMPLATE).render(briefs=briefs, feed_items=feed_items, states_list=[
+    states_list = [
         {"code": "AL", "mandated": True}, {"code": "AK", "mandated": False}, {"code": "AZ", "mandated": False},
-        {"code": "AR", "mandated": True}, {"code": "CA", "mandated": False}, {"code": "CO", "mandated": False},
-        {"code": "CT", "mandated": True}, {"code": "DE", "mandated": False}, {"code": "FL", "mandated": True},
+        {"code": "AR", "mandated": True}, {"code": "CA", "mandated": True}, {"code": "CO", "mandated": False},
+        {"code": "CT", "mandated": True}, {"code": "DE", "mandated": True}, {"code": "FL", "mandated": True},
         {"code": "GA", "mandated": True}, {"code": "HI", "mandated": False}, {"code": "ID", "mandated": True},
         {"code": "IL", "mandated": False}, {"code": "IN", "mandated": True}, {"code": "IA", "mandated": True},
         {"code": "KS", "mandated": False}, {"code": "KY", "mandated": False}, {"code": "LA", "mandated": True},
@@ -399,14 +399,16 @@ def build():
         {"code": "MI", "mandated": True}, {"code": "MN", "mandated": True}, {"code": "MS", "mandated": True},
         {"code": "MO", "mandated": True}, {"code": "MT", "mandated": False}, {"code": "NE", "mandated": True},
         {"code": "NV", "mandated": True}, {"code": "NH", "mandated": True}, {"code": "NJ", "mandated": False},
-        {"code": "NM", "mandated": False}, {"code": "NY", "mandated": False}, {"code": "NC", "mandated": True},
+        {"code": "NM", "mandated": False}, {"code": "NY", "mandated": True}, {"code": "NC", "mandated": True},
         {"code": "ND", "mandated": False}, {"code": "OH", "mandated": True}, {"code": "OK", "mandated": False},
         {"code": "OR", "mandated": True}, {"code": "PA", "mandated": True}, {"code": "RI", "mandated": True},
         {"code": "SC", "mandated": True}, {"code": "SD", "mandated": False}, {"code": "TN", "mandated": True},
         {"code": "TX", "mandated": False}, {"code": "UT", "mandated": True}, {"code": "VT", "mandated": False},
         {"code": "VA", "mandated": True}, {"code": "WA", "mandated": False}, {"code": "WV", "mandated": True},
-        {"code": "WI", "mandated": False}, {"code": "WY", "mandated": False}
-    ])
+        {"code": "WI", "mandated": True}, {"code": "WY", "mandated": False}
+    ]
+    
+    index_html = Template(HTML_TEMPLATE).render(briefs=briefs, feed_items=feed_items, states_list=states_list)
     with open('public/index.html', 'w', encoding='utf-8') as f:
         f.write(index_html)
 
