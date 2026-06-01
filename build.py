@@ -242,7 +242,7 @@ HTML_TEMPLATE = """
             <button class="tab" onclick="switchTab('blueprint')">Implementation</button>
             <button class="tab" onclick="switchTab('timeline')">Timeline</button>
             <button class="tab" onclick="switchTab('feed')">Live Feed</button>
-            <button class="tab" onclick="switchTab('api')">Developers / API</button>
+            
         </div>
 
 
@@ -580,39 +580,6 @@ HTML_TEMPLATE = """
         </div>
 
         
-        <!-- TAB: API -->
-        <div id="api" class="tab-content">
-            <div style="margin-bottom: 25px;">
-                <h2 style="font-size: 1.5rem; margin-bottom: 5px;">Public REST API</h2>
-                <p style="color: var(--accent); font-size: 0.95rem;">Build EdTech tools, widgets, and trackers using our live-updating policy infrastructure.</p>
-            </div>
-            
-            <div class="card" style="cursor: default;">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                    <span style="background: #00bbff; color: #000; padding: 4px 10px; border-radius: 4px; font-weight: 700; font-size: 0.8rem;">GET</span>
-                    <code style="color: #00bbff;">/api/radar.json</code>
-                </div>
-                <p style="font-size: 0.9rem; color: #ccc;">Returns the current aggregate capability statistics, national mandate counts, and a full 50-state array of NGPF grades and legislative statuses.</p>
-                <div style="background: #000; padding: 15px; border-radius: 4px; border: 1px solid #333; overflow-x: auto;">
-<pre style="margin: 0; color: #888; border: none; padding: 0; font-size: 0.85rem;">{
-  "mandates": 30,
-  "total_states": 50,
-  "finra_adult": 49,
-  "finra_genz": 38,
-  "states": [
-    {
-      "code": "AL",
-      "name": "Alabama",
-      "grade": "A",
-      "details": "..."
-    }
-  ]
-}</pre>
-                </div>
-                <a href="api/radar.json" target="_blank" class="newsletter-btn" style="display: inline-block; margin-top: 20px; text-decoration: none;">View Live Endpoint &rarr;</a>
-            </div>
-        </div>
-
         <!-- TAB: FEED -->
         <div id="feed" class="tab-content">
             
