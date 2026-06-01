@@ -121,6 +121,10 @@ HTML_TEMPLATE = """
         .timeline-content:hover { border-color: #555; }
         
         
+        
+        /* New Badge */
+        .badge-new { background: #00ff00; color: #000; padding: 3px 8px; border-radius: 4px; font-size: 0.65rem; font-weight: 800; margin-left: 10px; vertical-align: middle; letter-spacing: 0.05em; text-transform: uppercase; box-shadow: 0 0 10px rgba(0,255,0,0.4); display: inline-block; transform: translateY(-3px);}
+
         /* Pioneer Links */
         .pioneer-links { margin-top: 15px; border-top: 1px solid #222; padding-top: 15px; display: flex; gap: 10px; flex-wrap: wrap; }
         .p-link { font-size: 0.8rem; color: #888; text-decoration: none; border: 1px solid #333; padding: 4px 10px; border-radius: 4px; transition: all 0.2s; text-transform: uppercase; letter-spacing: 0.05em; display: flex; align-items: center; gap: 5px;}
@@ -332,7 +336,7 @@ HTML_TEMPLATE = """
                             <span>{{ brief.date }} &nbsp;|&nbsp; {{ brief.source_quality }}</span>
                             <span style="color: var(--fg); font-weight: bold;">&rarr;</span>
                         </div>
-                        <h3 style="margin: 10px 0 15px 0; font-size: 1.4rem;"><a href="brief/{{ brief.html_filename }}" style="text-decoration: none;">{{ brief.title }}</a></h3>
+                        <h3 style="margin: 10px 0 15px 0; font-size: 1.4rem; display: flex; align-items: center; flex-wrap: wrap; gap: 10px;"><a href="brief/{{ brief.html_filename }}" style="text-decoration: none;">{{ brief.title }}</a>{% if brief.is_new %}<span class="badge-new">NEW</span>{% endif %}</h3>
                         <p style="color: #aaa; font-size: 0.95rem; line-height: 1.5; margin-bottom: 20px;">
                             {{ brief.preview }}
                         </p>
@@ -983,6 +987,8 @@ def build():
             print(f"Error reading {path}: {e}")
             
     briefs.sort(key=lambda x: str(x.get('date', '')), reverse=True)
+    if briefs:
+        briefs[0]['is_new'] = True
 
     feed_items = []
     
