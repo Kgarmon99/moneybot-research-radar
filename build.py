@@ -278,6 +278,37 @@ HTML_TEMPLATE = """
                 </div>
             </div>
 
+            
+            <!-- Curriculum Velocity Gap Viz -->
+            <div class="viz-card" style="grid-column: 1 / -1; margin-top: 10px; margin-bottom: 20px; border-color: #331111;">
+                <div class="viz-title" style="color: #ff4444; font-weight: 600;">The Curriculum Velocity Gap</div>
+                <p style="font-size: 0.95rem; color: #ccc; margin-bottom: 25px; line-height: 1.6;">Even in states with "A" grade mandates, public school standards take an average of 5 years to update. They are teaching a static 1990s curriculum to students who are walking into a dynamic 2026 financial warzone.</p>
+                
+                <div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: stretch;">
+                    <!-- Lagging Standards -->
+                    <div style="flex: 1 1 300px; padding: 20px; border: 1px dashed #333; border-radius: 6px; background: #050505;">
+                        <h4 style="margin: 0 0 15px 0; color: #888; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em;">State Standards (Lagging)</h4>
+                        <ul style="list-style: none; padding: 0; margin: 0; color: #888; font-size: 0.95rem;">
+                            <li style="margin-bottom: 12px; display: flex; align-items: flex-start; gap: 10px;"><span style="color: #555;">&rarr;</span> Balancing a paper checkbook</li>
+                            <li style="margin-bottom: 12px; display: flex; align-items: flex-start; gap: 10px;"><span style="color: #555;">&rarr;</span> Writing physical checks</li>
+                            <li style="margin-bottom: 12px; display: flex; align-items: flex-start; gap: 10px;"><span style="color: #555;">&rarr;</span> Traditional brick-and-mortar CDs</li>
+                            <li style="margin-bottom: 0; display: flex; align-items: flex-start; gap: 10px;"><span style="color: #555;">&rarr;</span> Static monthly budgeting</li>
+                        </ul>
+                    </div>
+                    
+                    <!-- Modern Threats -->
+                    <div style="flex: 1 1 300px; padding: 20px; border: 1px solid #440000; border-radius: 6px; background: #110000; box-shadow: inset 0 0 20px rgba(255,0,0,0.03);">
+                        <h4 style="margin: 0 0 15px 0; color: #ff4444; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em;">Modern Threat Vectors (Real-Time)</h4>
+                        <ul style="list-style: none; padding: 0; margin: 0; color: #ddd; font-size: 0.95rem;">
+                            <li style="margin-bottom: 12px; display: flex; align-items: flex-start; gap: 10px;"><span style="color: #ff4444;">&times;</span> Buy-Now-Pay-Later (BNPL) phantom debt</li>
+                            <li style="margin-bottom: 12px; display: flex; align-items: flex-start; gap: 10px;"><span style="color: #ff4444;">&times;</span> Gamified 0DTE options trading apps</li>
+                            <li style="margin-bottom: 12px; display: flex; align-items: flex-start; gap: 10px;"><span style="color: #ff4444;">&times;</span> Algorithmic & social credit underwriting</li>
+                            <li style="margin-bottom: 0; display: flex; align-items: flex-start; gap: 10px;"><span style="color: #ff4444;">&times;</span> Synthetic credit and micro-betting traps</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
             <!-- Stanford Validation / Solution Viz -->
             <div class="viz-card" style="margin-top: 20px; border-color: var(--fg);">
                 <div class="viz-title" style="color: var(--fg); font-weight: 600;">The Solution: Just-In-Time Gamification (Stanford SIEPR)</div>
