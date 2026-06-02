@@ -1003,9 +1003,16 @@ def build():
         except Exception as e:
             print(f"Error reading {path}: {e}")
             
+    from datetime import datetime, timedelta
+
     briefs.sort(key=lambda x: str(x.get('date', '')), reverse=True)
-    if briefs:
-        briefs[0]['is_new'] = True
+    two_months_ago = datetime.now() - timedelta(days=60)
+    for brief in briefs:
+        try:
+            brief_date = datetime.strptime(str(brief.get('date', '')), '%Y-%m-%d')
+            brief['is_new'] = brief_date >= two_months_ago
+        except (ValueError, TypeError):
+            brief['is_new'] = False
 
     feed_items = []
     
